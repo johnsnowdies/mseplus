@@ -7,7 +7,7 @@
 #
 # Адрес: 192.168.59.103 (MySQL 5.6.39)
 # Схема: funds
-# Время создания: 2018-02-12 19:00:21 +0000
+# Время создания: 2018-02-12 21:13:55 +0000
 # ************************************************************
 
 
@@ -32,7 +32,8 @@ CREATE TABLE `currencies` (
   `max_companies` int(11) DEFAULT NULL,
   `max_agents` int(11) DEFAULT NULL,
   `currency_short_name` varchar(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `currencies_id_uindex` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `currencies` WRITE;
@@ -58,11 +59,14 @@ DROP TABLE IF EXISTS `markets`;
 
 CREATE TABLE `markets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `fk_currency` int(11) DEFAULT NULL,
+  `fk_currency` int(11) unsigned NOT NULL,
   `type` enum('INTERNAL','EXTERNAL') DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `market_short_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `markets_id_uindex` (`id`),
+  KEY `markets_currencies_id_fk` (`fk_currency`),
+  CONSTRAINT `markets_currencies_id_fk` FOREIGN KEY (`fk_currency`) REFERENCES `currencies` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `markets` WRITE;
@@ -88,12 +92,15 @@ DROP TABLE IF EXISTS `stock`;
 
 CREATE TABLE `stock` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `fk_market` int(11) DEFAULT NULL,
+  `fk_market` int(11) unsigned NOT NULL,
   `company_name` varchar(255) DEFAULT NULL,
   `amount` int(11) DEFAULT NULL,
   `capitalization` int(11) DEFAULT NULL,
   `sum` double DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `stock_id_uindex` (`id`),
+  KEY `stock_markets_id_fk` (`fk_market`),
+  CONSTRAINT `stock_markets_id_fk` FOREIGN KEY (`fk_market`) REFERENCES `markets` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -105,10 +112,13 @@ DROP TABLE IF EXISTS `stock_history`;
 
 CREATE TABLE `stock_history` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `fk_stock` int(11) DEFAULT NULL,
+  `fk_stock` int(11) unsigned NOT NULL,
   `tick_id` int(11) DEFAULT NULL,
   `sum` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `stock_history_id_uindex` (`id`),
+  KEY `stock_history_stock_id_fk` (`fk_stock`),
+  CONSTRAINT `stock_history_stock_id_fk` FOREIGN KEY (`fk_stock`) REFERENCES `stock` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
