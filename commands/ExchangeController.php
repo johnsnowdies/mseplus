@@ -22,8 +22,6 @@ class ExchangeController extends Controller
         $campaignService = new CampaignService();
         $campaignService->runSimulation();
 
-
-
         # Run trade sumulation service
 
     }

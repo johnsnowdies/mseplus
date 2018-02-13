@@ -18,7 +18,9 @@
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "jcabanillas/yii2-inspinia": "*"
+        "jcabanillas/yii2-inspinia": "*",
+        "nubs/random-name-generator": "dev-master",
+        "rmrevin/yii2-fontawesome": "~2.17"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

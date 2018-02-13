@@ -52,7 +52,7 @@ class Stock extends \yii\db\ActiveRecord
             'company_name' => 'Название кампании',
             'amount' => 'Размешено акций',
             'capitalization' => 'Капитализация',
-            'sum' => 'Стоимость',
+            'sum' => 'Стоимость акции',
         ];
     }
 

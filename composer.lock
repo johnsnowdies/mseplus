@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe72bab82c26072dc006c828076816b7",
+    "content-hash": "0600fa29adb122071288882a9247b7ed",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -29,6 +29,127 @@
             ]
         },
         {
+            "name": "bower-asset/chosen",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/harvesthq/chosen-package.git",
+                "reference": "4537066f32292e28d3f7305152ed7a8eb34a2388"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/harvesthq/chosen-package/zipball/4537066f32292e28d3f7305152ed7a8eb34a2388",
+                "reference": "4537066f32292e28d3f7305152ed7a8eb34a2388",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
+            ]
+        },
+        {
+            "name": "bower-asset/cropper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fengyuanchen/cropper.git",
+                "reference": "c3abb4c980689ec8d0abda77ae7745d59cc88bb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fengyuanchen/cropper/zipball/c3abb4c980689ec8d0abda77ae7745d59cc88bb8",
+                "reference": "c3abb4c980689ec8d0abda77ae7745d59cc88bb8",
+                "shasum": null
+            },
+            "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/fastclick",
+            "version": "v0.6.11",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:ftlabs/fastclick.git",
+                "reference": "57d35f73ca54e31ee37161e32f6ac11786f520d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ftlabs/fastclick/zipball/57d35f73ca54e31ee37161e32f6ac11786f520d2",
+                "reference": "57d35f73ca54e31ee37161e32f6ac11786f520d2",
+                "shasum": null
+            },
+            "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/flot",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/flot/flot.git",
+                "reference": "958e5fd43c6dff4bab3e1fd5cb6109df5c1e8003"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/flot/flot/zipball/958e5fd43c6dff4bab3e1fd5cb6109df5c1e8003",
+                "reference": "958e5fd43c6dff4bab3e1fd5cb6109df5c1e8003",
+                "shasum": null
+            },
+            "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/flot-spline",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpozy/flot-spline.git",
+                "reference": "b1917a6e2a55cfe045a52fdee4d9efd85a5f4202"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpozy/flot-spline/zipball/b1917a6e2a55cfe045a52fdee4d9efd85a5f4202",
+                "reference": "b1917a6e2a55cfe045a52fdee4d9efd85a5f4202",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "SEE LICENSE IN LICENSE"
+            ]
+        },
+        {
+            "name": "bower-asset/flot.tooltip",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/krzysu/flot.tooltip.git",
+                "reference": "a4ae1ae23e3ac3379c8c506295ea193d8139b2f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/krzysu/flot.tooltip/zipball/a4ae1ae23e3ac3379c8c506295ea193d8139b2f5",
+                "reference": "a4ae1ae23e3ac3379c8c506295ea193d8139b2f5",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/fontawesome",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "reference": "159d220a7446ceb7cde0b0096674f60f51129bf7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/159d220a7446ceb7cde0b0096674f60f51129bf7",
+                "reference": "159d220a7446ceb7cde0b0096674f60f51129bf7",
+                "shasum": null
+            },
+            "type": "bower-asset"
+        },
+        {
             "name": "bower-asset/inputmask",
             "version": "3.3.11",
             "source": {
@@ -51,6 +172,28 @@
             ]
         },
         {
+            "name": "bower-asset/ionrangeslider",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:IonDen/ion.rangeSlider.git",
+                "reference": "6399e3e1fc3bd7d89a9c54632fc4e55106a1d817"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IonDen/ion.rangeSlider/zipball/6399e3e1fc3bd7d89a9c54632fc4e55106a1d817",
+                "reference": "6399e3e1fc3bd7d89a9c54632fc4e55106a1d817",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.8"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "bower-asset/jquery",
             "version": "3.2.1",
             "source": {
@@ -62,6 +205,107 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/77d2a51d0520d2ee44173afdf4e40a9201f5964e",
                 "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/jquery-sparkline",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rkgrep/jquery.sparkline.git",
+                "reference": "b9f8a9f98d4028acd6573d6360ed31b20904672e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rkgrep/jquery.sparkline/zipball/b9f8a9f98d4028acd6573d6360ed31b20904672e",
+                "reference": "b9f8a9f98d4028acd6573d6360ed31b20904672e",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "BSD 3"
+            ]
+        },
+        {
+            "name": "bower-asset/jquery-timeago",
+            "version": "v1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rmm5t/jquery-timeago.git",
+                "reference": "0a370aa681dccefccd42fac8e8892c9ef3257890"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rmm5t/jquery-timeago/zipball/0a370aa681dccefccd42fac8e8892c9ef3257890",
+                "reference": "0a370aa681dccefccd42fac8e8892c9ef3257890",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.4"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/jquery-ui",
+            "version": "1.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/components/jqueryui.git",
+                "reference": "44ecf3794cc56b65954cc19737234a3119d036cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/components/jqueryui/zipball/44ecf3794cc56b65954cc19737234a3119d036cc",
+                "reference": "44ecf3794cc56b65954cc19737234a3119d036cc",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.6"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/knob",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hacknightly/gnob.git",
+                "reference": "9febd55e9be65ed516e0f1259fe5d3dcf038a4cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hacknightly/gnob/zipball/9febd55e9be65ed516e0f1259fe5d3dcf038a4cf",
+                "reference": "9febd55e9be65ed516e0f1259fe5d3dcf038a4cf",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/momentjs",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moment/moment.git",
+                "reference": "03073778ec18ee38e179208cd1af899e8d1848dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moment/moment/zipball/03073778ec18ee38e179208cd1af899e8d1848dc",
+                "reference": "03073778ec18ee38e179208cd1af899e8d1848dc",
                 "shasum": null
             },
             "type": "bower-asset",
@@ -84,6 +328,48 @@
                 "shasum": null
             },
             "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/switchery",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:abpetkov/switchery.git",
+                "reference": "778104eb5bd2579a24f4d9bd124592dcdb8598aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abpetkov/switchery/zipball/778104eb5bd2579a24f4d9bd124592dcdb8598aa",
+                "reference": "778104eb5bd2579a24f4d9bd124592dcdb8598aa",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/fastclick": "0.6.11",
+                "bower-asset/transitionize": "*"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/transitionize",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:abpetkov/transitionize.git",
+                "reference": "bd106f74b90520774c1a7fff5f1f24073c0bce89"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abpetkov/transitionize/zipball/bd106f74b90520774c1a7fff5f1f24073c0bce89",
+                "reference": "bd106f74b90520774c1a7fff5f1f24073c0bce89",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "bower-asset/yii2-pjax",
@@ -213,6 +499,210 @@
                 "html"
             ],
             "time": "2017-06-03T02:28:16+00:00"
+        },
+        {
+            "name": "fortawesome/font-awesome",
+            "version": "v4.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "reference": "a8386aae19e200ddb0f6845b5feeee5eb7013687"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/a8386aae19e200ddb0f6845b5feeee5eb7013687",
+                "reference": "a8386aae19e200ddb0f6845b5feeee5eb7013687",
+                "shasum": ""
+            },
+            "require-dev": {
+                "jekyll": "1.0.2",
+                "lessc": "1.4.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.6.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OFL-1.1",
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dave Gandy",
+                    "email": "dave@fontawesome.io",
+                    "homepage": "http://twitter.com/davegandy",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The iconic font and CSS framework",
+            "homepage": "http://fontawesome.io/",
+            "keywords": [
+                "FontAwesome",
+                "awesome",
+                "bootstrap",
+                "font",
+                "icon"
+            ],
+            "time": "2016-10-24T15:52:54+00:00"
+        },
+        {
+            "name": "jcabanillas/yii2-inspinia",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jcabanillas/yii2-inspinia.git",
+                "reference": "d1a2698fb9fc047534fa836dc8c16ac332c93129"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jcabanillas/yii2-inspinia/zipball/d1a2698fb9fc047534fa836dc8c16ac332c93129",
+                "reference": "d1a2698fb9fc047534fa836dc8c16ac332c93129",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/chosen": "*",
+                "bower-asset/cropper": "*",
+                "bower-asset/flot": "*",
+                "bower-asset/flot-spline": "*",
+                "bower-asset/flot.tooltip": "*",
+                "bower-asset/fontawesome": "*",
+                "bower-asset/ionrangeslider": "*",
+                "bower-asset/jquery-sparkline": "*",
+                "bower-asset/jquery-timeago": "^1.5",
+                "bower-asset/knob": "*",
+                "bower-asset/momentjs": "*",
+                "bower-asset/switchery": "*",
+                "yiisoft/yii2": "*",
+                "yiisoft/yii2-jui": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "jcabanillas\\inspinia\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Javier Cabanillas",
+                    "email": "jcabanillas@bitevolution.net"
+                }
+            ],
+            "description": "Inspinia 2.5 widgets",
+            "keywords": [
+                " assets",
+                " inspinia",
+                " widgets",
+                "yii2"
+            ],
+            "time": "2016-06-10T06:34:58+00:00"
+        },
+        {
+            "name": "nubs/random-name-generator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nubs/random-name-generator.git",
+                "reference": "7004eb1724e1c4a154553e44312b7045fe412b77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nubs/random-name-generator/zipball/7004eb1724e1c4a154553e44312b7045fe412b77",
+                "reference": "7004eb1724e1c4a154553e44312b7045fe412b77",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~5.6 || ~7.0"
+            },
+            "require-dev": {
+                "cinam/randomizer": ">=1.1.1,<2.0",
+                "phpunit/phpunit": "~5.0",
+                "satooshi/php-coveralls": "~1.0",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nubs\\RandomNameGenerator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Spencer Rinehart",
+                    "email": "anubis@overthemonkey.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A library to create interesting, sometimes entertaining, random names.",
+            "keywords": [
+                "alliteration",
+                "generator",
+                "random",
+                "video game"
+            ],
+            "time": "2016-12-04T01:57:19+00:00"
+        },
+        {
+            "name": "rmrevin/yii2-fontawesome",
+            "version": "2.17.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rmrevin/yii2-fontawesome.git",
+                "reference": "65ce306da864f4d558348aeba040ed7876878090"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rmrevin/yii2-fontawesome/zipball/65ce306da864f4d558348aeba040ed7876878090",
+                "reference": "65ce306da864f4d558348aeba040ed7876878090",
+                "shasum": ""
+            },
+            "require": {
+                "fortawesome/font-awesome": "~4.7",
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "2.0.*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "asset-installer-paths": {
+                    "npm-asset-library": "vendor/npm",
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "rmrevin\\yii\\fontawesome\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Revin Roman",
+                    "email": "roman@rmrevin.com",
+                    "homepage": "https://rmrevin.com/"
+                }
+            ],
+            "description": "Asset Bundle for Yii2 with Font Awesome",
+            "keywords": [
+                "asset",
+                "awesome",
+                "bundle",
+                "font",
+                "yii"
+            ],
+            "time": "2017-01-11T14:05:47+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -463,6 +953,64 @@
                 "yii2"
             ],
             "time": "2016-12-20T13:26:02+00:00"
+        },
+        {
+            "name": "yiisoft/yii2-jui",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-jui.git",
+                "reference": "0438b11090198e9bc8db415429f9bc306cd3f986"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-jui/zipball/0438b11090198e9bc8db415429f9bc306cd3f986",
+                "reference": "0438b11090198e9bc8db415429f9bc306cd3f986",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery-ui": "~1.12.1",
+                "yiisoft/yii2": "~2.0.4"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\jui\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Kochetov",
+                    "email": "creocoder@gmail.com"
+                },
+                {
+                    "name": "Qiang Xue",
+                    "email": "qiang.xue@gmail.com"
+                },
+                {
+                    "name": "Carsten Brandt",
+                    "email": "mail@cebe.cc"
+                },
+                {
+                    "name": "Alexander Makarov",
+                    "email": "sam@rmcreative.ru"
+                }
+            ],
+            "description": "The Jquery UI extension for the Yii framework",
+            "keywords": [
+                "jQuery UI",
+                "yii2"
+            ],
+            "time": "2018-02-06T14:24:55+00:00"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
@@ -2817,8 +3365,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "nubs/random-name-generator": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

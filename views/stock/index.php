@@ -11,10 +11,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="stock-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Актуальный список <small class="m-l-sm">This is custom panel</small></h5>
+                    </div>
 
-    <p>
-        <?= Html::a('Create Stock', ['create'], ['class' => 'btn btn-success']) ?>
+                    <div class="ibox-content">
+                    <p>
+        <?= Html::a('Добавить кампанию', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -31,16 +36,36 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'fkMarket' => [
                 'label' => 'Биржа',
+                'format' => 'raw',
                 'value' => function ($data){
-                    return $data->fkMarket->market_short_name;
+                    $src = $data->fkMarket->fkCurrency->logo;
+
+                    return "<img src=\"{$src}\" height=20 width=40 > &nbsp;". $data->fkMarket->market_short_name;
                 }
             ],
             'company_name',
             'amount',
             'capitalization',
-            'sum',
+            'sum' => [
+                'label' => 'Цена акции',
+                'format' => ['decimal', 2],
+                'value' => function ($data){
+                    return $data->sum;
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+                    </div>
+                    <div class="ibox-footer">
+                        <span class="pull-right">
+                          The righ side of the footer
+                    </span>
+                        This is simple footer example
+                    </div>
+                </div>
+            </div>
+
+    
 </div>

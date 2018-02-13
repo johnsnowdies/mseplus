@@ -17,8 +17,8 @@ class CampaignService
 {
 
     private function generateCampaignName(){
-        return 'Campaign Sample name ' . rand(353243,2342352);
-
+        $generator = \Nubs\RandomNameGenerator\All::create();
+        return $generator->getName();
     }
 
 
@@ -30,19 +30,16 @@ class CampaignService
         return Stock::find()->where(['fk_market' => $arMarkets])->count();
     }
 
-
-
-
-    private function campaignBankrupt(){
-
+    private function campaignBankrupt($markets){
+        
     }
 
     private function campaignIpo($markets){
         $stock = new Stock();
 
         $stock->company_name = $this->generateCampaignName();
-        $stock->amount = rand(100,250);
-        $stock->capitalization = rand (500000, 10000000);
+        $stock->amount = rand(100,25000);
+        $stock->capitalization = rand (50000, 10000000);
         $stock->sum = $stock->capitalization / $stock->amount;
 
         $market = $markets[0];
@@ -82,9 +79,7 @@ class CampaignService
                 print("Campaign quote doesn't reached yet\r\n");
                 $this->campaignIpo($markets);
             }
-
         }
-
     }
 
 }

@@ -12,6 +12,7 @@ use Yii;
  * @property string $currency
  * @property int $max_companies
  * @property int $max_agents
+ * @property string $logo
  * @property string $currency_short_name
  *
  * @property Markets[] $markets

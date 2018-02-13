@@ -1,84 +1,77 @@
 <?php
-
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use app\widgets\Alert;
+use jcabanillas\inspinia\AppAsset;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
+use yii\bootstrap\Alert;
 
 AppAsset::register($this);
+$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/jcabanillas/yii2-inspinia/assets');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body>
-<?php $this->beginBody() ?>
+    <head>
 
-<div class="wrap">
-    <?php
-    /*
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
+        <meta charset="<?= Yii::$app->charset ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
-*/
-    ?>
+        <?= Html::csrfMetaTags() ?>
+        <title><?= Html::encode($this->title) ?></title>
+        <?php $this->head() ?>
+    </head>
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</div>
+    <body><?php $this->beginBody() ?>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <div id="wrapper" class="">
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
+            <?= $this->render('sidebar', ['directoryAsset' => $directoryAsset]) ?>
 
+            <div id="page-wrapper" class="gray-bg">
+
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <?php if (isset($this->blocks['content-header'])) { ?>
+                        <?= $this->blocks['content-header'] ?>
+                    <?php } else { ?>
+                        <div class="col-sm-<?= isset($this->blocks['content-header-actions']) ? 6 : 12 ?>">
+                            <h2><?= $this->title ?></h2>
+
+                            <?=
+                            Breadcrumbs::widget([
+                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                                'activeItemTemplate' => "<li class=\"active\"><strong>{link}</strong></li>\n"
+                            ])
+                            ?>
+                        </div>
+    <?php if (isset($this->blocks['content-header-actions'])): ?>
+                            <div class="col-sm-6">
+                                <div class="title-action">
+        <?= $this->blocks['content-header-actions'] ?>
+                                </div>
+                            </div>
+                        <?php endif ?>
+<?php } ?>
+
+                </div>
+
+                <div class="wrapper wrapper-content">
+
+
+
+                    <div class="row">
+                        <div class="col-lg-12">
+<?= $content ?>
+                        </div>
+                    </div>
+                </div>
+<?= $this->render('footer', ['directoryAsset' => $directoryAsset]) ?>
+            </div>
+        </div>
 <?php $this->endBody() ?>
-</body>
+    </body>
 </html>
 <?php $this->endPage() ?>

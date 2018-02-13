@@ -4,7 +4,8 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'id' => 'basic',
+    'id' => 'mes',
+    'name' => 'Multiverse Exchange Service',
     'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -14,7 +15,6 @@ $config = [
     ],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '3984652412',
         ],
         'cache' => [
@@ -24,6 +24,7 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
+       
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
