@@ -48,7 +48,7 @@ class Stock extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fk_market' => 'Fk Market',
+            'fk_market' => 'Биржа',
             'company_name' => 'Название кампании',
             'amount' => 'Размешено акций',
             'capitalization' => 'Капитализация',

@@ -1,8 +1,17 @@
 <div class="footer fixed">
     <div class="pull-right">
-        10GB of <strong>250GB</strong> Free.
+        <select class="form-control m-b" name="account">
+            <option>SGD</option>
+            <option>MP</option>
+            <option>NC</option>
+            <option>GD</option>
+        </select>
+
     </div>
-    <div>
-        <strong>Copyright</strong> <?=isset(\Yii::$app->params['copyright']) ? \Yii::$app->params['copyright'] : 'WebAppLayers &copy; 2015'?>
+    <div style="line-height: 40px">
+        <span class="label label-danger">SDG/MP:&nbsp;0.215</span>
+        <span class="label label-primary">SGD/DR:&nbsp;1.214</span>
+        <span class="label label-primary">SGD/GD:&nbsp;2.214</span>
+        <span class="label label-primary">SGD/NC:&nbsp;0.214</span>
     </div>
 </div>

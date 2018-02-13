@@ -54,6 +54,17 @@ class Markets extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getMarketsArray(){
+        $markets = self::find()->all();
+
+        $arMarkets = [];
+        foreach ($markets as $market){
+            $arMarkets[$market->id] = $market->market_short_name;
+        }
+
+        return $arMarkets;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

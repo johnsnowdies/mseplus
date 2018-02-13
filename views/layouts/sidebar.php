@@ -1,11 +1,23 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
+        <ul class="nav metismenu">
+            <li class="nav-header">
+                <div class="profile-element">
+<h2 style="color: #ffffff; margin-top:0!important;">Multiverse Stock <br>Exchange +</h2>
+                </div>
+                <div class="logo-element">
+                    MSE+
+                </div>
+            </li>
+
+        </ul>
 
         <?php
             $menu=[
+
                 [
                     'url' => '/',
-                    'icon' => 'fa fa-money',
+                    'icon' => 'fa fa-home',
                     'label' => 'Главная'
                 ],
                 [
@@ -15,14 +27,14 @@
                 ],
                 [
                     'url' => '/markets/',
-                    'icon' => 'fa fa-money',
+                    'icon' => 'fa fa-chart-line',
                     'label' => 'Биржи'
                 ],
 
            
                 [
                     'url' => '/stock/',
-                    'icon' => 'fa fa-money',
+                    'icon' => 'fa fa-exchange',
                     'label' => 'Кампании'
                 ],
                 

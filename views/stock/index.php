@@ -11,61 +11,107 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="stock-index">
 
-<div class="col-lg-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Актуальный список <small class="m-l-sm">This is custom panel</small></h5>
-                    </div>
-
-                    <div class="ibox-content">
-                    <p>
-        <?= Html::a('Добавить кампанию', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'fkCurrency' => [
-                'label' => 'Валюта',
-                'value' => function ($data){
-                    return $data->fkMarket->fkCurrency->currency_short_name;
-                }
-            ],
-
-            'fkMarket' => [
-                'label' => 'Биржа',
-                'format' => 'raw',
-                'value' => function ($data){
-                    $src = $data->fkMarket->fkCurrency->logo;
-
-                    return "<img src=\"{$src}\" height=20 width=40 > &nbsp;". $data->fkMarket->market_short_name;
-                }
-            ],
-            'company_name',
-            'amount',
-            'capitalization',
-            'sum' => [
-                'label' => 'Цена акции',
-                'format' => ['decimal', 2],
-                'value' => function ($data){
-                    return $data->sum;
-                }
-            ],
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-                    </div>
-                    <div class="ibox-footer">
-                        <span class="pull-right">
-                          The righ side of the footer
-                    </span>
-                        This is simple footer example
-                    </div>
-                </div>
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Актуальный список</h5>
             </div>
 
-    
+            <div class="ibox-content">
+
+                <div class="col-md-6">
+                    <?= Html::a('Добавить кампанию', ['create'], ['class' => 'btn btn-success']) ?>
+                </div>
+
+                <div class="col-md-3 col-md-offset-3 ">
+                    <select class="form-control m-b" name="account">
+                        <option>В валюте биржи</option>
+                        <option>SGD</option>
+                        <option>MP</option>
+                        <option>NC</option>
+                        <option>GD</option>
+                    </select>
+
+                </div>
+
+                <div style="clear:both"></div>
+                <hr>
+
+
+
+
+
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'tableOptions' => [
+                        'class' => 'table table-hover'
+                    ],
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+
+
+                        'fkMarket' => [
+                            'attribute'=>'fk_market',
+                            'label' => 'Биржа',
+                            'enableSorting'=> true,
+                            'format' => 'raw',
+                            'value' => function ($data) {
+                                $src = $data->fkMarket->fkCurrency->logo;
+
+                                return "<img src=\"{$src}\" height=20 width=40 > &nbsp;" . $data->fkMarket->market_short_name;
+                            }
+                        ],
+                        'company_name' => [
+                                'attribute' => 'company_name',
+                            'label' => 'Название кампании',
+                            'format' => 'raw',
+                            'value' => function ($data) {
+                                return "<a href=\"/stock/view?id={$data->id}\">{$data->company_name}</a>";
+                            }
+                        ],
+                        'amount',
+                        'capitalization' => [
+                            'label' => 'Капитализация',
+                            'attribute' => 'capitalization',
+                            'format' => ['decimal',2],
+                            'value' => function ($data) { return $data->capitalization;}
+                        ],
+                        'sum' => [
+                            'label' => 'Цена акции',
+                            'attribute' => 'sum',
+                            'format' => ['decimal', 2],
+                            'value' => function ($data) {
+                                return $data->sum;
+                            }
+                        ],
+                        'fkCurrency' => [
+
+                            'attribute' => 'fk_currency',
+                            'label' => 'Валюта',
+                            'enableSorting' => true,
+                            'format' => 'raw',
+                            'value' => function ($data) {
+                                return $data->fkMarket->fkCurrency->currency_short_name;
+                            }
+                        ],
+/*
+                        ['class' => 'yii\grid\ActionColumn',
+                            'header'=>'Действия',
+                            'headerOptions' => ['width' => '100'],
+                            'template' => '<div class="btn-group">{update}{delete}</div>',
+                        'buttons' => [
+                            'update' => function ($url,$model) {
+                                return '<button class="btn btn-xs btn-white" type="button">'.Html::a('<i class="fa fa-pencil"></i>',$url).'</button>';
+                            },
+                            'delete' => function ($url,$model,$key) {
+                                return '<button class="btn btn-xs btn-danger" type="button">'.Html::a('<i class="fa fa-trash"></i>', $url).'</button>';
+                            },
+                        ]
+                            ]*/
+                    ],
+                ]); ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

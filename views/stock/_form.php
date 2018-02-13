@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\Markets;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Stock */
@@ -12,7 +13,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'fk_market')->textInput() ?>
+    <?= $form->field($model, 'fk_market')->dropDownList(
+            Markets::getMarketsArray()
+    ) ?>
 
     <?= $form->field($model, 'company_name')->textInput(['maxlength' => true]) ?>
 
@@ -23,7 +26,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'sum')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
