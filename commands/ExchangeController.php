@@ -6,6 +6,7 @@ use yii\console\Controller;
 use app\components\CampaignService;
 use app\components\TradeSimulationService;
 
+use app\models\Rates;
 /**
  * This command echoes the first argument that you have entered.
  *
@@ -27,6 +28,11 @@ class ExchangeController extends Controller
 
         $tradeService = new TradeSimulationService();
         $tradeService->runSimulation();
+    }
 
+    public function actionRates(){
+        $rates = new Rates();
+        $data = $rates->getSystemRates();
+        print_r($data);
     }
 }
