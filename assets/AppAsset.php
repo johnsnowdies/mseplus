@@ -23,7 +23,8 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
-        'js/footerRate.js'
+        'js/footerRate.js',
+        'js/currencyChange.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

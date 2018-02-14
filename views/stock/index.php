@@ -2,6 +2,14 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\Rates;
+use yii\widgets\Pjax;
+
+$session = Yii::$app->session;
+$selectedCurrency = $session->get('currency');
+$rate = new Rates();
+$exchangeRates = $rate->getSystemRates();
+
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -23,19 +31,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
                 <div class="col-md-3 col-md-offset-3 ">
-                    <select class="form-control m-b" name="account">
-                        <option>В валюте биржи</option>
-                        <option>SGD</option>
-                        <option>MP</option>
-                        <option>NC</option>
-                        <option>GD</option>
+                    <select class="form-control m-b" id="stock-currency">
+                        <option value="nodata" <?=(!$selectedCurrency)?'selected':''?>>В валюте биржи</option>
+                        <option <?=($selectedCurrency == 'SGD')?'selected':''?>>SGD</option>
+                        <option <?=($selectedCurrency == 'DR')?'selected':''?>>DR</option>
+                        <option <?=($selectedCurrency == 'MP')?'selected':''?>>MP</option>
+                        <option <?=($selectedCurrency == 'NC')?'selected':''?>>NC</option>
+                        <option <?=($selectedCurrency == 'GD')?'selected':''?>>GD</option>
                     </select>
 
                 </div>
 
                 <div style="clear:both"></div>
                 <hr>
-
+                <?php Pjax::begin(['id' => 'stocks', 'timeout' => false]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'layout' => '{items}<hr>{pager}',
@@ -68,14 +77,26 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Капитализация',
                             'attribute' => 'capitalization',
                             'format' => ['decimal',2],
-                            'value' => function ($data) { return $data->capitalization;}
+                            'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) { 
+                                $result = $data->capitalization;
+                                $currency =  $data->fkMarket->fkCurrency->currency_short_name;
+                                if ($selectedCurrency && $selectedCurrency!=$currency)
+                                    $result /= ($exchangeRates[$selectedCurrency][$currency]);
+                                
+                                return $result;
+                            }
                         ],
                         'share_price' => [
                             'label' => 'Цена акции',
                             'attribute' => 'share_price',
                             'format' => ['decimal', 2],
-                            'value' => function ($data) {
-                                return $data->share_price;
+                            'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) {
+                                $result = $data->share_price;
+                                $currency =  $data->fkMarket->fkCurrency->currency_short_name;
+                                if ($selectedCurrency && $selectedCurrency!=$currency)
+                                $result /= ($exchangeRates[$selectedCurrency][$currency]);
+
+                                return $result;
                             }
                         ],
                         'value' => [
@@ -95,13 +116,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Валюта',
                             'enableSorting' => true,
                             'format' => 'raw',
-                            'value' => function ($data) {
-                                return $data->fkMarket->fkCurrency->currency_short_name;
+                            'value' => function ($data) use (&$selectedCurrency) {
+                                if ($selectedCurrency)
+                                    return $selectedCurrency;
+                                else
+                                    return $data->fkMarket->fkCurrency->currency_short_name;
                             }
                         ],
 
                     ],
                 ]); ?>
+                <?php Pjax::end(); ?>
                 </div>
             </div>
         </div>

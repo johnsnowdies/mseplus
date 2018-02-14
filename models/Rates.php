@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\models\Currencies;
+use app\models\CurrencyDelta;
 
 /**
  * This is the model class for table "rates".
@@ -19,6 +20,7 @@ use app\models\Currencies;
 class Rates extends \yii\db\ActiveRecord
 {
     const UNIVERSAL_UNIT = 1;
+    const REAL_UNIVERSAL_UNIT = 6;
 
     /**
      * @inheritdoc
@@ -91,11 +93,68 @@ class Rates extends \yii\db\ActiveRecord
                 if ($source->id != $target->id){
                     $rate = $this->getRateBetween($source->id,$target->id);
                     //print("{$source->currency_short_name}/{$target->currency_short_name}: {$rate}\r\n");
-                    $result[$source->currency_short_name][$target->currency_short_name] = round($rate,2);
+                    $result[$source->currency_short_name][$target->currency_short_name] = $rate;
                 }
             }
         }
 
         return $result;
+    }
+                    
+    public function recalculateRates($changes = null){
+        $changes = (!$changes)? CurrencyDelta::find()->all(): $changes;
+        
+        foreach ($changes as $change){
+            
+            print("{$change->currency} changed for {$change->delta} %\r\n");
+
+            $currency = Currencies::find()->where(['currency_short_name' => $change->currency])->one();
+            $universalUnit = Currencies::find()->where(['id' => self::UNIVERSAL_UNIT])->one();
+
+            
+            if($change->currency == $universalUnit->currency_short_name){
+             /*
+                print("Processing universal unit\r\n");
+                
+                $uuDelta = -1 * $change->delta;
+                $allCurrencies = Currencies::find()
+                ->andWhere(['!=','id',self::UNIVERSAL_UNIT])
+                ->andWhere(['!=','id',self::REAL_UNIVERSAL_UNIT])
+                ->all();
+
+                $uuChanges = [];
+
+                foreach ($allCurrencies as $c){
+                    $cd = new CurrencyDelta();
+                    $cd->currency = $c->currency_short_name;
+                    $cd->delta = $uuDelta;
+                    $uuChanges[] = $cd;
+                }
+
+                $this->recalculateRates($uuChanges);
+                */
+
+                continue;
+            }
+
+            $rate = self::find()->where(['fk_target_currency' => $currency->id])->one();
+            $diff = $rate->exchange_rate * ( $change->delta / 100 );
+
+            print("Old exchange rate:{$rate->exchange_rate}\r\n");
+
+            // Валюта растет: мы вычитаем
+            if ($change->delta > 0){
+                $rate->exchange_rate = abs($rate->exchange_rate - abs($diff));
+            }
+            else{
+                $rate->exchange_rate = $rate->exchange_rate + abs($diff);
+            }
+
+            $rate->save(false);
+            print("New exchange rate:{$rate->exchange_rate}\r\n");
+            print("\r\n");
+            
+            //TODO писать историю курса
+        }
     }
 }
