@@ -26,6 +26,11 @@
                     'label' => 'Валюты'
                 ],
                 [
+                    'url' => '#',
+                    'icon' => 'fa fa-globe',
+                    'label' => 'Новости'
+                ],
+                [
                     'url' => '/markets/',
                     'icon' => 'fa fa-chart-line',
                     'label' => 'Биржи'

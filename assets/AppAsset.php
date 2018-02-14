@@ -28,5 +28,6 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'rmrevin\yii\fontawesome\AssetBundle',
+        'machour\sparkline\SparklineAsset'
     ];
 }

@@ -42,10 +42,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                 <?= GridView::widget([
+
                     'dataProvider' => $dataProvider,
+
+                    'layout' => '{items}<hr>{pager}',
+
                     'tableOptions' => [
                         'class' => 'table table-hover'
                     ],
+
+
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 
@@ -83,6 +89,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($data) {
                                 return $data->sum;
                             }
+                        ],
+                        'value' => [
+                            'label' => 'Дельта',
+                            'format' => 'raw',
+                            'value' => function ($data) {
+                                if(rand(0,1))
+                                    return '<i class="fa fa-level-up" style="color:#1ab394"></i>'.(rand(1, 60)/10).'%';
+
+                                else
+                                    return '<i class="fa fa-level-down" style="color:#f8ac59"></i>'.(rand(1, 80)/10).'%';
+                            }
+
+
                         ],
                         'fkCurrency' => [
 
