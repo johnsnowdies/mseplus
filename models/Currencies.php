@@ -34,6 +34,17 @@ class Currencies extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getCurrencyArray(){
+        $currencies = self::find()->all();
+
+        $arCurrency = [];
+        foreach ($currencies as $currency){
+            $arCurrency[$currency->id] = $currency->currency_short_name;
+        }
+
+        return $arCurrency;
+    }
+
     /**
      * @inheritdoc
      */

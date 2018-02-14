@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <div class="ibox-content">
-
                 <div class="col-md-6">
                     <?= Html::a('Добавить кампанию', ['create'], ['class' => 'btn btn-success']) ?>
                 </div>
@@ -36,10 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div style="clear:both"></div>
                 <hr>
-
-
-
-
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -87,11 +82,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Дельта',
                             'format' => 'raw',
                             'value' => function ($data) {
-                                if(rand(0,1))
-                                    return '<i class="fa fa-level-up" style="color:#1ab394"></i>'.(rand(1, 60)/10).'%';
 
+                                if($data->behavior == 'GROWTH')
+                                    return '<i class="fa fa-level-up" style="color:#1ab394"></i>'.Yii::$app->formatter->format($data->delta,['decimal', 2]).'%';
                                 else
-                                    return '<i class="fa fa-level-down" style="color:#f8ac59"></i>'.(rand(1, 80)/10).'%';
+                                    return '<i class="fa fa-level-down" style="color:#ed5565"></i>'.Yii::$app->formatter->format($data->delta,['decimal', 2]).'%';
                             }
                         ],
                         'fkCurrency' => [

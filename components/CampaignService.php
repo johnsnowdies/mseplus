@@ -15,7 +15,6 @@ use yii\helpers\ArrayHelper;
 
 class CampaignService
 {
-
     private function generateCampaignName(){
         $generator = \Nubs\RandomNameGenerator\All::create();
         return $generator->getName();
@@ -41,10 +40,9 @@ class CampaignService
         $stock->amount = rand(100,25000);
         $stock->capitalization = rand (50000, 10000000);
         $stock->share_price = $stock->capitalization / $stock->amount;
-
         $stock->initial_capitalization = $stock->capitalization;
         $stock->initial_share_price = $stock->share_price;
-
+        $stock->delta = 0;
         $stock->fk_market = $market->id;
 
         print("<{$stock->company_name}> IPO at {$market->market_short_name}\r\n");
@@ -71,8 +69,6 @@ class CampaignService
             print("Processing {$currency->country}\r\n");
             $markets = Markets::find()->where(['fk_currency' => $currency->id])->all();
             $currentCampaignsCount = $this->getMarketCampaignCount($markets);
-
-            //shuffle($markets);
 
             // Проход по биржам
             foreach ($markets as $market){

@@ -13,8 +13,8 @@ use yii\behaviors\TimestampBehavior;
  * @property string $company_name
  * @property int $amount
  * @property int $capitalization
- * @property double $sum
- *
+ * @property string $behavior
+ * @property float $delta [double]
  * @property Markets $fkMarket
  * @property StockHistory[] $stockHistories
  * @property float $share_price [double]  Цена акции по итогам торгов
@@ -45,7 +45,7 @@ class Stock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_market'], 'required'],
+            [['fk_market','share_price','amount','initial_share_price','capitalization','initial_capitalization','company_name'], 'required'],
             [['fk_market', 'amount'], 'integer'],
             [['share_price','capitalization','initial_share_price','initial_capitalization'], 'number'],
             [['company_name'], 'string', 'max' => 255],

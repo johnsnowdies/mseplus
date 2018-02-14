@@ -39,17 +39,48 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Биржа',
                 'format' => 'raw',
                 'value' => function($data){
-                    return "<img src=\"{$data->fkMarket->fkCurrency->logo}\">&nbsp;".$data->fkMarket->market_short_name;
+                    return "<img src=\"{$data->fkMarket->logo}\">&nbsp;".$data->fkMarket->market_short_name;
                 }
             ],
             'company_name',
-            'amount',
-            'capitalization',
-            'sum' => [
+            
+            'amount' => [
+                'label' => 'Размещено акций',
+                'format' => ['decimal',2],
+                'value' => function($data){
+                    return $data->capitalization;
+                }
+            ],
+
+            'capitalization' => [
+                'label' => 'Капитализация',
+                'format' => ['decimal',2],
+                'value' => function($data){
+                    return $data->capitalization;
+                }
+            ],
+
+            'share_price' => [
                 'label' => 'Цена акции',
                 'format' => ['decimal', 2],
                 'value' => function ($data){
-                      return $data->sum;
+                      return $data->share_price;
+                }
+            ],
+
+            'initial_capitalization' => [
+                'label' => 'Установочная капитализация',
+                'format' => ['decimal',2],
+                'value' => function($data){
+                    return $data->initial_capitalization;
+                }
+            ],
+            
+            'initial_share_price' => [
+                'label' => 'Установочная цена акции',
+                'format' => ['decimal', 2],
+                'value' => function ($data){
+                      return $data->initial_share_price;
                 }
             ],
         ],

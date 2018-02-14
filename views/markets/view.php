@@ -11,29 +11,44 @@ $this->params['breadcrumbs'][] = ['label' => 'Биржи', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="markets-view">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Просмотр</h5>
+            </div>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+            <div class="ibox-content">
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+
+    
+
+    
+        <?= Html::a('Обновить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
-    </p>
+    
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'fk_currency',
+            'fk_currency' => [
+                'label' => 'Валюта',
+                'value' => function($data){
+                        return $data->fkCurrency->currency_short_name;
+                }
+            ],
             'type',
+            'max_companies',
+            'max_agents',
             'name',
             'market_short_name',
         ],
     ]) ?>
 
+</div>
 </div>

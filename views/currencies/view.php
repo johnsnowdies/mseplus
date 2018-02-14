@@ -6,35 +6,41 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Currencies */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Валюта', 'url' => ['index']];
+$this->title = $model->currency;
+$this->params['breadcrumbs'][] = ['label' => 'Валюты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="currencies-view">
+<div class="col-lg-6 col-lg-offset-3">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Просмотр</h5>
+            </div>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+            <div class="ibox-content">
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+    
+        <?= Html::a('Обновить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
-    </p>
+    
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'country',
             'currency',
-            'max_companies',
-            'max_agents',
             'currency_short_name',
         ],
     ]) ?>
+
+    </div>
+
+    </div>
 
 </div>

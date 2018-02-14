@@ -236,7 +236,7 @@ $this->title = 'Главная: состояние биржи';
                                 'enableSorting' => true,
                                 'format' => 'raw',
                                 'value' => function ($data) {
-                                    $src = $data->fkMarket->fkCurrency->logo;
+                                    $src = $data->fkMarket->logo;
                                     return $data->fkMarket->market_short_name;
                                 }
                             ],

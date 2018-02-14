@@ -10,21 +10,44 @@ $this->title = 'Валюты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="currencies-index">
+<div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Актуальный список</h5>
+            </div>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+            <div class="ibox-content">
 
-    <p>
-        <?= Html::a('Create Currencies', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    
+
+      <div class="col-md-6">
+        <?= Html::a('Добавить валюту', ['create'], ['class' => 'btn btn-success']) ?>
+      </div>
+
+        <div style="clear:both"></div>
+                <hr>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'layout' => '{items}<hr>{pager}',
+        'tableOptions' => [
+            'class' => 'table table-hover'
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            'currency' => [
+                'label' => 'Валюта',
+                'format' => 'raw',
+                'value' => function ($data){
+                    return "<a href=\"/currencies/view?id={$data->id}\">{$data->currency}</a>";
+                }
+            ],
             'country',
-            'currency',
+            
             'currency_short_name',
-            ['class' => 'yii\grid\ActionColumn'],
+            
         ],
     ]); ?>
+    </div>
+    </div>
 </div>

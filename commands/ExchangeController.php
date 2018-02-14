@@ -4,6 +4,7 @@ namespace app\commands;
 
 use yii\console\Controller;
 use app\components\CampaignService;
+use app\components\TradeSimulationService;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -23,6 +24,9 @@ class ExchangeController extends Controller
         $campaignService->runSimulation();
 
         # Run trade sumulation service
+
+        $tradeService = new TradeSimulationService();
+        $tradeService->runSimulation();
 
     }
 }

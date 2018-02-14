@@ -13,17 +13,11 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'country')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'currency')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'max_companies')->textInput() ?>
-
-    <?= $form->field($model, 'max_agents')->textInput() ?>
-
     <?= $form->field($model, 'currency_short_name')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

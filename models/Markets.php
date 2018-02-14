@@ -46,7 +46,7 @@ class Markets extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_currency'], 'required'],
+            [['fk_currency','market_short_name','name','type'], 'required'],
             [['fk_currency','max_agents','max_companies'], 'integer'],
             [['type','logo'], 'string'],
             [['name', 'market_short_name'], 'string', 'max' => 255],
@@ -61,7 +61,7 @@ class Markets extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fk_currency' => '',
+            'fk_currency' => 'Валюта',
             'max_companies' => 'Квота компаний',
             'max_agents' => 'Квота брокеров',
             'logo' => 'Логотип',
