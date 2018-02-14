@@ -34,26 +34,23 @@ class CampaignService
         
     }
 
-    private function campaignIpo($markets){
+    private function campaignIpo($market){
         $stock = new Stock();
 
         $stock->company_name = $this->generateCampaignName();
         $stock->amount = rand(100,25000);
         $stock->capitalization = rand (50000, 10000000);
-        $stock->sum = $stock->capitalization / $stock->amount;
+        $stock->share_price = $stock->capitalization / $stock->amount;
 
-        $market = $markets[0];
-
-        if (count($markets) > 1){
-            $market = $markets[rand(0,count($markets)-1)];
-        }
+        $stock->initial_capitalization = $stock->capitalization;
+        $stock->initial_share_price = $stock->share_price;
 
         $stock->fk_market = $market->id;
 
         print("<{$stock->company_name}> IPO at {$market->market_short_name}\r\n");
         print("Amount: {$stock->amount}\r\n");
-        print("Capitalization: {$stock->capitalization}\r\n");
-        print("Sum: {$stock->sum}\r\n");
+        print("Initial capitalization: {$stock->initial_capitalization}\r\n");
+        print("Initial share price: {$stock->initial_share_price}\r\n");
 
         $stock->save();
     }
@@ -63,6 +60,7 @@ class CampaignService
     public function runSimulation(){
         $currencies = Currencies::find()->all();
 
+        // Проход по странам
         foreach ($currencies as $currency){
 
             // Гарик, помоги!
@@ -74,10 +72,15 @@ class CampaignService
             $markets = Markets::find()->where(['fk_currency' => $currency->id])->all();
             $currentCampaignsCount = $this->getMarketCampaignCount($markets);
 
-            // Кампаний меньше квоты
-            if ($currentCampaignsCount < $currency->max_companies){
-                print("Campaign quote doesn't reached yet\r\n");
-                $this->campaignIpo($markets);
+            //shuffle($markets);
+
+            // Проход по биржам
+            foreach ($markets as $market){
+                // Кампаний меньше квоты
+                if ($currentCampaignsCount < $market->max_companies){
+                    print("Campaign quote doesn't reached yet\r\n");
+                    $this->campaignIpo($market);
+                }
             }
         }
     }

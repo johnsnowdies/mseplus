@@ -24,16 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'country',
             'currency',
             'currency_short_name',
-            'max_companies',
-            'max_agents',
-            'logo' => [
-                'label' => 'Лого',
-                'format' => 'raw',
-                'value' => function($data){
-                    if ($data->logo)
-                    return "<img src=\"{$data->logo}\" height=20 width=40>";
-                }
-            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

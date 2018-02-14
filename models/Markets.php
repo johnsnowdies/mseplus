@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "markets".
@@ -15,6 +16,12 @@ use Yii;
  *
  * @property Currencies $fkCurrency
  * @property Stock[] $stocks
+ *
+ * @property string $logo [varchar(255)]
+ * @property int $max_companies [int(11)]
+ * @property int $max_agents [int(11)]
+ * @property int $created_at [int(11)]
+ * @property int $updated_at [int(11)]
  */
 class Markets extends \yii\db\ActiveRecord
 {
@@ -26,6 +33,13 @@ class Markets extends \yii\db\ActiveRecord
         return 'markets';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -33,8 +47,8 @@ class Markets extends \yii\db\ActiveRecord
     {
         return [
             [['fk_currency'], 'required'],
-            [['fk_currency'], 'integer'],
-            [['type'], 'string'],
+            [['fk_currency','max_agents','max_companies'], 'integer'],
+            [['type','logo'], 'string'],
             [['name', 'market_short_name'], 'string', 'max' => 255],
             [['fk_currency'], 'exist', 'skipOnError' => true, 'targetClass' => Currencies::className(), 'targetAttribute' => ['fk_currency' => 'id']],
         ];
@@ -48,6 +62,9 @@ class Markets extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'fk_currency' => '',
+            'max_companies' => 'Квота компаний',
+            'max_agents' => 'Квота брокеров',
+            'logo' => 'Логотип',
             'type' => 'Тип',
             'name' => 'Название',
             'market_short_name' => 'Индекс',

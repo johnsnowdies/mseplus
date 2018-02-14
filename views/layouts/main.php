@@ -51,7 +51,7 @@ AppAsset::register($this);
             <?php if (isset($this->blocks['content-header'])) { ?>
                 <?= $this->blocks['content-header'] ?>
             <?php } else { ?>
-                <div class="col-sm-<?= isset($this->blocks['content-header-actions']) ? 6 : 11 ?>">
+                <div class="col-sm-<?= isset($this->blocks['content-header-actions']) ? 6 : 10 ?>">
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     <h2><?= $this->title ?></h2>
 
@@ -63,18 +63,18 @@ AppAsset::register($this);
                     ])
                     ?>
                 </div>
-                <div class="col-sm-1">
-                    <h2>Биржа</h2>
+                <div class="col-sm-2">
+                    <h2>Биржа <div class="switch pull-right">
+                            <div class="onoffswitch" style="margin-top: 5px;">
+                                <input type="checkbox" checked="" class="onoffswitch-checkbox" id="example1">
+                                <label class="onoffswitch-label" for="example1">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div></h2>
 
-                    <div class="switch pull-right">
-                        <div class="onoffswitch">
-                            <input type="checkbox" checked="" class="onoffswitch-checkbox" id="example1">
-                            <label class="onoffswitch-label" for="example1">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
+
                 </div>
                 <?php if (isset($this->blocks['content-header-actions'])): ?>
                     <div class="col-sm-6">

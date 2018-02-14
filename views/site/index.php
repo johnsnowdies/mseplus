@@ -10,20 +10,20 @@ $this->title = 'Главная: состояние биржи';
 ?>
 <div class="site-index">
 
-<!--
-    <div class="body-content">
+    <!--
+        <div class="body-content">
 
-        <div class="row">
-            <h2>Тут будет: </h2>
-            <p>Блок с расчетом курса валют</p>
-            <p>Блок новостей и событий</p>
-            <p>Блок с top 100 кампаний</p>
-            <p>Блок с графиками состояний бирж</p>
+            <div class="row">
+                <h2>Тут будет: </h2>
+                <p>Блок с расчетом курса валют</p>
+                <p>Блок новостей и событий</p>
+                <p>Блок с top 100 кампаний</p>
+                <p>Блок с графиками состояний бирж</p>
+
+            </div>
 
         </div>
-
-    </div>
-    -->
+        -->
 
     <div class="row">
         <div class="col-lg-5">
@@ -63,7 +63,6 @@ $this->title = 'Главная: состояние биржи';
                         <button type="button" class="btn btn-success m-r-sm">1</button>
                         Такт
                     </td>
-
                 </tr>
 
                 </tbody>
@@ -103,7 +102,7 @@ $this->title = 'Главная: состояние биржи';
                             <td>11.22</td>
                             <td>21.90</td>
                             <td>32.290</td>
-                            <td>1 <span class="badge badge-info"><i class="fa fa-lock"></i> </span> </td>
+                            <td>1 <span class="badge badge-info"><i class="fa fa-lock"></i> </span></td>
 
                         </tr>
                         <tr>
@@ -152,10 +151,7 @@ $this->title = 'Главная: состояние биржи';
                         <p>Представители СЛЗ и РКВ заключили долгосрочный контракт на поставку девочек-кошек.
                         </p>
 
-                        <span class="vertical-date">
-                                        Такт 1 <br>
-                                        <small>День 20</small>
-                                    </span>
+                        <span class="vertical-date">Такт 1 <br><small>День 20</small></span>
                     </div>
                 </div>
 
@@ -168,13 +164,9 @@ $this->title = 'Главная: состояние биржи';
                         <h2>Медийных холдинг "Ж" выходит на IPO</h2>
                         <p>Новый крупный игрок в сфере масс-медиа</p>
                         <a href="#" class="btn btn-sm btn-success"> Пресс-релиз </a>
-                        <span class="vertical-date">
-                                        Такт 12 <br>
-                                        <small>День 19</small>
-                                    </span>
+                        <span class="vertical-date">Такт 12 <br><small>День 19</small></span>
                     </div>
                 </div>
-
 
 
                 <div class="vertical-timeline-block">
@@ -184,11 +176,10 @@ $this->title = 'Главная: состояние биржи';
 
                     <div class="vertical-timeline-content">
                         <h2>Банктротство Jewish Technologies</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-                        <span class="vertical-date">
-                                        Такт 11<br>
-                                        <small>День 14</small>
-                                    </span>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident
+                            rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus
+                            minus veritatis qui ut.</p>
+                        <span class="vertical-date">Такт 11<br><small>День 14</small></span>
                     </div>
                 </div>
 
@@ -199,15 +190,12 @@ $this->title = 'Главная: состояние биржи';
 
                     <div class="vertical-timeline-content">
                         <h2>Банктротство NovatecGames</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-                        <span class="vertical-date">
-                                        Такт 8 <br>
-                                        <small>День 14</small>
-                                    </span>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident
+                            rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus
+                            minus veritatis qui ut.</p>
+                        <span class="vertical-date">Такт 8 <br><small>День 14</small></span>
                     </div>
                 </div>
-
-
 
 
             </div>
@@ -225,9 +213,9 @@ $this->title = 'Главная: состояние биржи';
                     <?= GridView::widget([
 
                         'dataProvider' => new ActiveDataProvider([
-                                'query' => Stock::find(),
-                            'sort'=>[
-                                'defaultOrder'=>['capitalization'=> SORT_DESC],
+                            'query' => Stock::find(),
+                            'sort' => [
+                                'defaultOrder' => ['capitalization' => SORT_DESC],
                             ],
                         ]),
                         'layout' => '{items}',
@@ -243,9 +231,9 @@ $this->title = 'Главная: состояние биржи';
 
 
                             'fkMarket' => [
-                                'attribute'=>'fk_market',
+                                'attribute' => 'fk_market',
                                 'label' => 'Биржа',
-                                'enableSorting'=> true,
+                                'enableSorting' => true,
                                 'format' => 'raw',
                                 'value' => function ($data) {
                                     $src = $data->fkMarket->fkCurrency->logo;
@@ -264,19 +252,21 @@ $this->title = 'Главная: состояние биржи';
                             'capitalization' => [
                                 'label' => 'Капитализация',
                                 'attribute' => 'capitalization',
-                                'format' => ['decimal',2],
-                                'value' => function ($data) { return $data->capitalization;}
+                                'format' => ['decimal', 2],
+                                'value' => function ($data) {
+                                    return $data->capitalization;
+                                }
                             ],
 
                             'value' => [
                                 'label' => 'Дельта',
                                 'format' => 'raw',
                                 'value' => function ($data) {
-                                    if(rand(0,1))
-                                        return '<i class="fa fa-level-up" style="color:#1ab394"></i>'.(rand(1, 60)/10).'%';
+                                    if (rand(0, 1))
+                                        return '<i class="fa fa-level-up" style="color:#1ab394"></i>' . (rand(1, 60) / 10) . '%';
 
                                     else
-                                        return '<i class="fa fa-level-down" style="color:#f8ac59"></i>'.(rand(1, 80)/10).'%';
+                                        return '<i class="fa fa-level-down" style="color:#f8ac59"></i>' . (rand(1, 80) / 10) . '%';
                                 }
 
 
@@ -424,53 +414,3 @@ $this->title = 'Главная: состояние биржи';
         </div>
     </div>
 </div>
-
-
-
-
-<script>
-    $(document).ready(function() {
-
-        var sparklineCharts = function(){
-            $("#sparkline1").sparkline([34, 43, 43, 35, 44, 32, 44, 52], {
-                type: 'line',
-                width: '100%',
-                height: '60',
-                lineColor: '#1ab394',
-                fillColor: "#ffffff"
-            });
-
-            $("#sparkline2").sparkline([24, 43, 43, 55, 44, 62, 44, 72], {
-                type: 'line',
-                width: '100%',
-                height: '60',
-                lineColor: '#1ab394',
-                fillColor: "#ffffff"
-            });
-
-            $("#sparkline3").sparkline([74, 43, 23, 55, 54, 32, 24, 12], {
-                type: 'line',
-                width: '100%',
-                height: '60',
-                lineColor: '#ed5565',
-                fillColor: "#ffffff"
-            });
-
-            $("#sparkline4").sparkline([24, 43, 33, 55, 64, 72, 44, 22], {
-                type: 'line',
-                width: '100%',
-                height: '60',
-                lineColor: '#ed5565',
-                fillColor: "#ffffff"
-            });
-
-
-        };
-
-
-
-        sparklineCharts();
-
-
-    });
-</script>

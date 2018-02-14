@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "stock".
@@ -16,6 +17,11 @@ use Yii;
  *
  * @property Markets $fkMarket
  * @property StockHistory[] $stockHistories
+ * @property float $share_price [double]  Цена акции по итогам торгов
+ * @property float $initial_share_price [double]  Установочная цена акции
+ * @property float $initial_capitalization [double]  Установочная капитализация
+ * @property int $created_at [int(11)]
+ * @property int $updated_at [int(11)]
  */
 class Stock extends \yii\db\ActiveRecord
 {
@@ -27,6 +33,12 @@ class Stock extends \yii\db\ActiveRecord
         return 'stock';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -34,8 +46,8 @@ class Stock extends \yii\db\ActiveRecord
     {
         return [
             [['fk_market'], 'required'],
-            [['fk_market', 'amount', 'capitalization'], 'integer'],
-            [['sum'], 'number'],
+            [['fk_market', 'amount'], 'integer'],
+            [['share_price','capitalization','initial_share_price','initial_capitalization'], 'number'],
             [['company_name'], 'string', 'max' => 255],
             [['fk_market'], 'exist', 'skipOnError' => true, 'targetClass' => Markets::className(), 'targetAttribute' => ['fk_market' => 'id']],
         ];
@@ -52,7 +64,9 @@ class Stock extends \yii\db\ActiveRecord
             'company_name' => 'Название кампании',
             'amount' => 'Размещено акций',
             'capitalization' => 'Капитализация',
-            'sum' => 'Стоимость акции',
+            'share_price' => 'Стоимость акции',
+            'initial_capitalization' => 'Установочная Капитализация',
+            'initial_share_price' => 'Установочная Стоимость акции',
         ];
     }
 

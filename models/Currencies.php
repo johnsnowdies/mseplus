@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "currencies".
@@ -10,12 +11,11 @@ use Yii;
  * @property int $id
  * @property string $country
  * @property string $currency
- * @property int $max_companies
- * @property int $max_agents
- * @property string $logo
  * @property string $currency_short_name
  *
  * @property Markets[] $markets
+ * @property int $created_at [int(11)]
+ * @property int $updated_at [int(11)]
  */
 class Currencies extends \yii\db\ActiveRecord
 {
@@ -27,13 +27,20 @@ class Currencies extends \yii\db\ActiveRecord
         return 'currencies';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['max_companies', 'max_agents'], 'integer'],
+            [['country', 'currency','currency_short_name'], 'required'],
             [['country', 'currency'], 'string', 'max' => 255],
             [['currency_short_name'], 'string', 'max' => 11],
         ];
@@ -48,8 +55,6 @@ class Currencies extends \yii\db\ActiveRecord
             'id' => 'ID',
             'country' => 'Государство',
             'currency' => 'Валюта',
-            'max_companies' => 'Квота компаний',
-            'max_agents' => 'Квота брокеров',
             'currency_short_name' => 'Индекс',
         ];
     }

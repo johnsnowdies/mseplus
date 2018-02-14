@@ -42,28 +42,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                 <?= GridView::widget([
-
                     'dataProvider' => $dataProvider,
-
                     'layout' => '{items}<hr>{pager}',
-
                     'tableOptions' => [
                         'class' => 'table table-hover'
                     ],
 
-
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-
-
                         'fkMarket' => [
                             'attribute'=>'fk_market',
                             'label' => 'Биржа',
                             'enableSorting'=> true,
                             'format' => 'raw',
                             'value' => function ($data) {
-                                $src = $data->fkMarket->fkCurrency->logo;
-
+                                $src = $data->fkMarket->logo;
                                 return "<img src=\"{$src}\" height=20 width=40 > &nbsp;" . $data->fkMarket->market_short_name;
                             }
                         ],
@@ -82,12 +75,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => ['decimal',2],
                             'value' => function ($data) { return $data->capitalization;}
                         ],
-                        'sum' => [
+                        'share_price' => [
                             'label' => 'Цена акции',
-                            'attribute' => 'sum',
+                            'attribute' => 'share_price',
                             'format' => ['decimal', 2],
                             'value' => function ($data) {
-                                return $data->sum;
+                                return $data->share_price;
                             }
                         ],
                         'value' => [
@@ -100,8 +93,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 else
                                     return '<i class="fa fa-level-down" style="color:#f8ac59"></i>'.(rand(1, 80)/10).'%';
                             }
-
-
                         ],
                         'fkCurrency' => [
 
@@ -113,20 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return $data->fkMarket->fkCurrency->currency_short_name;
                             }
                         ],
-/*
-                        ['class' => 'yii\grid\ActionColumn',
-                            'header'=>'Действия',
-                            'headerOptions' => ['width' => '100'],
-                            'template' => '<div class="btn-group">{update}{delete}</div>',
-                        'buttons' => [
-                            'update' => function ($url,$model) {
-                                return '<button class="btn btn-xs btn-white" type="button">'.Html::a('<i class="fa fa-pencil"></i>',$url).'</button>';
-                            },
-                            'delete' => function ($url,$model,$key) {
-                                return '<button class="btn btn-xs btn-danger" type="button">'.Html::a('<i class="fa fa-trash"></i>', $url).'</button>';
-                            },
-                        ]
-                            ]*/
+
                     ],
                 ]); ?>
                 </div>
