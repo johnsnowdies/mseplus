@@ -1,17 +1,29 @@
+<?php
+use app\models\Rates;
+
+$rates = new Rates();
+$data = $rates->getSystemRates();
+
+?>
+
 <div class="footer fixed">
     <div class="pull-right">
-        <select class="form-control m-b" name="account">
-            <option>SGD</option>
-            <option>MP</option>
-            <option>NC</option>
-            <option>GD</option>
+        <select id="footer-currency-selector" class="form-control m-b" name="account">
+        <?php foreach($data as $key => $value):?>
+            <option><?=$key?></option>
+        <?php endforeach;?>
+
         </select>
 
     </div>
-    <div style="line-height: 40px">
-        <span class="label label-danger">SDG/MP:&nbsp;0.215</span>
-        <span class="label label-primary">SGD/DR:&nbsp;1.214</span>
-        <span class="label label-primary">SGD/GD:&nbsp;2.214</span>
-        <span class="label label-primary">SGD/NC:&nbsp;0.214</span>
+
+    <?php foreach($data as $key => $value):?>
+    
+    <div style="line-height: 40px; display: none;" class="footer-rate-pane" id="footer-<?=$key?>" >
+        <?php foreach($value as $target => $rate):?>
+            <span class="label label-<?= ($rate >= 1) ? 'primary': 'danger' ;?>"><?=$key?>/<?=$target?>:&nbsp;<?=$rate?></span>
+        <?php endforeach;?>
+
     </div>
+    <?php endforeach;?>
 </div>

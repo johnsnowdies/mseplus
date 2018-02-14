@@ -82,7 +82,7 @@ class Rates extends \yii\db\ActiveRecord
 
 
     public function getSystemRates(){
-        $currencies = Currencies::find()->andWhere(['!=', 'id', Rates::UNIVERSAL_UNIT])->all();
+        $currencies = Currencies::find()->all();
         
         $result = [];
 
@@ -91,7 +91,7 @@ class Rates extends \yii\db\ActiveRecord
                 if ($source->id != $target->id){
                     $rate = $this->getRateBetween($source->id,$target->id);
                     //print("{$source->currency_short_name}/{$target->currency_short_name}: {$rate}\r\n");
-                    $result[$source->currency_short_name][$target->currency_short_name] = $rate;
+                    $result[$source->currency_short_name][$target->currency_short_name] = round($rate,2);
                 }
             }
         }
