@@ -20,6 +20,10 @@ use yii\behaviors\TimestampBehavior;
  * @property string $logo [varchar(255)]
  * @property int $max_companies [int(11)]
  * @property int $max_agents [int(11)]
+ * @property int $max_amount [int(11)]
+ * @property int $min_amount [int(11)]
+ * @property float $max_capitalization
+ * @property float $min_capitalization
  * @property int $created_at [int(11)]
  * @property int $updated_at [int(11)]
  */
@@ -62,12 +66,17 @@ class Markets extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'fk_currency' => 'Валюта',
-            'max_companies' => 'Квота компаний',
-            'max_agents' => 'Квота брокеров',
+            
             'logo' => 'Логотип',
             'type' => 'Тип',
             'name' => 'Название',
             'market_short_name' => 'Индекс',
+            'max_amount' => 'MAX AM',
+            'min_amount' => 'MIN AM',
+            'max_capitalization' => 'MAX CAP',
+            'min_capitalization' => 'MIN CAP',
+            'max_companies' => 'COMP QUOTE',
+            'max_agents' => 'MAX AGENTS',
         ];
     }
 

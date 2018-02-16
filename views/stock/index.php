@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php Pjax::begin(['id' => 'stocks', 'timeout' => false]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
+                    
                     'layout' => '{items}<hr>{pager}',
                     'tableOptions' => [
                         'class' => 'table table-hover'
@@ -75,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'amount',
                         'capitalization' => [
                             'label' => 'Капитализация',
-                            'attribute' => 'capitalization',
+                            'attribute' => 'capitalization_in_uu',
                             'format' => ['decimal',2],
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) { 
                                 $result = $data->capitalization;
@@ -101,6 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'value' => [
                             'label' => 'Дельта',
+                            'headerOptions' => ['style' => 'width:90px'],
                             'format' => 'raw',
                             'value' => function ($data) {
 

@@ -35,7 +35,7 @@ class ExchangeController extends Controller
     }
 
     public function actionGenerate(){
-        for ($i = 1; $i < 30000; $i++){
+        for ($i = 1; $i < 3000; $i++){
             # Run campaign service
             $campaignService = new CampaignService();
             $campaignService->runSimulation();
@@ -45,8 +45,7 @@ class ExchangeController extends Controller
 
     public function actionTrade()
     {
-        for ($i = 1; $i < 100; $i++)
-        {
+     
             # Run trade sumulation service
             $tradeService = new TradeSimulationService();
             $tradeService->runSimulation();
@@ -54,7 +53,7 @@ class ExchangeController extends Controller
             # Run currency rate recalculate
             $rates = new Rates();
             $rates->recalculateRates();
-        }
+        
     }
 
    

@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
-
+use app\models\Rates;
 /**
  * This is the model class for table "stock".
  *
@@ -13,6 +13,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $company_name
  * @property int $amount
  * @property int $capitalization
+ * @property int $capitalization_in_uu
  * @property string $behavior
  * @property float $delta [double]
  * @property Markets $fkMarket
@@ -25,6 +26,7 @@ use yii\behaviors\TimestampBehavior;
  */
 class Stock extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */

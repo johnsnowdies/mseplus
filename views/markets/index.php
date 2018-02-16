@@ -57,6 +57,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'market_short_name',
             'max_companies',
             'max_agents',
+            'max_amount',
+            'min_amount',
+            'max_capitalization',
+            'min_capitalization',
            
 
         ],

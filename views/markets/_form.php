@@ -23,7 +23,13 @@ use app\models\Currencies;
 
     <?= $form->field($model, 'max_companies')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'max_agents')->textInput(['maxlength' => true]) ?>
-    
+
+        <?= $form->field($model, 'max_amount')->textInput() ?>
+        <?= $form->field($model, 'min_amount')->textInput() ?>
+        <?= $form->field($model, 'max_capitalization')->textInput() ?>
+        <?= $form->field($model, 'min_capitalization')->textInput() ?>
+
+
 
     <?= $form->field($model, 'market_short_name')->textInput(['maxlength' => true]) ?>
 

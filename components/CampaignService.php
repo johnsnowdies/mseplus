@@ -11,6 +11,7 @@ namespace app\components;
 use app\models\Stock;
 use app\models\Currencies;
 use app\models\Markets;
+use app\models\Rates;
 use yii\helpers\ArrayHelper;
 
 class CampaignService
@@ -35,16 +36,23 @@ class CampaignService
 
     private function campaignIpo($market){
         $stock = new Stock();
+        $rate = new Rates();
+        $exchangeRates = $rate->getSystemRates();
 
-    
+        if($market->fkCurrency->currency_short_name == 'SGD')
+            $rate = 1;
+        else
+            $rate = $exchangeRates['SGD'][$market->fkCurrency->currency_short_name];
 
         $stock->company_name = $this->generateCampaignName();
-        $stock->amount = rand(100, 25000);
-        $stock->capitalization = rand(50000, 10000000);
+
+        $stock->amount = rand($market->min_amount, $market->max_amount);
+        $stock->capitalization = rand($market->min_capitalization / $rate, $market->max_capitalization / $rate);
 
         if ($market->id == 5)
-            $stock->capitalization = rand(5000000, 10000000);
+       
 
+        $stock->capitalization_in_uu = $stock->capitalization * $rate;
         $stock->share_price = $stock->capitalization / $stock->amount;
         $stock->initial_capitalization = $stock->capitalization;
         $stock->initial_share_price = $stock->share_price;
@@ -68,9 +76,7 @@ class CampaignService
         foreach ($currencies as $currency){
 
             // Гарик, помоги!
-            if ($currency->currency_short_name == 'SGD')
-                continue;
-
+           
             print("\r\n");
             print("Processing {$currency->country}\r\n");
             $markets = Markets::find()->where(['fk_currency' => $currency->id])->all();
