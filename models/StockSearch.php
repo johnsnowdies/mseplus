@@ -48,6 +48,10 @@ class StockSearch extends Stock
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['attributes' => ['capitalization',   'fk_market',
+            'company_name',
+            'amount',
+            'share_price']]
         ]);
 
          /**
@@ -60,9 +64,14 @@ class StockSearch extends Stock
             'capitalization' => [
                 'asc' => ['capitalization_in_uu' => SORT_ASC],
                 'desc' => ['capitalization_in_uu' => SORT_DESC],
-                'label' => 'Капитализация',
+                'label' => 'CAP',
                 'default' => SORT_ASC
             ],
+            
+            'fk_market',
+            'company_name',
+            'amount',
+            'share_price'
         ]
     ]);
 

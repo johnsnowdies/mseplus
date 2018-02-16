@@ -39,15 +39,16 @@ class CampaignService
         $rate = new Rates();
         $exchangeRates = $rate->getSystemRates();
 
-        if($market->fkCurrency->currency_short_name == 'SGD')
+        if($market->fkCurrency->currency_short_name == 'SGD'){
             $rate = 1;
-        else
+        }
+        else{
             $rate = $exchangeRates['SGD'][$market->fkCurrency->currency_short_name];
+        }
 
         $stock->company_name = $this->generateCampaignName();
-
-        $stock->amount = rand($market->min_amount, $market->max_amount);
         $stock->capitalization = rand($market->min_capitalization / $rate, $market->max_capitalization / $rate);
+        $stock->amount = rand($market->min_amount, $market->max_amount);
         $stock->capitalization_in_uu = $stock->capitalization * $rate;
         $stock->share_price = $stock->capitalization / $stock->amount;
         $stock->initial_capitalization = $stock->capitalization;

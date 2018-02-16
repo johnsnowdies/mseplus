@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php Pjax::begin(['id' => 'stocks', 'timeout' => false]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
+                    'filterModel' => new app\models\StockSearch(),
                     'pager' => [
                         'maxButtonCount'=>25,    // Set maximum number of page buttons that can be displayed
                         ],
@@ -78,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'amount',
                         'capitalization' => [
                             'label' => 'CAP',
-                            'attribute' => 'capitalization_in_uu',
+                            'attribute' => 'capitalization',
                             'format' => ['decimal',2],
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) { 
                                 $result = $data->capitalization;

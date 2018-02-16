@@ -36,6 +36,11 @@ AppAsset::register($this);
         }
 
         .up { bottom:100% !important; top:auto !important; }
+
+        tr.filters{
+            display:none;
+
+        }
     </style>
 </head>
 

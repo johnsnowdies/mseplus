@@ -10,20 +10,7 @@ $this->title = 'Главная: состояние биржи';
 ?>
 <div class="site-index">
 
-    <!--
-        <div class="body-content">
-
-            <div class="row">
-                <h2>Тут будет: </h2>
-                <p>Блок с расчетом курса валют</p>
-                <p>Блок новостей и событий</p>
-                <p>Блок с top 100 кампаний</p>
-                <p>Блок с графиками состояний бирж</p>
-
-            </div>
-
-        </div>
-        -->
+    
 
     <div class="row">
         <div class="col-lg-5">
@@ -55,10 +42,6 @@ $this->title = 'Главная: состояние биржи';
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <button type="button" class="btn btn-info m-r-sm">20</button>
-                        День
-                    </td>
                     <td>
                         <button type="button" class="btn btn-success m-r-sm">1</button>
                         Такт
@@ -212,12 +195,14 @@ $this->title = 'Главная: состояние биржи';
                 <div class="ibox-content">
                     <?= GridView::widget([
 
+
                         'dataProvider' => new ActiveDataProvider([
                             'query' => Stock::find(),
                             'sort' => [
                                 'defaultOrder' => ['capitalization' => SORT_DESC],
                             ],
                         ]),
+                        'filterModel' => new app\models\StockSearch(),
                         'layout' => '{items}',
 
 
@@ -227,17 +212,18 @@ $this->title = 'Главная: состояние биржи';
 
 
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
+                            //['class' => 'yii\grid\SerialColumn'],
 
-
+                            
                             'fkMarket' => [
-                                'attribute' => 'fk_market',
+                                'headerOptions' => ['style' => 'width:140px'],
+                                'attribute'=>'fk_market',
                                 'label' => 'Биржа',
-                                'enableSorting' => true,
+                                'enableSorting'=> true,
                                 'format' => 'raw',
                                 'value' => function ($data) {
                                     $src = $data->fkMarket->logo;
-                                    return $data->fkMarket->market_short_name;
+                                    return "<img src=\"{$src}\" height=20 width=40 > &nbsp;" . $data->fkMarket->market_short_name;
                                 }
                             ],
                             'company_name' => [
@@ -259,18 +245,22 @@ $this->title = 'Главная: состояние биржи';
                             ],
 
                             'value' => [
-                                'label' => 'Дельта',
+                                'label' => 'DELTA',
+                                'headerOptions' => ['style' => 'width:90px'],
                                 'format' => 'raw',
                                 'value' => function ($data) {
-                                    if (rand(0, 1))
-                                        return '<i class="fa fa-level-up" style="color:#1ab394"></i>' . (rand(1, 60) / 10) . '%';
-
+    
+                                    if($data->behavior == 'GROWTH')
+                                        return '<i class="fa fa-level-up" style="color:#1ab394"></i>'.Yii::$app->formatter->format($data->delta,['decimal', 2]).'%';
                                     else
-                                        return '<i class="fa fa-level-down" style="color:#f8ac59"></i>' . (rand(1, 80) / 10) . '%';
+                                        return '<i class="fa fa-level-down" style="color:#ed5565"></i>'.Yii::$app->formatter->format($data->delta,['decimal', 2]).'%';
                                 }
-
-
                             ],
+
+                           
+
+
+                            
                             'fkCurrency' => [
 
                                 'attribute' => 'fk_currency',
