@@ -47,8 +47,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php Pjax::begin(['id' => 'stocks', 'timeout' => false]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    
-                    'layout' => '{items}<hr>{pager}',
+                    'pager' => [
+                        'maxButtonCount'=>25,    // Set maximum number of page buttons that can be displayed
+                        ],
+                    'layout' => '{items}<hr><center>{pager}</center>',
                     'tableOptions' => [
                         'class' => 'table table-hover'
                     ],
@@ -75,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'amount',
                         'capitalization' => [
-                            'label' => 'Капитализация',
+                            'label' => 'CAP',
                             'attribute' => 'capitalization_in_uu',
                             'format' => ['decimal',2],
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) { 
@@ -88,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
                         'share_price' => [
-                            'label' => 'Цена акции',
+                            'label' => 'UNIT PRICE',
                             'attribute' => 'share_price',
                             'format' => ['decimal', 2],
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) {
@@ -101,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
                         'value' => [
-                            'label' => 'Дельта',
+                            'label' => 'DELTA',
                             'headerOptions' => ['style' => 'width:90px'],
                             'format' => 'raw',
                             'value' => function ($data) {
@@ -115,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'fkCurrency' => [
 
                             'attribute' => 'fk_currency',
-                            'label' => 'Валюта',
+                            'label' => 'CUR',
                             'enableSorting' => true,
                             'format' => 'raw',
                             'value' => function ($data) use (&$selectedCurrency) {

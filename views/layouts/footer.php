@@ -21,7 +21,7 @@ $data = $rates->getSystemRates();
     
     <div style="line-height: 40px; display: none;" class="footer-rate-pane" id="footer-<?=$key?>" >
         <?php foreach($value as $target => $rate):?>
-            <span class="label label-<?= ($rate >= 1) ? 'primary': 'danger' ;?>"><?=$key?>/<?=$target?>:&nbsp;<?=$rate?></span>
+            <span class="label label-<?= ($rate >= 1) ? 'primary': 'danger' ;?>"><?=$key?>/<?=$target?>:&nbsp;<?=number_format($rate,2)?></span>
         <?php endforeach;?>
 
     </div>

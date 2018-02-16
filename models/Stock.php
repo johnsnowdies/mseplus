@@ -62,13 +62,13 @@ class Stock extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fk_market' => 'Биржа',
-            'company_name' => 'Название кампании',
-            'amount' => 'Размещено акций',
-            'capitalization' => 'Капитализация',
-            'share_price' => 'Стоимость акции',
-            'initial_capitalization' => 'Установочная Капитализация',
-            'initial_share_price' => 'Установочная Стоимость акции',
+            'fk_market' => 'MARKET',
+            'company_name' => 'COMPANY',
+            'amount' => 'AMOUNT',
+            'capitalization' => 'CAP',
+            'share_price' => 'U PRICE',
+            'initial_capitalization' => 'INIT CAP',
+            'initial_share_price' => 'INIT PRICE',
         ];
     }
 

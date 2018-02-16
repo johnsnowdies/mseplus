@@ -48,10 +48,6 @@ class CampaignService
 
         $stock->amount = rand($market->min_amount, $market->max_amount);
         $stock->capitalization = rand($market->min_capitalization / $rate, $market->max_capitalization / $rate);
-
-        if ($market->id == 5)
-       
-
         $stock->capitalization_in_uu = $stock->capitalization * $rate;
         $stock->share_price = $stock->capitalization / $stock->amount;
         $stock->initial_capitalization = $stock->capitalization;
