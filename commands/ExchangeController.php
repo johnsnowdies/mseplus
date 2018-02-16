@@ -7,13 +7,14 @@ use app\components\CampaignService;
 use app\components\TradeSimulationService;
 
 use app\models\Rates;
+
 /**
  * This command echoes the first argument that you have entered.
  *
  * This command is provided as an example for you to learn how to create console commands.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
+ * @since  2.0
  */
 class ExchangeController extends Controller
 {
@@ -42,15 +43,17 @@ class ExchangeController extends Controller
 
     }
 
-    public function actionTrade(){
-        for ($i = 1; $i < 100; $i++){
-          # Run trade sumulation service
-          $tradeService = new TradeSimulationService();
-          $tradeService->runSimulation();
+    public function actionTrade()
+    {
+        for ($i = 1; $i < 100; $i++)
+        {
+            # Run trade sumulation service
+            $tradeService = new TradeSimulationService();
+            $tradeService->runSimulation();
 
-          # Run currency rate recalculate
-          $rates = new Rates();
-          $rates->recalculateRates();
+            # Run currency rate recalculate
+            $rates = new Rates();
+            $rates->recalculateRates();
         }
     }
 

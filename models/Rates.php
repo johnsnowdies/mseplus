@@ -113,7 +113,7 @@ class Rates extends \yii\db\ActiveRecord
 
             
             if($change->currency == $universalUnit->currency_short_name){
-             /*
+             
                 print("Processing universal unit\r\n");
                 
                 $uuDelta = -1 * $change->delta;
@@ -132,13 +132,12 @@ class Rates extends \yii\db\ActiveRecord
                 }
 
                 $this->recalculateRates($uuChanges);
-                */
-
+                
                 continue;
             }
 
             $rate = self::find()->where(['fk_target_currency' => $currency->id])->one();
-            $diff = $rate->exchange_rate * ( $change->delta / 100 );
+            $diff = $rate->exchange_rate * ( abs($change->delta) / 100 );
 
             print("Old exchange rate:{$rate->exchange_rate}\r\n");
 

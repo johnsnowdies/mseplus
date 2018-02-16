@@ -39,11 +39,11 @@ class CampaignService
     
 
         $stock->company_name = $this->generateCampaignName();
-        $stock->amount = rand(100,25000);
-        $stock->capitalization = rand (50000, 10000000);
+        $stock->amount = rand(100, 25000);
+        $stock->capitalization = rand(50000, 10000000);
 
-        if($market->id == 5)
-            $stock->capitalization = rand (5000000, 10000000);
+        if ($market->id == 5)
+            $stock->capitalization = rand(5000000, 10000000);
 
         $stock->share_price = $stock->capitalization / $stock->amount;
         $stock->initial_capitalization = $stock->capitalization;
