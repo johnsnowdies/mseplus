@@ -9,7 +9,7 @@
 namespace app\components;
 
 use app\models\Stock;
-use app\models\History;
+use app\models\StockHistory;
 use app\models\Settings;
 use app\models\Rates;
 
@@ -79,20 +79,23 @@ class TradeSimulationService
             print("Share price change: {$company->share_price} -> {$new_share_price}\r\n");
             print("\r\n");
 
-
             $rate = new Rates();
             $exchangeRates = $rate->getSystemRates();
-            $rate = $exchangeRates['SGD'][$company->fkMarket->fkCurrency->currency_short_name];
-    
 
-            $history = new History();
+            if($company->fkMarket->fkCurrency->currency_short_name == 'SGD'){
+                $rate = 1;
+            }
+            else{
+                $rate = $exchangeRates['SGD'][$company->fkMarket->fkCurrency->currency_short_name];
+            }
+    
+            $history = new StockHistory();
             $history->tickId = $tick;
             $history->fk_stock = $company->id;
             $history->capitalization = $new_capitalization;
             $history->share_price = $new_share_price;
             $history->delta = $delta;
             $history->behavior = $behavior;
-
             $history->save();
 
             $company->capitalization = $new_capitalization;

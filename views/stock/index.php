@@ -18,7 +18,6 @@ $this->title = 'Кампании';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="stock-index">
-
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
@@ -32,14 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="col-md-3 col-md-offset-3 ">
                     <select class="form-control m-b" id="stock-currency">
-                        <option value="nodata" <?=(!$selectedCurrency)?'selected':''?>>В валюте биржи</option>
-                        <option <?=($selectedCurrency == 'SGD')?'selected':''?>>SGD</option>
-                        <option <?=($selectedCurrency == 'DR')?'selected':''?>>DR</option>
-                        <option <?=($selectedCurrency == 'MP')?'selected':''?>>MP</option>
-                        <option <?=($selectedCurrency == 'NC')?'selected':''?>>NC</option>
-                        <option <?=($selectedCurrency == 'GD')?'selected':''?>>GD</option>
+                        <option value="nodata" <?= (!$selectedCurrency) ? 'selected' : '' ?>>В валюте биржи</option>
+                        <option <?= ($selectedCurrency == 'SGD') ? 'selected' : '' ?>>SGD</option>
+                        <option <?= ($selectedCurrency == 'DR') ? 'selected' : '' ?>>DR</option>
+                        <option <?= ($selectedCurrency == 'MP') ? 'selected' : '' ?>>MP</option>
+                        <option <?= ($selectedCurrency == 'NC') ? 'selected' : '' ?>>NC</option>
+                        <option <?= ($selectedCurrency == 'GD') ? 'selected' : '' ?>>GD</option>
                     </select>
-
                 </div>
 
                 <div style="clear:both"></div>
@@ -49,8 +47,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'dataProvider' => $dataProvider,
                     'filterModel' => new app\models\StockSearch(),
                     'pager' => [
-                        'maxButtonCount'=>25,    // Set maximum number of page buttons that can be displayed
-                        ],
+                        'maxButtonCount' => 25,    // Set maximum number of page buttons that can be displayed
+                    ],
                     'layout' => '{items}<hr><center>{pager}</center>',
                     'tableOptions' => [
                         'class' => 'table table-hover'
@@ -59,9 +57,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
                         'fkMarket' => [
-                            'attribute'=>'fk_market',
+                            'attribute' => 'fk_market',
                             'label' => 'Биржа',
-                            'enableSorting'=> true,
+                            'enableSorting' => true,
                             'format' => 'raw',
                             'value' => function ($data) {
                                 $src = $data->fkMarket->logo;
@@ -69,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
                         'company_name' => [
-                                'attribute' => 'company_name',
+                            'attribute' => 'company_name',
                             'label' => 'Название кампании',
                             'format' => 'raw',
                             'value' => function ($data) {
@@ -80,13 +78,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         'capitalization' => [
                             'label' => 'CAP',
                             'attribute' => 'capitalization',
-                            'format' => ['decimal',2],
-                            'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) { 
+                            'format' => ['decimal', 2],
+                            'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) {
                                 $result = $data->capitalization;
-                                $currency =  $data->fkMarket->fkCurrency->currency_short_name;
-                                if ($selectedCurrency && $selectedCurrency!=$currency)
+                                $currency = $data->fkMarket->fkCurrency->currency_short_name;
+                                if ($selectedCurrency && $selectedCurrency != $currency)
                                     $result /= ($exchangeRates[$selectedCurrency][$currency]);
-                                
+
                                 return $result;
                             }
                         ],
@@ -96,9 +94,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => ['decimal', 2],
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) {
                                 $result = $data->share_price;
-                                $currency =  $data->fkMarket->fkCurrency->currency_short_name;
-                                if ($selectedCurrency && $selectedCurrency!=$currency)
-                                $result /= ($exchangeRates[$selectedCurrency][$currency]);
+                                $currency = $data->fkMarket->fkCurrency->currency_short_name;
+                                if ($selectedCurrency && $selectedCurrency != $currency)
+                                    $result /= ($exchangeRates[$selectedCurrency][$currency]);
 
                                 return $result;
                             }
@@ -109,14 +107,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'raw',
                             'value' => function ($data) {
 
-                                if($data->behavior == 'GROWTH')
-                                    return '<i class="fa fa-level-up" style="color:#1ab394"></i>'.Yii::$app->formatter->format($data->delta,['decimal', 2]).'%';
+                                if ($data->behavior == 'GROWTH')
+                                    return '<i class="fa fa-level-up" style="color:#1ab394"></i>' . Yii::$app->formatter->format($data->delta, ['decimal', 2]) . '%';
                                 else
-                                    return '<i class="fa fa-level-down" style="color:#ed5565"></i>'.Yii::$app->formatter->format($data->delta,['decimal', 2]).'%';
+                                    return '<i class="fa fa-level-down" style="color:#ed5565"></i>' . Yii::$app->formatter->format($data->delta, ['decimal', 2]) . '%';
                             }
                         ],
                         'fkCurrency' => [
-
                             'attribute' => 'fk_currency',
                             'label' => 'CUR',
                             'enableSorting' => true,
@@ -128,12 +125,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return $data->fkMarket->fkCurrency->currency_short_name;
                             }
                         ],
-
                     ],
                 ]); ?>
                 <?php Pjax::end(); ?>
-                </div>
             </div>
         </div>
     </div>
+</div>
 </div>

@@ -15,6 +15,9 @@ Date: 2018-02-17 00:21:16
 
 SET FOREIGN_KEY_CHECKS=0;
 
+CREATE DATABASE `funds`  CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+USE `funds`;
+
 -- ----------------------------
 -- Table structure for currencies
 -- ----------------------------

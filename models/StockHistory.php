@@ -20,7 +20,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property Stock $fkStock
  */
-class History extends \yii\db\ActiveRecord
+class StockHistory extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
