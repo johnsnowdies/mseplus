@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Stock;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Markets;
@@ -16,6 +17,12 @@ use app\models\Markets;
     <?= $form->field($model, 'fk_market')->dropDownList(
             Markets::getMarketsArray()
     ) ?>
+
+    <?= $form->field($model, 'sector')->dropDownList([
+        Stock::SECTOR_AGRICULTURAL => 'Агрокультурный',
+        Stock::SECTOR_INDUSTRIAL => 'Промышленый',
+        Stock::SECTOR_SERVICE => 'Услуги'
+        ]) ?>
 
     <?= $form->field($model, 'company_name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'amount')->textInput() ?>

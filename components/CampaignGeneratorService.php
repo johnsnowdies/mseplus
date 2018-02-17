@@ -14,7 +14,7 @@ use app\models\Markets;
 use app\models\Rates;
 use yii\helpers\ArrayHelper;
 
-class CampaignService
+class CampaignGeneratorService
 {
     private function generateCampaignName(){
         $generator = \Nubs\RandomNameGenerator\All::create();
@@ -46,6 +46,32 @@ class CampaignService
             $rate = $exchangeRates['SGD'][$market->fkCurrency->currency_short_name];
         }
 
+
+        // Определение сектора экономики новой кампании
+        $sectorCampaignLimit = [
+            Stock::SECTOR_AGRICULTURAL => ($market->max_amount * $market->rate_agri) / 100,
+            Stock::SECTOR_INDUSTRIAL => ($market->max_amount * $market->rate_indus) / 100,
+            Stock::SECTOR_SERVICE => ($market->max_amount * $market->rate_serv) / 100
+        ];
+
+        $sectorCampaignCount = [
+            Stock::SECTOR_AGRICULTURAL => Stock::find()->where(['fk_market' => $market->id, 'sector' => Stock::SECTOR_AGRICULTURAL])->count(),
+            Stock::SECTOR_INDUSTRIAL => Stock::find()->where(['fk_market' => $market->id, 'sector' => Stock::SECTOR_INDUSTRIAL])->count(),
+            Stock::SECTOR_SERVICE => Stock::find()->where(['fk_market' => $market->id, 'sector' => Stock::SECTOR_SERVICE])->count(),
+        ];
+
+        $sector = null;
+
+        if ($sectorCampaignCount[Stock::SECTOR_AGRICULTURAL] < $sectorCampaignLimit[Stock::SECTOR_AGRICULTURAL]) {
+            $sector = Stock::SECTOR_AGRICULTURAL;
+        }
+        else if ($sectorCampaignCount[Stock::SECTOR_INDUSTRIAL] < $sectorCampaignLimit[Stock::SECTOR_INDUSTRIAL]){
+            $sector = Stock::SECTOR_INDUSTRIAL;
+        }
+        else if ($sectorCampaignCount[Stock::SECTOR_SERVICE] < $sectorCampaignLimit[Stock::SECTOR_SERVICE]){
+            $sector = Stock::SECTOR_SERVICE;
+        }
+
         $stock->company_name = $this->generateCampaignName();
         $stock->capitalization = rand($market->min_capitalization / $rate, $market->max_capitalization / $rate);
         $stock->amount = rand($market->min_amount, $market->max_amount);
@@ -55,6 +81,7 @@ class CampaignService
         $stock->initial_share_price = $stock->share_price;
         $stock->delta = 0;
         $stock->fk_market = $market->id;
+        $stock->sector = $sector;
 
         print("<{$stock->company_name}> IPO at {$market->market_short_name}\r\n");
         print("Amount: {$stock->amount}\r\n");

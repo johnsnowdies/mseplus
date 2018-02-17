@@ -2,9 +2,7 @@
 
 namespace app\models;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
-use app\models\Rates;
 /**
  * This is the model class for table "stock".
  *
@@ -15,6 +13,7 @@ use app\models\Rates;
  * @property int $capitalization
  * @property int $capitalization_in_uu
  * @property string $behavior
+ * @property string $sector
  * @property float $delta [double]
  * @property Markets $fkMarket
  * @property StockHistory[] $stockHistories
@@ -26,6 +25,16 @@ use app\models\Rates;
  */
 class Stock extends \yii\db\ActiveRecord
 {
+
+    // Behavior enum possible values
+    const BEHAVIOR_GROWTH = 'GROWTH';
+    const BEHAVIOR_FALLING = 'FALLING';
+
+    // Sector enum possible values
+    const SECTOR_AGRICULTURAL = 'AGRI';
+    const SECTOR_INDUSTRIAL = 'INDUS';
+    const SECTOR_SERVICE = 'SERV';
+
 
     /**
      * @inheritdoc

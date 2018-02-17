@@ -29,6 +29,10 @@ use app\models\Currencies;
         <?= $form->field($model, 'max_capitalization')->textInput() ?>
         <?= $form->field($model, 'min_capitalization')->textInput() ?>
 
+    <?= $form->field($model, 'rate_agri')->textInput() ?>
+    <?= $form->field($model, 'rate_indus')->textInput() ?>
+    <?= $form->field($model, 'rate_serv')->textInput() ?>
+
 
 
     <?= $form->field($model, 'market_short_name')->textInput(['maxlength' => true]) ?>

@@ -75,8 +75,8 @@ class Rates extends \yii\db\ActiveRecord
 
     // В одном source RESULT target
     public function getRateBetween($sourceCurrencyId, $targetCurrencyId){
-        $uuToSourceRate = Self::find()->where(['fk_source_currency' => Rates::UNIVERSAL_UNIT, 'fk_target_currency' => $sourceCurrencyId ])->one();
-        $uuToTargetRate = Self::find()->where(['fk_source_currency' => Rates::UNIVERSAL_UNIT, 'fk_target_currency' => $targetCurrencyId ])->one();
+        $uuToSourceRate = self::find()->where(['fk_source_currency' => Rates::UNIVERSAL_UNIT, 'fk_target_currency' => $sourceCurrencyId ])->one();
+        $uuToTargetRate = self::find()->where(['fk_source_currency' => Rates::UNIVERSAL_UNIT, 'fk_target_currency' => $targetCurrencyId ])->one();
 
         $rate = $uuToTargetRate->exchange_rate / $uuToSourceRate->exchange_rate;
         return $rate;
@@ -103,6 +103,7 @@ class Rates extends \yii\db\ActiveRecord
                     
     public function recalculateRates($changes = null){
         $changes = (!$changes)? CurrencyDelta::find()->all(): $changes;
+        $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
         
         foreach ($changes as $change){
             
@@ -150,10 +151,16 @@ class Rates extends \yii\db\ActiveRecord
             }
 
             $rate->save(false);
+
+            // Сохраняем курс в историю
+            $history = new RatesHistory();
+            $history->exchange_rate = $rate->exchange_rate;
+            $history->fk_source_currency = $rate->fk_source_currency;
+            $history->fk_target_currency = $rate->fk_target_currency;
+            $history->tick = $lastTickSettings->value;
+
             print("New exchange rate:{$rate->exchange_rate}\r\n");
             print("\r\n");
-            
-            //TODO писать историю курса
         }
     }
 }

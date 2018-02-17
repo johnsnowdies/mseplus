@@ -26,6 +26,9 @@ use yii\behaviors\TimestampBehavior;
  * @property float $min_capitalization
  * @property int $created_at [int(11)]
  * @property int $updated_at [int(11)]
+ * @prorerty int rate_agri
+ * @property int rate_indus
+ * @property int rate_serv
  */
 class Markets extends \yii\db\ActiveRecord
 {
@@ -77,6 +80,9 @@ class Markets extends \yii\db\ActiveRecord
             'min_capitalization' => 'MIN CAP',
             'max_companies' => 'COMP QUOTE',
             'max_agents' => 'MAX AGENTS',
+            'rate_agri' => 'Агрокультурный сектор',
+            'rate_indus' => 'Индустриальный сектор',
+            'rate_serv' => 'Сектор услуг'
         ];
     }
 

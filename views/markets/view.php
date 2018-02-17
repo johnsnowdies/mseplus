@@ -47,10 +47,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'max_agents',
             'name',
             'market_short_name',
+            'rate_agri' => [
+                'label' => 'A/I/S',
+                'value' => function($data){
+                        return "{$data->rate_agri}/{$data->rate_indus}/{$data->rate_serv}";
+                }
+            ],
             'max_amount',
             'min_amount',
             'max_capitalization',
             'min_capitalization',
+
         ],
     ]) ?>
 

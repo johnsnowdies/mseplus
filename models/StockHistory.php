@@ -27,7 +27,7 @@ class StockHistory extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'history';
+        return 'stock_history';
     }
 
     public function behaviors()

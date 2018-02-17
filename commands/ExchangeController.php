@@ -3,7 +3,7 @@
 namespace app\commands;
 
 use yii\console\Controller;
-use app\components\CampaignService;
+use app\components\CampaignGeneratorService;
 use app\components\TradeSimulationService;
 
 use app\models\Rates;
@@ -22,7 +22,7 @@ class ExchangeController extends Controller
         print("Exchange service launched\r\n");
 
         # Run campaign service
-        $campaignService = new CampaignService();
+        $campaignService = new CampaignGeneratorService();
         $campaignService->runSimulation();
 
         # Run trade sumulation service
@@ -37,7 +37,7 @@ class ExchangeController extends Controller
     public function actionGenerate(){
         for ($i = 1; $i < 3000; $i++){
             # Run campaign service
-            $campaignService = new CampaignService();
+            $campaignService = new CampaignGeneratorService();
             $campaignService->runSimulation();
         }
 
