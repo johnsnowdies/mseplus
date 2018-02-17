@@ -8,6 +8,7 @@
 
 namespace app\components;
 
+use app\models\News;
 use app\models\Stock;
 use app\models\StockHistory;
 use app\models\Settings;
@@ -15,6 +16,7 @@ use app\models\Rates;
 
 class TradeSimulationService
 {
+
     public function runSimulation(){
 
         $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
@@ -105,6 +107,40 @@ class TradeSimulationService
             $company->behavior = $behavior;
 
             if ($new_capitalization < 0){
+
+                $capValueable = ($company->initial_capitalization * 100) / $company->fkMarket->max_capitalization;
+                $market = $company->fkMarket;
+
+                $news = new News();
+
+                $priorityMessage = "";
+
+                if ($capValueable < 30) {
+                    $news->priority = News::PRIORITY_LOW;
+                    $priorityMessage = "Незначительной влияние на рынок не привело к каким-либо серьезным последствиям дла отрасли";
+                }
+
+                if ($capValueable >= 30 && $capValueable < 70){
+                    $news->priority = News::PRIORITY_MEDIUM;
+                    $priorityMessage = "Инвесторы обеспокены этим событием, ожидается спад сектора.";
+                }
+
+
+                if ($capValueable >= 70) {
+                    $news->priority = News::PRIORITY_HIGH;
+                    $priorityMessage = "Брокеры в панике! Новость о банкротстве некогда крупной компании застигла рынок в расплох!";
+                }
+
+                $news->title = "Кампания {$company->company_name} обанкротилась!";
+                $news->text = "После падения акций до {$company->share_price} {$market->fkCurrency->currency_short_name} 
+                кампания остановила торги на бирже {$market->market_short_name}\n{$priorityMessage}";
+
+                $news->fk_market = $market->id;
+                $news->type = News::TYPE_POSITIVE;
+                $news->sector = $company->sector;
+                $news->tick = $tick;
+                $news->save(false);
+
                 // Банкрот! 
                 $company->delete();
             }else{

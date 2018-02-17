@@ -8,6 +8,8 @@
 
 namespace app\components;
 
+use app\models\News;
+use app\models\Settings;
 use app\models\Stock;
 use app\models\Currencies;
 use app\models\Markets;
@@ -38,6 +40,8 @@ class CampaignGeneratorService
         $stock = new Stock();
         $rate = new Rates();
         $exchangeRates = $rate->getSystemRates();
+        $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
+        $tick = $lastTickSettings->value;
 
         if($market->fkCurrency->currency_short_name == 'SGD'){
             $rate = 1;
@@ -72,6 +76,7 @@ class CampaignGeneratorService
             $sector = Stock::SECTOR_SERVICE;
         }
 
+
         $stock->company_name = $this->generateCampaignName();
         $stock->capitalization = rand($market->min_capitalization / $rate, $market->max_capitalization / $rate);
         $stock->amount = rand($market->min_amount, $market->max_amount);
@@ -89,6 +94,38 @@ class CampaignGeneratorService
         print("Initial share price: {$stock->initial_share_price}\r\n");
 
         $stock->save();
+
+        // Создание новости об IPO
+        // Определяем процент от максимальной капитализации
+
+        $capValueable = ($stock->capitalization * 100) / $market->max_capitalization;
+        $news = new News();
+
+        $priorityMessage = "";
+
+        if ($capValueable < 30) {
+            $news->priority = News::PRIORITY_LOW;
+            $priorityMessage = "Инвесторы проявили незначительный интерес к данному IPO";
+        }
+
+        if ($capValueable >= 30 && $capValueable < 70){
+            $news->priority = News::PRIORITY_MEDIUM;
+            $priorityMessage = "Инвесторы положительно восприняли IPO этой кампании";
+        }
+
+
+        if ($capValueable >= 70) {
+            $news->priority = News::PRIORITY_HIGH;
+            $priorityMessage = "Рынок взбудоражен новостью!";
+        }
+
+        $news->title = "Кампания {$stock->company_name} провела IPO";
+        $news->text = "На бирже {$market->market_short_name} было размешено {$stock->amount} акций по цене {$stock->share_price} за штуку.\n{$priorityMessage}";
+        $news->fk_market = $market->id;
+        $news->type = News::TYPE_POSITIVE;
+        $news->sector = $stock->sector;
+        $news->tick = $tick;
+        $news->save(false);
     }
 
 
