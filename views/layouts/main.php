@@ -14,6 +14,9 @@ use app\assets\AppAsset as MyAsset;
 MyAsset::register($this);
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/jcabanillas/yii2-inspinia/assets');
 AppAsset::register($this);
+$session = Yii::$app->session;
+$currentSidebarState = $session->get('sidebar');
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -44,13 +47,14 @@ AppAsset::register($this);
     </style>
 </head>
 
-<body><?php $this->beginBody() ?>
+<body <?= ($currentSidebarState)? 'class="mini-navbar"':''?> ></body><?php $this->beginBody() ?>
 
 <div id="wrapper" class="">
 
     <?= $this->render('sidebar', ['directoryAsset' => $directoryAsset]) ?>
 
     <div id="page-wrapper" class="gray-bg">
+
 
         <div class="row wrapper border-bottom white-bg page-heading">
             <?php if (isset($this->blocks['content-header'])) { ?>

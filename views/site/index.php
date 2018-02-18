@@ -9,6 +9,7 @@ $news = $newsDataProvider->query->orderBy(['id' => SORT_DESC])->limit(5)->all();
 use app\models\Stock;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 $this->title = 'Главная: состояние биржи';
 ?>
@@ -157,9 +158,8 @@ $this->title = 'Главная: состояние биржи';
                 </div>
 
                 <div class="ibox-content">
+                    <?php Pjax::begin();?>
                     <?= GridView::widget([
-
-
                         'dataProvider' => $stockDataProvider,
                         'filterModel' => new app\models\StockSearch(),
                         'layout' => '{items}',
@@ -223,6 +223,7 @@ $this->title = 'Главная: состояние биржи';
 
                         ],
                     ]); ?>
+                    <?php Pjax::end();?>
                 </div>
             </div>
 

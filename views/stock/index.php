@@ -5,6 +5,11 @@ use yii\grid\GridView;
 use app\models\Rates;
 use yii\widgets\Pjax;
 
+use app\assets\StockPageAsset;
+
+
+StockPageAsset::register($this);
+
 $session = Yii::$app->session;
 $selectedCurrency = $session->get('currency');
 $rate = new Rates();

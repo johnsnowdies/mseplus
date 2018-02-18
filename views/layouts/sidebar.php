@@ -26,20 +26,20 @@
                     'label' => 'Валюты'
                 ],
                 [
-                    'url' => '#',
+                    'url' => '/news/',
                     'icon' => 'fa fa-globe',
                     'label' => 'Новости'
                 ],
                 [
                     'url' => '/markets/',
-                    'icon' => 'fa fa-chart-line',
+                    'icon' => 'fa fa-exchange',
                     'label' => 'Биржи'
                 ],
 
            
                 [
                     'url' => '/stock/',
-                    'icon' => 'fa fa-exchange',
+                    'icon' => 'fa fa-building',
                     'label' => 'Кампании'
                 ],
                 
