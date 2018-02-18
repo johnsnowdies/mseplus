@@ -153,11 +153,23 @@ class Rates extends \yii\db\ActiveRecord
             $rate->save(false);
 
             // Сохраняем курс в историю
-            $history = new RatesHistory();
+
+            $history = RatesHistory::find()->where(
+                [
+                    'tick' => $lastTickSettings->value,
+                    'fk_target_currency' => $rate->fk_target_currency,
+                    'fk_source_currency' => $rate->fk_source_currency
+                ])->one();
+
+            if (!$history)
+                $history = new RatesHistory();
+
             $history->exchange_rate = $rate->exchange_rate;
             $history->fk_source_currency = $rate->fk_source_currency;
             $history->fk_target_currency = $rate->fk_target_currency;
             $history->tick = $lastTickSettings->value;
+
+            $history->save();
 
             print("New exchange rate:{$rate->exchange_rate}\r\n");
             print("\r\n");
