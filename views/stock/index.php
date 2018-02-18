@@ -22,6 +22,7 @@ $exchangeRates = $rate->getSystemRates();
 $this->title = 'Кампании';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="stock-index">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -82,17 +83,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         'amount',
                         'capitalization' => [
                             'label' => 'CAP',
-                            'attribute' => 'capitalization',
+                            'attribute' => 'capitalization_in_uu',
                             'format' => ['decimal', 2],
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) {
                                 $result = $data->capitalization;
                                 $currency = $data->fkMarket->fkCurrency->currency_short_name;
                                 if ($selectedCurrency && $selectedCurrency != $currency)
-                                    $result /= ($exchangeRates[$selectedCurrency][$currency]);
+                                    $result = ($data->capitalization) / ($exchangeRates[$currency][$selectedCurrency]);
 
                                 return $result;
                             }
                         ],
+
                         'share_price' => [
                             'label' => 'UNIT PRICE',
                             'attribute' => 'share_price',

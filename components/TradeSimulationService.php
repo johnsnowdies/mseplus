@@ -106,7 +106,9 @@ class TradeSimulationService
             $company->delta = $delta;
             $company->behavior = $behavior;
 
-            if ($new_capitalization < 0){
+
+
+            if ($new_capitalization < ($company->initial_capitalization - ($company->initial_capitalization * 0.1) )){
 
                 $capValueable = ($company->initial_capitalization * 100) / $company->fkMarket->max_capitalization;
                 $market = $company->fkMarket;

@@ -123,7 +123,7 @@ class CampaignGeneratorService
         $formatedSharePrice = Yii::$app->formatter->format($stock->share_price, ['decimal', 2]);
 
         $news->title = "Кампания {$stock->company_name} провела IPO";
-        $news->text = "На бирже {$market->market_short_name} было размешено {$stock->amount} акций по цене {$formatedSharePrice} {$market->fkCurrncy->currency_short_name} за штуку.\n{$priorityMessage}";
+        $news->text = "На бирже {$market->market_short_name} было размешено {$stock->amount} акций по цене {$formatedSharePrice} {$market->fkCurrency->currency_short_name} за штуку.\n{$priorityMessage}";
         $news->fk_market = $market->id;
         $news->type = News::TYPE_POSITIVE;
         $news->sector = $stock->sector;

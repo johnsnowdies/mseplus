@@ -45,6 +45,9 @@ class ExchangeController extends Controller
 
     public function actionTrade()
     {
+            # Run campaign service
+            $campaignService = new CampaignGeneratorService();
+            $campaignService->runSimulation();
      
             # Run trade sumulation service
             $tradeService = new TradeSimulationService();
@@ -53,6 +56,7 @@ class ExchangeController extends Controller
             # Run currency rate recalculate
             $rates = new Rates();
             $rates->recalculateRates();
+            $rates->saveMarketsHistory();
         
     }
 

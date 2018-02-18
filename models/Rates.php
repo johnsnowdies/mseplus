@@ -171,8 +171,25 @@ class Rates extends \yii\db\ActiveRecord
 
             $history->save();
 
+
+
             print("New exchange rate:{$rate->exchange_rate}\r\n");
             print("\r\n");
+        }
+
+    }
+
+    public function saveMarketsHistory(){
+        $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
+        // Сохраняем тренды бирж
+
+        $marketsDelta = MarketsDelta::find()->all();
+        foreach ($marketsDelta as $market){
+            $marketHistoryRecord = new MarketsHistory();
+            $marketHistoryRecord->fk_market = Markets::find()->where(['market_short_name' => $market->market])->one()->id;
+            $marketHistoryRecord->delta = $market->delta;
+            $marketHistoryRecord->tick = $lastTickSettings->value;
+            $marketHistoryRecord->save(false);
         }
     }
 }

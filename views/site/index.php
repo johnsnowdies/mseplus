@@ -6,6 +6,7 @@
 
 $news = $newsDataProvider->query->orderBy(['id' => SORT_DESC])->limit(5)->all();
 
+use app\models\Markets;
 use app\models\Stock;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
@@ -230,127 +231,79 @@ $this->title = 'Главная: состояние биржи';
         </div>
     </div>
 
+
+    <?php
+    $marktesData = \app\models\MarketsDelta::find()->all();
+    $marketsHistory = new \app\models\MarketsHistory();
+    ?>
+
+
+
     <div class="row">
-        <div class="col-lg-3">
+        <?php foreach ($marktesData as $market):?>
+        <div class="col-lg-2">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h5 class="m-b-md">Повышение</h5>
-                    <h2 class="text-navy">
-                        <i class="fa fa-play fa-rotate-270"></i> MSUEE
+
+                    <h2 class="<?=($market->delta > 0)? 'text-navy': 'text-danger' ?>">
+
+                        <?php if($market->delta > 0):?>
+                            <i class="fa fa-play fa-rotate-270"></i>
+                        <?php endif; ?>
+
+                        <?php if($market->delta < 0):?>
+                            <i class="fa fa-play fa-rotate-90"></i>
+                        <?php endif; ?>
+
+                        <?=Yii::$app->formatter->format($market->delta,['decimal', 2])?>
+<br>
+                        <small><?=$market->market?></small>
+
                     </h2>
+
                     <small>Moon and Star union External Exchange</small>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="ibox">
-                <div class="ibox-content ">
-                    <h5 class="m-b-md">Повышение</h5>
-                    <h2 class="text-navy">
-                        <i class="fa fa-play fa-rotate-270"></i> ERES
-                    </h2>
-                    <small>Enerian Republic Exchange Service</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <h5 class="m-b-md">Спад</h5>
-                    <h2 class="text-danger">
-                        <i class="fa fa-play fa-rotate-90"></i> NSES
-                    </h2>
-                    <small>Nova System External Stock</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <h5 class="m-b-md">Спад</h5>
-                    <h2 class="text-danger">
-                        <i class="fa fa-play fa-rotate-90"></i> GSCOM
-                    </h2>
-                    <small>Glory Shining Cat Overlord Market</small>
-                </div>
-            </div>
-        </div>
+
+        <?php endforeach;?>
+
 
     </div>
 
     <div class="row">
-        <div class="col-lg-3">
+
+        <?php foreach ($marktesData as $market):?>
+            <?php
+                $marketId = Markets::find()->where(['market_short_name' => $market->market])->one()->id;
+                $data = $marketsHistory->getHistoryForMarket($marketId);
+                $color = '';
+                if ($market->delta > 0)
+                    $color = '#1ab394';
+                else
+                    $color = '#ed5565';
+            ?>
+        <div class="col-lg-2">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h5>MSUEE за 24ч</h5>
-                    <h2>198 009</h2>
+                    <h2></h2>
+
                     <?= \machour\sparkline\Sparkline::widget([
                         'clientOptions' => [
                             'type' => 'line',
                             'height' => 60,
                             'width' => '100%',
-                            'lineColor' => '#1ab394',
+                            'lineColor' => $color,
                             'fillColor' => '#ffffff'
                         ],
-                        'data' => [34, 43, 43, 35, 44, 32, 44, 52]
+                        'data' => $data
                     ]); ?>
 
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <h5>ERES за 24ч</h5>
-                    <h2>65 000</h2>
-                    <?= \machour\sparkline\Sparkline::widget([
-                        'clientOptions' => [
-                            'type' => 'line',
-                            'height' => 60,
-                            'width' => '100%',
-                            'lineColor' => '#1ab394',
-                            'fillColor' => '#ffffff'
-                        ],
-                        'data' => [24, 43, 43, 55, 44, 62, 44, 72]
-                    ]); ?>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <h5>NSES</h5>
-                    <h2>680 900</h2>
-                    <?= \machour\sparkline\Sparkline::widget([
-                        'clientOptions' => [
-                            'type' => 'line',
-                            'height' => 60,
-                            'width' => '100%',
-                            'lineColor' => '#ed5565',
-                            'fillColor' => '#ffffff'
-                        ],
-                        'data' => [74, 43, 23, 55, 54, 32, 24, 12]
-                    ]); ?>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <h5>GSCOM</h5>
-                    <h2>450 000</h2>
-                    <?= \machour\sparkline\Sparkline::widget([
-                        'clientOptions' => [
-                            'type' => 'line',
-                            'height' => 60,
-                            'width' => '100%',
-                            'lineColor' => '#ed5565',
-                            'fillColor' => '#ffffff'
-                        ],
-                        'data' => [24, 43, 33, 55, 64, 72, 44, 22]
-                    ]); ?>
-                </div>
-            </div>
-        </div>
+        <?php endforeach;?>
+
+
     </div>
 </div>
