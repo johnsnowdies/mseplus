@@ -162,7 +162,6 @@ $this->title = 'Главная: состояние биржи';
                     <?php Pjax::begin();?>
                     <?= GridView::widget([
                         'dataProvider' => $stockDataProvider,
-                        'filterModel' => new app\models\StockSearch(),
                         'layout' => '{items}',
                         'tableOptions' => [
                             'class' => 'table table-hover'

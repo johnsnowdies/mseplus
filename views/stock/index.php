@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Rates;
@@ -51,7 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php Pjax::begin(['id' => 'stocks', 'timeout' => false]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => new app\models\StockSearch(),
                     'pager' => [
                         'maxButtonCount' => 25,    // Set maximum number of page buttons that can be displayed
                     ],
@@ -85,11 +85,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'CAP',
                             'attribute' => 'capitalization',
                             'format' => ['decimal', 2],
+
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) {
                                 $result = $data->capitalization;
                                 $currency = $data->fkMarket->fkCurrency->currency_short_name;
                                 if ($selectedCurrency && $selectedCurrency != $currency)
-                                    $result = ($data->capitalization) / ($exchangeRates[$currency][$selectedCurrency]);
+                                    $result = ($data->capitalization) * ($exchangeRates[$currency][$selectedCurrency]);
 
                                 return $result;
                             }
@@ -103,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $result = $data->share_price;
                                 $currency = $data->fkMarket->fkCurrency->currency_short_name;
                                 if ($selectedCurrency && $selectedCurrency != $currency)
-                                    $result /= ($exchangeRates[$selectedCurrency][$currency]);
+                                    $result = ($data->share_price) * ($exchangeRates[$selectedCurrency][$currency]);
 
                                 return $result;
                             }

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "stock".
@@ -34,7 +35,6 @@ class Stock extends \yii\db\ActiveRecord
     const SECTOR_INDUSTRIAL = 'INDUS';
     const SECTOR_SERVICE = 'SERV';
 
-
     /**
      * @inheritdoc
      */
@@ -60,6 +60,7 @@ class Stock extends \yii\db\ActiveRecord
             [['share_price','capitalization','initial_share_price','initial_capitalization'], 'number'],
             [['company_name'], 'string', 'max' => 255],
             [['fk_market'], 'exist', 'skipOnError' => true, 'targetClass' => Markets::className(), 'targetAttribute' => ['fk_market' => 'id']],
+            [['calc_cap'],'safe']
         ];
     }
 
