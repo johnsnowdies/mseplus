@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'amount',
                         'capitalization' => [
                             'label' => 'CAP',
-                            'attribute' => 'capitalization_in_uu',
+                            'attribute' => 'capitalization',
                             'format' => ['decimal', 2],
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) {
                                 $result = $data->capitalization;

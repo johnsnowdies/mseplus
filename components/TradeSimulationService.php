@@ -101,7 +101,7 @@ class TradeSimulationService
             $history->save();
 
             $company->capitalization = $new_capitalization;
-            $company->capitalization_in_uu = $new_capitalization * $rate;
+
             $company->share_price = $new_share_price;
             $company->delta = $delta;
             $company->behavior = $behavior;

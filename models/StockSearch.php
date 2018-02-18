@@ -61,9 +61,9 @@ class StockSearch extends Stock
      */
     $dataProvider->setSort([
         'attributes' => [
-            'capitalization_in_uu' => [
-                'asc' => ['capitalization_in_uu' => SORT_ASC],
-                'desc' => ['capitalization_in_uu' => SORT_DESC],
+            'capitalization' => [
+                'asc' => ['capitalization' => SORT_ASC],
+                'desc' => ['capitalization' => SORT_DESC],
                 'label' => 'CAP',
                 'default' => SORT_ASC
             ],

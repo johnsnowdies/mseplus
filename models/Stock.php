@@ -11,7 +11,6 @@ use yii\behaviors\TimestampBehavior;
  * @property string $company_name
  * @property int $amount
  * @property int $capitalization
- * @property int $capitalization_in_uu
  * @property string $behavior
  * @property string $sector
  * @property float $delta [double]
