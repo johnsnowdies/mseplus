@@ -14,6 +14,7 @@ use app\models\Stock;
 use app\models\Currencies;
 use app\models\Markets;
 use app\models\Rates;
+use Yii;
 use yii\helpers\ArrayHelper;
 
 class CampaignGeneratorService
@@ -119,8 +120,10 @@ class CampaignGeneratorService
             $priorityMessage = "Рынок взбудоражен новостью!";
         }
 
+        $formatedSharePrice = Yii::$app->formatter->format($stock->share_price, ['decimal', 2]);
+
         $news->title = "Кампания {$stock->company_name} провела IPO";
-        $news->text = "На бирже {$market->market_short_name} было размешено {$stock->amount} акций по цене {$stock->share_price} за штуку.\n{$priorityMessage}";
+        $news->text = "На бирже {$market->market_short_name} было размешено {$stock->amount} акций по цене {$formatedSharePrice} {$market->fkCurrncy->currency_short_name} за штуку.\n{$priorityMessage}";
         $news->fk_market = $market->id;
         $news->type = News::TYPE_POSITIVE;
         $news->sector = $stock->sector;

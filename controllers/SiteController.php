@@ -2,7 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\News;
+use app\models\Stock;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -61,7 +64,21 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $stockDataProvider = new ActiveDataProvider([
+            'query' => Stock::find(),
+            'sort' => [
+                'defaultOrder' => ['capitalization' => SORT_DESC],
+            ],
+        ]);
+
+        $newsDataProvider = new ActiveDataProvider([
+           'query' =>  News::find()
+        ]);
+
+        return $this->render('index', [
+            'stockDataProvider' => $stockDataProvider,
+            'newsDataProvider' => $newsDataProvider
+        ]);
     }
 
     /**

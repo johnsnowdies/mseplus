@@ -1,6 +1,10 @@
 <?php
 
 /* @var $this yii\web\View */
+/* @var $stockDataProvider yii\data\ActiveDataProvider */
+/* @var $newsDataProvider yii\data\ActiveDataProvider */
+
+$news = $newsDataProvider->query->orderBy(['id' => SORT_DESC])->limit(5)->all();
 
 use app\models\Stock;
 use yii\data\ActiveDataProvider;
@@ -124,63 +128,23 @@ $this->title = 'Главная: состояние биржи';
     <div class="row">
         <div class="col-lg-5">
             <div id="vertical-timeline" class="vertical-container light-timeline">
+
+                <?php foreach ($news as $item):?>
+
                 <div class="vertical-timeline-block">
                     <div class="vertical-timeline-icon navy-bg">
                         <i class="fa fa-briefcase"></i>
                     </div>
 
                     <div class="vertical-timeline-content">
-                        <h2>Контракт</h2>
-                        <p>Представители СЛЗ и РКВ заключили долгосрочный контракт на поставку девочек-кошек.
-                        </p>
+                        <h2><?=$item->title?></h2>
+                        <p><?=$item->text?></p>
 
-                        <span class="vertical-date">Такт 1 <br><small>День 20</small></span>
+                        <span class="vertical-date">Такт #<?=$item->tick?></span>
                     </div>
                 </div>
 
-                <div class="vertical-timeline-block">
-                    <div class="vertical-timeline-icon blue-bg">
-                        <i class="fa fa-file-text"></i>
-                    </div>
-
-                    <div class="vertical-timeline-content">
-                        <h2>Медийных холдинг "Ж" выходит на IPO</h2>
-                        <p>Новый крупный игрок в сфере масс-медиа</p>
-                        <a href="#" class="btn btn-sm btn-success"> Пресс-релиз </a>
-                        <span class="vertical-date">Такт 12 <br><small>День 19</small></span>
-                    </div>
-                </div>
-
-
-                <div class="vertical-timeline-block">
-                    <div class="vertical-timeline-icon red-bg">
-                        <i class="fa fa-trash"></i>
-                    </div>
-
-                    <div class="vertical-timeline-content">
-                        <h2>Банктротство Jewish Technologies</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident
-                            rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus
-                            minus veritatis qui ut.</p>
-                        <span class="vertical-date">Такт 11<br><small>День 14</small></span>
-                    </div>
-                </div>
-
-                <div class="vertical-timeline-block">
-                    <div class="vertical-timeline-icon red-bg">
-                        <i class="fa fa-trash"></i>
-                    </div>
-
-                    <div class="vertical-timeline-content">
-                        <h2>Банктротство NovatecGames</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident
-                            rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus
-                            minus veritatis qui ut.</p>
-                        <span class="vertical-date">Такт 8 <br><small>День 14</small></span>
-                    </div>
-                </div>
-
-
+                <?php endforeach;?>
             </div>
             <div style="text-align: center;margin-bottom: 25px;">
                 <a href="#">Все новости</a>
@@ -196,25 +160,13 @@ $this->title = 'Главная: состояние биржи';
                     <?= GridView::widget([
 
 
-                        'dataProvider' => new ActiveDataProvider([
-                            'query' => Stock::find(),
-                            'sort' => [
-                                'defaultOrder' => ['capitalization' => SORT_DESC],
-                            ],
-                        ]),
+                        'dataProvider' => $stockDataProvider,
                         'filterModel' => new app\models\StockSearch(),
                         'layout' => '{items}',
-
-
                         'tableOptions' => [
                             'class' => 'table table-hover'
                         ],
-
-
                         'columns' => [
-                            //['class' => 'yii\grid\SerialColumn'],
-
-                            
                             'fkMarket' => [
                                 'headerOptions' => ['style' => 'width:140px'],
                                 'attribute'=>'fk_market',
@@ -226,6 +178,7 @@ $this->title = 'Главная: состояние биржи';
                                     return "<img src=\"{$src}\" height=20 width=40 > &nbsp;" . $data->fkMarket->market_short_name;
                                 }
                             ],
+
                             'company_name' => [
                                 'attribute' => 'company_name',
                                 'label' => 'Название кампании',
@@ -257,10 +210,6 @@ $this->title = 'Главная: состояние биржи';
                                 }
                             ],
 
-                           
-
-
-                            
                             'fkCurrency' => [
 
                                 'attribute' => 'fk_currency',
