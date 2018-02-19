@@ -64,12 +64,13 @@ class News extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'text' => 'Text',
-            'markets' => 'Markets',
-            'sector' => 'Sector',
-            'type' => 'Type',
-            'priority' => 'Priority',
+            'tick' => 'Такт',
+            'title' => 'Заголовок',
+            'text' => 'Описание',
+            'fk_markets' => '',
+            'sector' => 'Сектор',
+            'type' => 'Оттенок',
+            'priority' => 'Влияние',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

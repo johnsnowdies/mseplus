@@ -138,7 +138,7 @@ class TradeSimulationService
                 кампания остановила торги на бирже {$market->market_short_name}\n{$priorityMessage}";
 
                 $news->fk_market = $market->id;
-                $news->type = News::TYPE_POSITIVE;
+                $news->type = News::TYPE_NEGATIVE;
                 $news->sector = $company->sector;
                 $news->tick = $tick;
                 $news->save(false);
