@@ -143,8 +143,15 @@ class TradeSimulationService
                 $news->tick = $tick;
                 $news->save(false);
 
-                // Банкрот! 
+                // Удаляем все записи из истории
+                StockHistory::deleteAll(['fk_stock' => $company->id]);
+
+                // Удаляем кампанию
                 $company->delete();
+
+
+
+
             }else{
                 $company->save();
             }

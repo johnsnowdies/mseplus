@@ -260,7 +260,7 @@ $this->title = 'Главная: состояние биржи';
 
                     </h2>
 
-                    <small>Moon and Star union External Exchange</small>
+                    <small></small>
                 </div>
             </div>
         </div>

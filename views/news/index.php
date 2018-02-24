@@ -58,7 +58,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "<img src=\"{$src}\" height=20 width=40 > &nbsp;" . $data->fkMarket->market_short_name;
                 }
             ],
-            'title',
+            'title' => [
+                'label' => 'Заголовок',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return "<a href=\"/news/view?id={$data->id}\">{$data->title}</a>";
+                }
+
+            ],
 
             'sector' => [
                 'label' => 'Сектор',

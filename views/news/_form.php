@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Markets;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -16,18 +17,26 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'sector')->dropDownList([ 'AGRI' => 'AGRI', 'INDUS' => 'INDUS', 'SERV' => 'SERV', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'fk_market')->dropDownList(
+        Markets::getMarketsArray()
+    ) ?>
 
-    <?= $form->field($model, 'type')->dropDownList([ 'POSITIVE' => 'POSITIVE', 'NEGATIVE' => 'NEGATIVE', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'sector')->dropDownList(
+            [
+                'AGRI' => 'Агрокультурный',
+                'INDUS' => 'Индустриальный',
+                'SERV' => 'Услуг',
+            ],
+            [
+                'prompt' => ''
+            ]) ?>
 
-    <?= $form->field($model, 'priority')->dropDownList([ 'LOW' => 'LOW', 'MEDIUM' => 'MEDIUM', 'HIGH' => 'HIGH', '' => '', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'type')->dropDownList([ 'POSITIVE' => '+', 'NEGATIVE' => '-', ], ['prompt' => '']) ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+    <?= $form->field($model, 'priority')->dropDownList([ 'LOW' => 'Низкое', 'MEDIUM' => 'Среднее', 'HIGH' => 'Высокое', '' => '', ], ['prompt' => '']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
