@@ -276,6 +276,7 @@ $this->title = 'Главная: состояние биржи';
             <?php
                 $marketId = Markets::find()->where(['market_short_name' => $market->market])->one()->id;
                 $data = $marketsHistory->getHistoryForMarket($marketId);
+
                 $color = '';
                 if ($market->delta > 0)
                     $color = '#1ab394';

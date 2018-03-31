@@ -53,8 +53,12 @@ class MarketsHistory extends \yii\db\ActiveRecord
     public function getLastTicksMarketsHistory(){
         $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
         $tick = $lastTickSettings->value;
+
+
         $result = [];
-        for($i = ($tick - 10); $i <= $tick; $i++){
+        $first = (($tick - 10) < 0)? 1: ($tick - 10);
+
+        for($i = $first; $i <= $tick; $i++){
             $result[] = $this->getMarketsForTick($i);
         }
 
@@ -63,6 +67,7 @@ class MarketsHistory extends \yii\db\ActiveRecord
 
     public function getHistoryForMarket($id){
         $data = $this->getLastTicksMarketsHistory();
+
 
         $result = [];
 

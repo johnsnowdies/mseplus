@@ -2,7 +2,7 @@
 use app\models\Rates;
 
 $rates = new Rates();
-$data = $rates->getSystemRates();
+$data = $rates->getSystemRatesWithoutEU();
 
 ?>
 
@@ -18,10 +18,10 @@ $data = $rates->getSystemRates();
     </div>
 
     <?php foreach($data as $key => $value):?>
-    
+
     <div style="line-height: 40px; display: none;" class="footer-rate-pane" id="footer-<?=$key?>" >
         <?php foreach($value as $target => $rate):?>
-            <span class="label label-<?= ($rate >= 1) ? 'primary': 'danger' ;?>"><?=$key?>/<?=$target?>:&nbsp;<?=$rate?></span>
+            <span class="label label-<?= ($rate >= 1) ? 'primary': 'danger' ;?>"><?=$key?>/<?=$target?>:&nbsp;<?=Yii::$app->formatter->format($rate, ['decimal', 2])?></span>
         <?php endforeach;?>
 
     </div>

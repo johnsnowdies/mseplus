@@ -21,7 +21,8 @@ class CampaignGeneratorService
 {
     private function generateCampaignName(){
         $generator = \Nubs\RandomNameGenerator\All::create();
-        return $generator->getName();
+        $rnd = rand(10000,90000);
+        return $generator->getName() . " #" . $rnd;
     }
 
 
@@ -33,10 +34,6 @@ class CampaignGeneratorService
         return Stock::find()->where(['fk_market' => $arMarkets])->count();
     }
 
-    private function campaignBankrupt($markets){
-        
-    }
-
     private function campaignIpo($market){
         $stock = new Stock();
         $rate = new Rates();
@@ -44,13 +41,13 @@ class CampaignGeneratorService
         $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
         $tick = $lastTickSettings->value;
 
-        if($market->fkCurrency->currency_short_name == 'SGD'){
+
+        if($market->fkCurrency->currency_short_name == 'EU'){
             $rate = 1;
         }
         else{
-            $rate = $exchangeRates['SGD'][$market->fkCurrency->currency_short_name];
+            $rate = $exchangeRates['EU'][$market->fkCurrency->currency_short_name];
         }
-
 
         // Определение сектора экономики новой кампании
         $sectorCampaignLimit = [
@@ -67,16 +64,21 @@ class CampaignGeneratorService
 
         $sector = null;
 
+        $possible_sector = [];
+
         if ($sectorCampaignCount[Stock::SECTOR_AGRICULTURAL] < $sectorCampaignLimit[Stock::SECTOR_AGRICULTURAL]) {
-            $sector = Stock::SECTOR_AGRICULTURAL;
-        }
-        else if ($sectorCampaignCount[Stock::SECTOR_INDUSTRIAL] < $sectorCampaignLimit[Stock::SECTOR_INDUSTRIAL]){
-            $sector = Stock::SECTOR_INDUSTRIAL;
-        }
-        else if ($sectorCampaignCount[Stock::SECTOR_SERVICE] < $sectorCampaignLimit[Stock::SECTOR_SERVICE]){
-            $sector = Stock::SECTOR_SERVICE;
+            $possible_sector[] = Stock::SECTOR_AGRICULTURAL;
         }
 
+        if ($sectorCampaignCount[Stock::SECTOR_INDUSTRIAL] < $sectorCampaignLimit[Stock::SECTOR_INDUSTRIAL]){
+            $possible_sector[] = Stock::SECTOR_INDUSTRIAL;
+        }
+
+        if ($sectorCampaignCount[Stock::SECTOR_SERVICE] < $sectorCampaignLimit[Stock::SECTOR_SERVICE]){
+            $possible_sector[] = Stock::SECTOR_SERVICE;
+        }
+
+        $sector = $possible_sector[ rand(0, count($possible_sector)-1)];
 
         $stock->company_name = $this->generateCampaignName();
         $stock->capitalization = rand($market->min_capitalization / $rate, $market->max_capitalization / $rate);
@@ -117,7 +119,7 @@ class CampaignGeneratorService
 
         if ($capValueable >= 70) {
             $news->priority = News::PRIORITY_HIGH;
-            $priorityMessage = "Рынок взбудоражен новостью!";
+            $priorityMessage = "Рынок возбужден новостью!";
         }
 
         $formatedSharePrice = Yii::$app->formatter->format($stock->share_price, ['decimal', 2]);
@@ -128,7 +130,8 @@ class CampaignGeneratorService
         $news->type = News::TYPE_POSITIVE;
         $news->sector = $stock->sector;
         $news->tick = $tick;
-        $news->save(false);
+        if ($tick != 1)
+            $news->save(false);
     }
 
 
@@ -144,15 +147,24 @@ class CampaignGeneratorService
             print("\r\n");
             print("Processing {$currency->country}\r\n");
             $markets = Markets::find()->where(['fk_currency' => $currency->id])->all();
-            $currentCampaignsCount = $this->getMarketCampaignCount($markets);
+
 
             // Проход по биржам
             foreach ($markets as $market){
-                // Кампаний меньше квоты
-                if ($currentCampaignsCount < $market->max_companies){
-                    print("Campaign quote doesn't reached yet\r\n");
-                    $this->campaignIpo($market);
+
+                while(true){
+                    $currentCampaignsCount = Stock::find()->where(['fk_market' => $market->id])->count();
+
+                    // Кампаний меньше квоты
+                    if ($currentCampaignsCount < $market->max_companies){
+                        print("Campaign quote doesn't reached yet\r\n");
+                        $this->campaignIpo($market);
+                    }else{
+                        print("Campaign quote reached for {$market->market_short_name} current count: {$currentCampaignsCount}!\r\n");
+                        break;
+                    }
                 }
+
             }
         }
     }

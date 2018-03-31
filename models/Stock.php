@@ -15,6 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $behavior
  * @property string $sector
  * @property float $delta [double]
+ * @property float $delta_abs [double]
  * @property Markets $fkMarket
  * @property StockHistory[] $stockHistories
  * @property float $share_price [double]  Цена акции по итогам торгов

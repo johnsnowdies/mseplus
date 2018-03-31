@@ -14,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
  * @property double $capitalization
  * @property double $share_price
  * @property double $delta
+ * @property double $delta_abs
  * @property string $behavior
  * @property int $created_at
  * @property int $updated_at

@@ -2,6 +2,7 @@
 
 namespace app\commands;
 
+use app\components\NewsGeneratorService;
 use yii\console\Controller;
 use app\components\CampaignGeneratorService;
 use app\components\TradeSimulationService;
@@ -25,6 +26,9 @@ class ExchangeController extends Controller
         $campaignService = new CampaignGeneratorService();
         $campaignService->runSimulation();
 
+        $newsService = new NewsGeneratorService();
+        $newsService->runSimulation();
+
         # Run trade sumulation service
         $tradeService = new TradeSimulationService();
         $tradeService->runSimulation();
@@ -32,8 +36,12 @@ class ExchangeController extends Controller
         # Run currency rate recalculate
         $rates = new Rates();
         $rates->recalculateRates();
+        $rates->saveMarketsHistory();
+
+        $tradeService->increaseTick();
     }
 
+    /*
     public function actionGenerate(){
         for ($i = 1; $i < 3000; $i++){
             # Run campaign service
@@ -59,6 +67,7 @@ class ExchangeController extends Controller
             $rates->saveMarketsHistory();
         
     }
+    */
 
    
 }

@@ -20,7 +20,6 @@ use app\models\CurrencyDelta;
 class Rates extends \yii\db\ActiveRecord
 {
     const UNIVERSAL_UNIT = 1;
-    const REAL_UNIVERSAL_UNIT = 6;
 
     /**
      * @inheritdoc
@@ -93,6 +92,29 @@ class Rates extends \yii\db\ActiveRecord
                 if ($source->id != $target->id){
                     $rate = $this->getRateBetween($source->id,$target->id);
                     //print("{$source->currency_short_name}/{$target->currency_short_name}: {$rate}\r\n");
+                    //if ($source->currency_short_name!= 'EU' && $target->currency_short_name!='EU')
+
+                    $result[$source->currency_short_name][$target->currency_short_name] = $rate;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+
+    public function getSystemRatesWithoutEU(){
+        $currencies = Currencies::find()->all();
+
+        $result = [];
+
+        foreach($currencies as $source){
+            foreach($currencies as $target){
+                if ($source->id != $target->id){
+                    $rate = $this->getRateBetween($source->id,$target->id);
+                    //print("{$source->currency_short_name}/{$target->currency_short_name}: {$rate}\r\n");
+                    if ($source->currency_short_name!= 'EU' && $target->currency_short_name!='EU')
+
                     $result[$source->currency_short_name][$target->currency_short_name] = $rate;
                 }
             }
@@ -112,29 +134,8 @@ class Rates extends \yii\db\ActiveRecord
             $currency = Currencies::find()->where(['currency_short_name' => $change->currency])->one();
             $universalUnit = Currencies::find()->where(['id' => self::UNIVERSAL_UNIT])->one();
 
-            
             if($change->currency == $universalUnit->currency_short_name){
-             
-                print("Processing universal unit\r\n");
-                
-                $uuDelta = -1 * $change->delta;
-                $allCurrencies = Currencies::find()
-                ->andWhere(['!=','id',self::UNIVERSAL_UNIT])
-                ->andWhere(['!=','id',self::REAL_UNIVERSAL_UNIT])
-                ->all();
-
-                $uuChanges = [];
-
-                foreach ($allCurrencies as $c){
-                    $cd = new CurrencyDelta();
-                    $cd->currency = $c->currency_short_name;
-                    $cd->delta = $uuDelta;
-                    $uuChanges[] = $cd;
-                }
-
-                $this->recalculateRates($uuChanges);
-                
-                continue;
+                break;
             }
 
             $rate = self::find()->where(['fk_target_currency' => $currency->id])->one();
