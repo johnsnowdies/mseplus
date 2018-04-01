@@ -43,4 +43,10 @@ class Settings extends \yii\db\ActiveRecord
             'value' => 'Value',
         ];
     }
+
+    public static function getKeyValue($key){
+        $setting = Settings::findOne(['key' => $key]);
+        return $setting->value;
+
+    }
 }

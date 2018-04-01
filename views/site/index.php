@@ -234,29 +234,37 @@ $this->title = 'Главная: состояние биржи';
     <?php
     $marktesData = \app\models\MarketsDelta::find()->all();
     $marketsHistory = new \app\models\MarketsHistory();
+
     ?>
 
 
 
     <div class="row">
-        <?php foreach ($marktesData as $market):?>
+        <?php foreach ($marktesData as $market):
+
+            $marketId = Markets::find()->where(['market_short_name' => $market->market])->one();
+
+            $diff = $marketsHistory->getDiffLastTwoDeltas($marketId['id']);
+
+            ?>
         <div class="col-lg-2">
             <div class="ibox">
                 <div class="ibox-content">
 
-                    <h2 class="<?=($market->delta > 0)? 'text-navy': 'text-danger' ?>">
+                    <h2 class="<?=($diff)? 'text-navy': 'text-danger' ?>">
 
-                        <?php if($market->delta > 0):?>
+                        <?php if($diff):?>
                             <i class="fa fa-play fa-rotate-270"></i>
                         <?php endif; ?>
 
-                        <?php if($market->delta < 0):?>
+                        <?php if(!$diff):?>
                             <i class="fa fa-play fa-rotate-90"></i>
                         <?php endif; ?>
 
-                        <?=Yii::$app->formatter->format($market->delta,['decimal', 2])?>
-<br>
-                        <small><?=$market->market?></small>
+                        <?=$market->market?>
+
+                        <br>
+                        <small><?=Yii::$app->formatter->format($market->getDeltaPercent(),['decimal', 4])?>%</small>
 
                     </h2>
 
@@ -276,9 +284,10 @@ $this->title = 'Главная: состояние биржи';
             <?php
                 $marketId = Markets::find()->where(['market_short_name' => $market->market])->one()->id;
                 $data = $marketsHistory->getHistoryForMarket($marketId);
+              $diff = $marketsHistory->getDiffLastTwoDeltas($marketId);
 
                 $color = '';
-                if ($market->delta > 0)
+                if ($diff)
                     $color = '#1ab394';
                 else
                     $color = '#ed5565';

@@ -20,8 +20,9 @@ class TradeSimulationService
     public function getNewsRate($company,$currentTick){
 
 
-        $newsList = News::find()->where([
-            'tick' => $currentTick - 1,
+        $newsList = News::find()
+            ->where(['in','tick', [$currentTick-4,$currentTick-3,$currentTick-2,$currentTick-1,$currentTick]])
+            ->where([
             'fk_market' => $company->fk_market,
             'sector' => $company->sector
             ])->all();
@@ -122,15 +123,7 @@ class TradeSimulationService
     }
 
     public function runSimulation(){
-
-        // Инкрементация такта
-        $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
-        $tick = $lastTickSettings->value;
-        $tick++;
-
-        $lastTickSettings->value = $tick;
-
-
+        $tick = Settings::getKeyValue('lastTick');
 
         print("Assuming tick #{$tick}\r\n");
 
@@ -156,8 +149,6 @@ class TradeSimulationService
             if ($trend == 0 )
                 $trend = 1;
 
-
-
             $newsRate = $this->getNewsRate($company,$tick);
 
             if ($newsRate == 0 )
@@ -173,10 +164,10 @@ class TradeSimulationService
 
             for ($i = 0; $i < 15; $i++){
                 $ask_bottom_limit = 1;//round($trend);
-                $ask_top_limit =  $limit;//round((($limit * $trend * $newsRate) > $company->amount ) ? $company->amount :  ($limit * $trend * $newsRate));
+                $ask_top_limit = round((($limit * $newsRate) > $company->amount ) ? $company->amount :  ($limit * $newsRate));
 
                 $bid_bottom_limit = 1;//round(1/$trend);
-                $bid_top_limit = $limit;// round((($limit * (1/$trend) * (1/$newsRate)) > $company->amount) ? $company->amount - $ask_top_limit: ($limit * (1/$trend) * (1/$newsRate)));
+                $bid_top_limit = round((($limit * (1/$newsRate)) > $company->amount) ? $company->amount - $ask_top_limit: ($limit * (1/$newsRate)));
 
 
                 $current_ask = round(rand( $ask_bottom_limit, $ask_top_limit)); // покупка

@@ -26,28 +26,10 @@ class CampaignGeneratorService
     }
 
 
-    private function getMarketCampaignCount($markets){
-        $arMarkets = [];
-        foreach ($markets as $market){
-            $arMarkets[] = $market->id;
-        }
-        return Stock::find()->where(['fk_market' => $arMarkets])->count();
-    }
-
-    private function campaignIpo($market){
+    private function campaignIpo(Markets $market)
+    {
         $stock = new Stock();
-        $rate = new Rates();
-        $exchangeRates = $rate->getSystemRates();
-        $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
-        $tick = $lastTickSettings->value;
-
-
-        if($market->fkCurrency->currency_short_name == 'EU'){
-            $rate = 1;
-        }
-        else{
-            $rate = $exchangeRates['EU'][$market->fkCurrency->currency_short_name];
-        }
+        $tick = Settings::getKeyValue('lastTick');
 
         // Определение сектора экономики новой кампании
         $sectorCampaignLimit = [
@@ -81,13 +63,14 @@ class CampaignGeneratorService
         $sector = $possible_sector[ rand(0, count($possible_sector)-1)];
 
         $stock->company_name = $this->generateCampaignName();
-        $stock->capitalization = rand($market->min_capitalization / $rate, $market->max_capitalization / $rate);
+        $stock->capitalization = rand($market->getMinCapitalizationInMarketCurrency(), $market->getMaxCapitalizationInMarketCurrency());
         $stock->amount = rand($market->min_amount, $market->max_amount);
 
         $stock->share_price = $stock->capitalization / $stock->amount;
         $stock->initial_capitalization = $stock->capitalization;
         $stock->initial_share_price = $stock->share_price;
         $stock->delta = 0;
+        $stock->delta_abs = 0;
         $stock->fk_market = $market->id;
         $stock->sector = $sector;
 

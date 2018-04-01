@@ -112,4 +112,53 @@ class Markets extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Stock::className(), ['fk_market' => 'id']);
     }
+
+
+
+    public static function getTotalCurrencyCapitalization($currencyName){;
+        $currency = Currencies::find()->where(['currency_short_name' => $currencyName])->one();
+        $markets = Markets::find()->select('id')->where(['fk_currency' => $currency->id])->all();
+
+        $marketIds = [];
+
+        foreach ($markets as $m){
+            $marketIds[] = $m->id;
+        }
+
+
+        return  Stock::find()->where(['in','fk_market',  $marketIds])->sum('capitalization');
+    }
+
+
+    /**
+     * @return float
+     */
+    public function getMaxCapitalizationInMarketCurrency()
+    {
+        return $this->max_capitalization / $this->getRates();
+    }
+
+    /**
+     * @return float
+     */
+    public function getMinCapitalizationInMarketCurrency()
+    {
+        return $this->min_capitalization / $this->getRates();
+    }
+
+
+    private function getRates()
+    {
+        $rate = new Rates();
+        $exchangeRates = $rate->getSystemRates();
+
+        if($this->fkCurrency->currency_short_name == 'EU'){
+            $rateValue = 1;
+        }
+        else{
+            $rateValue = $exchangeRates['EU'][$this->fkCurrency->currency_short_name];
+        }
+
+        return $rateValue;
+    }
 }

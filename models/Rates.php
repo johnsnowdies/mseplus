@@ -129,22 +129,22 @@ class Rates extends \yii\db\ActiveRecord
         
         foreach ($changes as $change){
             
-            print("{$change->currency} changed for {$change->delta} %\r\n");
+            print("{$change->currency} changed for {$change->getDeltaPercent()} %\r\n");
 
             $currency = Currencies::find()->where(['currency_short_name' => $change->currency])->one();
-            $universalUnit = Currencies::find()->where(['id' => self::UNIVERSAL_UNIT])->one();
 
+            $universalUnit = Currencies::find()->where(['id' => self::UNIVERSAL_UNIT])->one();
             if($change->currency == $universalUnit->currency_short_name){
                 break;
             }
 
             $rate = self::find()->where(['fk_target_currency' => $currency->id])->one();
-            $diff = $rate->exchange_rate * ( abs($change->delta) / 100 );
+            $diff = $rate->exchange_rate * ( abs($change->getDeltaPercent()) / 100 );
 
             print("Old exchange rate:{$rate->exchange_rate}\r\n");
 
             // Валюта растет: мы вычитаем
-            if ($change->delta > 0){
+            if ($change->getDeltaPercent() > 0){
                 $rate->exchange_rate = abs($rate->exchange_rate - abs($diff));
             }
             else{
@@ -172,8 +172,6 @@ class Rates extends \yii\db\ActiveRecord
 
             $history->save();
 
-
-
             print("New exchange rate:{$rate->exchange_rate}\r\n");
             print("\r\n");
         }
@@ -181,15 +179,25 @@ class Rates extends \yii\db\ActiveRecord
     }
 
     public function saveMarketsHistory(){
-        $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
+        $tick = Settings::getKeyValue('lastTick');
         // Сохраняем тренды бирж
 
         $marketsDelta = MarketsDelta::find()->all();
         foreach ($marketsDelta as $market){
             $marketHistoryRecord = new MarketsHistory();
-            $marketHistoryRecord->fk_market = Markets::find()->where(['market_short_name' => $market->market])->one()->id;
-            $marketHistoryRecord->delta = $market->delta;
-            $marketHistoryRecord->tick = $lastTickSettings->value;
+            $id =  Markets::find()->where(['market_short_name' => $market->market])->one()->id;
+
+
+
+                                                                            // t = 100%
+                                                                            // delta = x%
+                                                                            // x% = delta * 100 / t
+
+            $marketHistoryRecord->fk_market = $id;
+            $marketHistoryRecord->delta_abs = $market->delta;
+            $marketHistoryRecord->delta =  $market->getDeltaPercent();
+
+            $marketHistoryRecord->tick = $tick;
             $marketHistoryRecord->save(false);
         }
     }

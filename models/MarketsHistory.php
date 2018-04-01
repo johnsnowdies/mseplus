@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $fk_market
  * @property double $delta
+ * @property double $delta_abs
  * @property int $tick
  */
 class MarketsHistory extends \yii\db\ActiveRecord
@@ -29,7 +30,7 @@ class MarketsHistory extends \yii\db\ActiveRecord
     {
         return [
             [['fk_market', 'tick'], 'integer'],
-            [['delta'], 'number'],
+            [['delta','delta_abs'], 'number'],
         ];
     }
 
@@ -65,6 +66,32 @@ class MarketsHistory extends \yii\db\ActiveRecord
         return $result;
     }
 
+    public function getDiffLastTwoDeltas($marketId){
+
+        $hist = $this->getLastTicksMarketsHistory();
+        $last = count($hist) - 2;
+
+        $delta1 = 0;
+        $delta2 = 0;
+
+        foreach ($hist[$last] as $currentTick){
+            if($currentTick->fk_market == $marketId){
+                $delta1 = $currentTick->delta;
+            }
+        }
+
+        foreach ($hist[$last - 1] as $currentTick){
+            if($currentTick->fk_market == $marketId){
+                $delta2 = $currentTick->delta;
+            }
+        }
+
+
+        
+
+        return  $delta1 >= $delta2;
+    }
+
     public function getHistoryForMarket($id){
         $data = $this->getLastTicksMarketsHistory();
 
@@ -74,7 +101,7 @@ class MarketsHistory extends \yii\db\ActiveRecord
         foreach ($data as $ticks){
             foreach($ticks as $market)
                 if ($market->fk_market == $id)
-                    $result[] = round($market->delta,2);
+                    $result[] = round($market->delta,4);
         }
 
         return $result;

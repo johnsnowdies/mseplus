@@ -26,8 +26,8 @@ class ExchangeController extends Controller
         $campaignService = new CampaignGeneratorService();
         $campaignService->runSimulation();
 
-        $newsService = new NewsGeneratorService();
-        $newsService->runSimulation();
+        //$newsService = new NewsGeneratorService();
+        //$newsService->runSimulation();
 
         # Run trade sumulation service
         $tradeService = new TradeSimulationService();

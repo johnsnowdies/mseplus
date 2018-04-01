@@ -41,4 +41,10 @@ class CurrencyDelta extends \yii\db\ActiveRecord
             'delta' => 'Delta',
         ];
     }
+
+    public function getDeltaPercent(){
+        $currency = $this->currency;
+        $totalCap = Markets::getTotalCurrencyCapitalization($currency);
+        return (($this->delta * 100) / $totalCap);
+    }
 }
