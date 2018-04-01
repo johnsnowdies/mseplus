@@ -1,5 +1,7 @@
 <?php
 
+use yii\di\Instance;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -23,6 +25,28 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
+    'container' => [
+        'definitions' => [
+            'app\components\NewsService' => [
+                ['class' => 'app\components\NewsService']
+            ],
+
+
+
+            'app\components\CampaignService' => [
+                ['class' => 'app\components\CampaignService'],
+                [Instance::of('app\components\NewsService')]
+            ],
+
+            'app\components\TradeService' => [
+                ['class' => 'app\components\TradeService'],
+                [
+                    Instance::of('app\components\NewsService'),
+                    Instance::of('app\components\CampaignService')
+                ]
+            ],
+        ]
+    ]
     /*
     'controllerMap' => [
         'fixture' => [ // Fixture generation command line.

@@ -14,19 +14,30 @@ use app\models\Stock;
 use app\models\Currencies;
 use app\models\Markets;
 use app\models\Rates;
+use app\models\StockHistory;
 use Yii;
 use yii\helpers\ArrayHelper;
 
-class CampaignGeneratorService
+class CampaignService
 {
+    /**
+     * @var NewsService
+     */
+    private $_newsService;
+
+
+    public function __construct(NewsService $newsService)
+    {
+        $this->_newsService = $newsService;
+    }
+
     private function generateCampaignName(){
         $generator = \Nubs\RandomNameGenerator\All::create();
         $rnd = rand(10000,90000);
         return $generator->getName() . " #" . $rnd;
     }
 
-
-    private function campaignIpo(Markets $market)
+    public function campaignIpo(Markets $market)
     {
         $stock = new Stock();
         $tick = Settings::getKeyValue('lastTick');
@@ -82,44 +93,87 @@ class CampaignGeneratorService
         $stock->save();
 
         // Создание новости об IPO
-        // Определяем процент от максимальной капитализации
+        if ($tick != 1){
+            // Определяем процент от максимальной капитализации
+            $capValueable = ($stock->capitalization * 100) / $market->max_capitalization;
+            $priority = "";
 
-        $capValueable = ($stock->capitalization * 100) / $market->max_capitalization;
+            $priorityMessage = "";
+
+            if ($capValueable < 30) {
+                $priority = News::PRIORITY_LOW;
+                $priorityMessage = "Инвесторы проявили незначительный интерес к данному IPO";
+            }
+
+            if ($capValueable >= 30 && $capValueable < 70){
+                $priority = News::PRIORITY_MEDIUM;
+                $priorityMessage = "Инвесторы положительно восприняли IPO этой кампании";
+            }
+
+
+            if ($capValueable >= 70) {
+                $priority = News::PRIORITY_HIGH;
+                $priorityMessage = "Рынок возбужден новостью!";
+            }
+
+            $formatedSharePrice = Yii::$app->formatter->format($stock->share_price, ['decimal', 2]);
+
+            $this->_newsService->create(
+                $market,
+                $stock,
+                "Кампания {$stock->company_name} провела IPO",
+                $priority,
+                "На бирже {$market->market_short_name} было размешено {$stock->amount} акций по цене {$formatedSharePrice} {$market->fkCurrency->currency_short_name} за штуку.\n{$priorityMessage}",
+                News::TYPE_POSITIVE,
+                $tick
+            );
+        }
+    }
+
+
+    public function bankruptCompany(Stock $company, int $tick){
+        $capValueable = ($company->initial_capitalization * 100) / $company->fkMarket->max_capitalization;
+        $market = $company->fkMarket;
+
         $news = new News();
 
         $priorityMessage = "";
 
         if ($capValueable < 30) {
             $news->priority = News::PRIORITY_LOW;
-            $priorityMessage = "Инвесторы проявили незначительный интерес к данному IPO";
+            $priorityMessage = "Незначительной влияние на рынок не привело к каким-либо серьезным последствиям дла отрасли";
         }
 
         if ($capValueable >= 30 && $capValueable < 70){
             $news->priority = News::PRIORITY_MEDIUM;
-            $priorityMessage = "Инвесторы положительно восприняли IPO этой кампании";
+            $priorityMessage = "Инвесторы обеспокены этим событием, ожидается спад сектора.";
         }
 
 
         if ($capValueable >= 70) {
             $news->priority = News::PRIORITY_HIGH;
-            $priorityMessage = "Рынок возбужден новостью!";
+            $priorityMessage = "Брокеры в панике! Новость о банкротстве некогда крупной компании застигла рынок врасплох!";
         }
 
-        $formatedSharePrice = Yii::$app->formatter->format($stock->share_price, ['decimal', 2]);
+        $news->title = "Кампания {$company->company_name} обанкротилась!";
+        $news->text = "После падения акций до {$company->share_price} {$market->fkCurrency->currency_short_name} 
+                кампания остановила торги на бирже {$market->market_short_name}\n{$priorityMessage}";
 
-        $news->title = "Кампания {$stock->company_name} провела IPO";
-        $news->text = "На бирже {$market->market_short_name} было размешено {$stock->amount} акций по цене {$formatedSharePrice} {$market->fkCurrency->currency_short_name} за штуку.\n{$priorityMessage}";
         $news->fk_market = $market->id;
-        $news->type = News::TYPE_POSITIVE;
-        $news->sector = $stock->sector;
+        $news->type = News::TYPE_NEGATIVE;
+        $news->sector = $company->sector;
         $news->tick = $tick;
-        if ($tick != 1)
-            $news->save(false);
+        $news->save(false);
+
+        // Удаляем все записи из истории
+        StockHistory::deleteAll(['fk_stock' => $company->id]);
+
+        // Удаляем кампанию
+        $company->delete();
     }
 
 
-
-    public function runSimulation(){
+    public function run(){
         $currencies = Currencies::find()->all();
 
         // Проход по странам

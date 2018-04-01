@@ -38,16 +38,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+/*
             'fkMarket' => [
                 'attribute' => 'fk_market',
                 'label' => 'Биржа',
                 'enableSorting' => true,
                 'format' => 'raw',
                 'value' => function ($data) {
-                    $src = $data->fkMarket->logo;
+                    $src = $data->getFkMarket()->logo;
                     return "<img src=\"{$src}\" height=20 width=40 > &nbsp;" . $data->fkMarket->market_short_name;
                 }
-            ],
+            ],*/
             'title' => [
                 'label' => 'Заголовок',
                 'format' => 'raw',

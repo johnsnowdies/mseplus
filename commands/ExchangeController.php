@@ -2,10 +2,11 @@
 
 namespace app\commands;
 
-use app\components\NewsGeneratorService;
+use app\components\NewsService;
+use Yii;
 use yii\console\Controller;
-use app\components\CampaignGeneratorService;
-use app\components\TradeSimulationService;
+use app\components\CampaignService;
+use app\components\TradeService;
 
 use app\models\Rates;
 
@@ -19,18 +20,17 @@ use app\models\Rates;
  */
 class ExchangeController extends Controller
 {
+
+
     public function actionRun(){
         print("Exchange service launched\r\n");
 
         # Run campaign service
-        $campaignService = new CampaignGeneratorService();
+        $campaignService = Yii::$container->get('app\components\CampaignService');
         $campaignService->runSimulation();
 
-        //$newsService = new NewsGeneratorService();
-        //$newsService->runSimulation();
-
-        # Run trade sumulation service
-        $tradeService = new TradeSimulationService();
+        # Run trade service
+        $tradeService = Yii::$container->get('app\components\TradeService');
         $tradeService->runSimulation();
 
         # Run currency rate recalculate

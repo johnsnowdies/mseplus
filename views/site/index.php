@@ -16,8 +16,92 @@ $this->title = 'Главная: состояние биржи';
 ?>
 <div class="site-index">
 
-    
+    <?php
+    $marktesData = \app\models\MarketsDelta::find()->all();
+    $marketsHistory = new \app\models\MarketsHistory();
 
+    ?>
+
+
+
+    <div class="row">
+        <?php foreach ($marktesData as $market):
+
+            $marketId = Markets::find()->where(['market_short_name' => $market->market])->one();
+
+            $diff = $marketsHistory->getDiffLastTwoDeltas($marketId['id']);
+
+            ?>
+            <div class="col-lg-2">
+                <div class="ibox">
+                    <div class="ibox-content">
+
+                        <h2 class="<?=($diff)? 'text-navy': 'text-danger' ?>">
+
+                            <?php if($diff):?>
+                                <i class="fa fa-play fa-rotate-270"></i>
+                            <?php endif; ?>
+
+                            <?php if(!$diff):?>
+                                <i class="fa fa-play fa-rotate-90"></i>
+                            <?php endif; ?>
+
+                            <?=$market->market?>
+
+                            <br>
+                            <small><?=Yii::$app->formatter->format($market->getDeltaPercent(),['decimal', 4])?>%</small>
+
+                        </h2>
+
+                        <small></small>
+                    </div>
+                </div>
+            </div>
+
+        <?php endforeach;?>
+
+
+    </div>
+
+    <div class="row">
+
+        <?php foreach ($marktesData as $market):?>
+            <?php
+            $marketId = Markets::find()->where(['market_short_name' => $market->market])->one()->id;
+            $data = $marketsHistory->getHistoryForMarket($marketId);
+            $diff = $marketsHistory->getDiffLastTwoDeltas($marketId);
+
+            $color = '';
+            if ($diff)
+                $color = '#1ab394';
+            else
+                $color = '#ed5565';
+            ?>
+            <div class="col-lg-2">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <h2></h2>
+
+                        <?= \machour\sparkline\Sparkline::widget([
+                            'clientOptions' => [
+                                'type' => 'line',
+                                'height' => 60,
+                                'width' => '100%',
+                                'lineColor' => $color,
+                                'fillColor' => '#ffffff'
+                            ],
+                            'data' => $data
+                        ]); ?>
+
+                    </div>
+                </div>
+            </div>
+        <?php endforeach;?>
+
+
+    </div>
+    
+<!--
     <div class="row">
         <div class="col-lg-5">
             <div class="widget red-bg p-lg text-center">
@@ -57,7 +141,6 @@ $this->title = 'Главная: состояние биржи';
                 </tbody>
             </table>
         </div>
-
         <div class="col-lg-7">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -125,8 +208,9 @@ $this->title = 'Главная: состояние биржи';
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
+-->
     <div class="row">
         <div class="col-lg-5">
             <div id="vertical-timeline" class="vertical-container light-timeline">
@@ -231,88 +315,5 @@ $this->title = 'Главная: состояние биржи';
     </div>
 
 
-    <?php
-    $marktesData = \app\models\MarketsDelta::find()->all();
-    $marketsHistory = new \app\models\MarketsHistory();
 
-    ?>
-
-
-
-    <div class="row">
-        <?php foreach ($marktesData as $market):
-
-            $marketId = Markets::find()->where(['market_short_name' => $market->market])->one();
-
-            $diff = $marketsHistory->getDiffLastTwoDeltas($marketId['id']);
-
-            ?>
-        <div class="col-lg-2">
-            <div class="ibox">
-                <div class="ibox-content">
-
-                    <h2 class="<?=($diff)? 'text-navy': 'text-danger' ?>">
-
-                        <?php if($diff):?>
-                            <i class="fa fa-play fa-rotate-270"></i>
-                        <?php endif; ?>
-
-                        <?php if(!$diff):?>
-                            <i class="fa fa-play fa-rotate-90"></i>
-                        <?php endif; ?>
-
-                        <?=$market->market?>
-
-                        <br>
-                        <small><?=Yii::$app->formatter->format($market->getDeltaPercent(),['decimal', 4])?>%</small>
-
-                    </h2>
-
-                    <small></small>
-                </div>
-            </div>
-        </div>
-
-        <?php endforeach;?>
-
-
-    </div>
-
-    <div class="row">
-
-        <?php foreach ($marktesData as $market):?>
-            <?php
-                $marketId = Markets::find()->where(['market_short_name' => $market->market])->one()->id;
-                $data = $marketsHistory->getHistoryForMarket($marketId);
-              $diff = $marketsHistory->getDiffLastTwoDeltas($marketId);
-
-                $color = '';
-                if ($diff)
-                    $color = '#1ab394';
-                else
-                    $color = '#ed5565';
-            ?>
-        <div class="col-lg-2">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <h2></h2>
-
-                    <?= \machour\sparkline\Sparkline::widget([
-                        'clientOptions' => [
-                            'type' => 'line',
-                            'height' => 60,
-                            'width' => '100%',
-                            'lineColor' => $color,
-                            'fillColor' => '#ffffff'
-                        ],
-                        'data' => $data
-                    ]); ?>
-
-                </div>
-            </div>
-        </div>
-        <?php endforeach;?>
-
-
-    </div>
 </div>

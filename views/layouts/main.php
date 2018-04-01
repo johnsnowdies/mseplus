@@ -60,7 +60,7 @@ $currentSidebarState = $session->get('sidebar');
             <?php if (isset($this->blocks['content-header'])) { ?>
                 <?= $this->blocks['content-header'] ?>
             <?php } else { ?>
-                <div class="col-sm-<?= isset($this->blocks['content-header-actions']) ? 6 : 10 ?>">
+                <div class="col-sm-<?= isset($this->blocks['content-header-actions']) ? 6 : 9 ?>">
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     <h2><?= $this->title ?></h2>
 
@@ -72,8 +72,8 @@ $currentSidebarState = $session->get('sidebar');
                     ])
                     ?>
                 </div>
-                <div class="col-sm-2">
-                    <h2>Биржа <div class="switch pull-right">
+                <div class="col-sm-3">
+                    <h2 style="text-align: right"><small><?=\app\models\Settings::getKeyValue('lastTick')?> такт</small> | Биржа&nbsp;<div class="switch pull-right" style="text-align: left">
                             <div class="onoffswitch" style="margin-top: 5px;">
                                 <input type="checkbox" checked="" class="onoffswitch-checkbox" id="example1">
                                 <label class="onoffswitch-label" for="example1">

@@ -69,7 +69,7 @@ class MarketsHistory extends \yii\db\ActiveRecord
     public function getDiffLastTwoDeltas($marketId){
 
         $hist = $this->getLastTicksMarketsHistory();
-        $last = count($hist) - 2;
+        $last = count($hist) - 1;
 
         $delta1 = 0;
         $delta2 = 0;
@@ -86,10 +86,7 @@ class MarketsHistory extends \yii\db\ActiveRecord
             }
         }
 
-
-        
-
-        return  $delta1 >= $delta2;
+        return  $delta1 < $delta2;
     }
 
     public function getHistoryForMarket($id){

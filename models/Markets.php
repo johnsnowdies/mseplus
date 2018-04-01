@@ -69,6 +69,7 @@ class Markets extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'fk_currency' => 'Валюта',
+            'fk_market' => 'Биржа',
             
             'logo' => 'Логотип',
             'type' => 'Тип',
