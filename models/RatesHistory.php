@@ -75,6 +75,10 @@ class RatesHistory extends \yii\db\ActiveRecord
         $uuToSourceRate = self::find()->where(['fk_source_currency' => Rates::UNIVERSAL_UNIT, 'fk_target_currency' => $sourceCurrencyId, 'tick' => $tick ])->one();
         $uuToTargetRate = self::find()->where(['fk_source_currency' => Rates::UNIVERSAL_UNIT, 'fk_target_currency' => $targetCurrencyId , 'tick' => $tick])->one();
 
+        if (!$uuToSourceRate || !$uuToTargetRate){
+            return 0;
+        }
+
         $rate = $uuToTargetRate->exchange_rate / $uuToSourceRate->exchange_rate;
         return $rate;
     }
@@ -107,4 +111,6 @@ class RatesHistory extends \yii\db\ActiveRecord
 
         return $result;
     }
+
+
 }

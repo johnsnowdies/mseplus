@@ -80,6 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return "<a href=\"/stock/view?id={$data->id}\">{$data->company_name}</a>";
                             }
                         ],
+                        'sector' ,
                         'amount',
                         'capitalization' => [
                             'label' => 'CAP',

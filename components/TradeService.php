@@ -13,7 +13,6 @@ class TradeService
     private $_newsService;
     private $_campaignService;
 
-
     public function __construct(NewsService $newsService, CampaignService $campaignService)
     {
         $this->_newsService = $newsService;
@@ -42,9 +41,12 @@ class TradeService
 
         foreach($companies as $company){
             print("Trade simulation for {$company->company_name}\r\n");
-            $limit = $company->amount / 2; //50% of shares
+            $limit = round($company->amount / 2); //50% of shares
 
-            $newsRate = $this->_newsService->getNewsRate($company,$tick);
+
+            $rate = $this->_newsService->getNewsRate($company,$tick);
+            $newsRate = $rate['newsRate'];
+            $dealRate = $rate['dealRate'];
 
 
             // Запросы на покупки и продажу
@@ -56,19 +58,8 @@ class TradeService
             $falling_rounds = 0;
 
             for ($i = 0; $i < 15; $i++){
-                $ask_bottom_limit = 1;//round($trend);
-                $bid_bottom_limit = 1;//round(1/$trend);
-
-                $ask_top_limit = $limit;
-                $bid_top_limit = $limit;
-
-                if ($newsRate != 0 ){
-                    $ask_top_limit = round((($limit * $newsRate) > $company->amount ) ? $company->amount :  ($limit * $newsRate));
-                    $bid_top_limit = round((($limit * (1/$newsRate)) > $company->amount) ? $company->amount : ($limit * (1/$newsRate)));
-                }
-
-                $current_ask = round(rand( $ask_bottom_limit, $ask_top_limit)); // покупка
-                $current_bid = round(rand( $bid_bottom_limit , $bid_top_limit)); // продажа
+                $current_ask = round(rand( 1, $limit)); // покупка
+                $current_bid = round(rand( 1 , $limit)); // продажа
 
 
                 $avg_ask[] = $current_ask;
@@ -80,37 +71,51 @@ class TradeService
             }
 
             $bancrupt_factor = false;
-            if ($falling_rounds = 15){
+            if ($falling_rounds > 10){
                 $bancrupt_factor = true;
             }
 
-            $ask = round(array_sum($avg_ask) / count($avg_ask));
-            $bid = round(array_sum($avg_bid) / count($avg_bid));
+            $ask = round(array_sum($avg_ask) / count($avg_ask)) * $newsRate;
+            $bid = round(array_sum($avg_bid) / count($avg_bid)) / $newsRate;
 
             print("Calculated news rate: {$newsRate}\r\n");
             print("BID requests: {$bid}\r\n");
             print("ASK requests: {$ask}\r\n");
 
+            // Эксперименты Лейши
+            /*
+            if ($ask >= $bid){
+                $behavior = "GROWTH";
+                $new_share_price = $company->share_price * ( ($ask/ $limit) + 0.5);
+                $new_capitalization = $new_share_price * $company->amount;
+            }else{
+                $behavior = "FALLING";
+                $new_share_price = $company->share_price * (1.5 - ($bid/ $limit));
+                $new_capitalization = $new_share_price * $company->amount;
+            }
+
+            $delta = round((($new_capitalization / $company->capitalization) * 100) - 100,4);
+            $delta_abs = round($new_capitalization - $company->capitalization,2);
+            */
 
             // Рыночек тут
             if ($ask >= $bid){
-                $behavior = "GROWTH";  
-                $new_capitalization = $company->capitalization + round(($ask/$bid) * $company->share_price);
+                $behavior = "GROWTH";
+                $new_capitalization = $company->capitalization + round(($ask/$bid) * $dealRate * $company->share_price);
             }else{
                 $behavior = "FALLING";
-                $new_capitalization = $company->capitalization - round(($bid/$ask) * $company->share_price);
+                $new_capitalization = $company->capitalization - round(($bid/$ask) * $dealRate * $company->share_price);
             }
 
             $new_share_price = $new_capitalization / $company->amount;
 
-            $delta = round((($new_capitalization / $company->capitalization) * 100) - 100,2);
-            $delta_abs = round($new_capitalization - $company->capitalization,2);
+            $delta = round((($new_capitalization / $company->capitalization) * 100) - 100,4);
+            $delta_abs = round($new_capitalization - $company->capitalization,4);
 
             print("{$behavior} for {$delta}% equal {$delta_abs} {$company->fkMarket->fkCurrency->currency_short_name}\r\n");
             print("Capitalization change:{$company->capitalization} -> {$new_capitalization}\r\n");
             print("Share price change: {$company->share_price} -> {$new_share_price}\r\n");
             print("\r\n");
-
 
             $history = new StockHistory();
             $history->tickId = $tick;
@@ -130,7 +135,7 @@ class TradeService
             $company->behavior = $behavior;
 
             // Банкротство
-            if ( ($new_capitalization < ($company->initial_capitalization * 0.1)) && ($bancrupt_factor) ){
+            if ( ($new_capitalization < ($company->initial_capitalization * 0.5)) && ($bancrupt_factor) ){
                 $this->_campaignService->bankruptCompany($company,$tick);
             }else{
                 $company->save();

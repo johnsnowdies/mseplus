@@ -33,6 +33,10 @@ use yii\widgets\ActiveForm;
                 'prompt' => ''
             ]) ?>
 
+    <?= $form->field($model, 'ttl')->textInput() ?>
+
+
+
     <?= $form->field($model, 'type')->dropDownList([ 'POSITIVE' => '+', 'NEGATIVE' => '-', ], ['prompt' => '']) ?>
 
     <?= $form->field($model, 'priority')->dropDownList([ 'LOW' => 'Низкое', 'MEDIUM' => 'Среднее', 'HIGH' => 'Высокое', '' => '', ], ['prompt' => '']) ?>

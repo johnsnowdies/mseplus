@@ -75,12 +75,15 @@ class Stock extends \yii\db\ActiveRecord
             'fk_market' => 'MARKET',
             'company_name' => 'COMPANY',
             'amount' => 'AMOUNT',
+            'sector' => 'SECTOR',
             'capitalization' => 'CAP',
             'share_price' => 'U PRICE',
             'initial_capitalization' => 'INIT CAP',
             'initial_share_price' => 'INIT PRICE',
         ];
     }
+
+
 
     /**
      * @return \yii\db\ActiveQuery

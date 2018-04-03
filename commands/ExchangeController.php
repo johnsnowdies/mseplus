@@ -27,11 +27,11 @@ class ExchangeController extends Controller
 
         # Run campaign service
         $campaignService = Yii::$container->get('app\components\CampaignService');
-        $campaignService->runSimulation();
+        $campaignService->run();
 
         # Run trade service
         $tradeService = Yii::$container->get('app\components\TradeService');
-        $tradeService->runSimulation();
+        $tradeService->run();
 
         # Run currency rate recalculate
         $rates = new Rates();

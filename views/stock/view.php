@@ -18,7 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         <h5>Информация о Кампании</h5>
                     </div>
 
+
                     <div class="ibox-content">
+                        <div class="col-md-6">
+                            <?= Html::a('Добавить кампанию', ['create'], ['class' => 'btn btn-success']) ?>
+                        </div>
 
 
     <p>
@@ -48,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Размещено акций',
                 'format' => ['decimal',2],
                 'value' => function($data){
-                    return $data->capitalization;
+                    return $data->amount;
                 }
             ],
 

@@ -28,8 +28,6 @@ use app\models\Markets;
     <?= $form->field($model, 'amount')->textInput() ?>
     <?= $form->field($model, 'capitalization')->textInput() ?>
     <?= $form->field($model, 'share_price')->textInput() ?>
-    <?= $form->field($model, 'initial_capitalization')->textInput() ?>
-    <?= $form->field($model, 'initial_share_price')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

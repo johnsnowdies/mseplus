@@ -77,6 +77,10 @@ class Rates extends \yii\db\ActiveRecord
         $uuToSourceRate = self::find()->where(['fk_source_currency' => Rates::UNIVERSAL_UNIT, 'fk_target_currency' => $sourceCurrencyId ])->one();
         $uuToTargetRate = self::find()->where(['fk_source_currency' => Rates::UNIVERSAL_UNIT, 'fk_target_currency' => $targetCurrencyId ])->one();
 
+        if (!$uuToSourceRate || !$uuToTargetRate){
+            return 0;
+        }
+
         $rate = $uuToTargetRate->exchange_rate / $uuToSourceRate->exchange_rate;
         return $rate;
     }
@@ -185,20 +189,25 @@ class Rates extends \yii\db\ActiveRecord
         $marketsDelta = MarketsDelta::find()->all();
         foreach ($marketsDelta as $market){
             $marketHistoryRecord = new MarketsHistory();
-            $id =  Markets::find()->where(['market_short_name' => $market->market])->one()->id;
+            $marketObj =  Markets::find()->where(['market_short_name' => $market->market])->one();
+
+            if ($marketObj){
+                $id = $marketObj->id;
 
 
+                // t = 100%
+                // delta = x%
+                // x% = delta * 100 / t
 
-                                                                            // t = 100%
-                                                                            // delta = x%
-                                                                            // x% = delta * 100 / t
+                $marketHistoryRecord->fk_market = $id;
+                $marketHistoryRecord->delta_abs = $market->delta;
+                $marketHistoryRecord->delta =  $market->getDeltaPercent();
 
-            $marketHistoryRecord->fk_market = $id;
-            $marketHistoryRecord->delta_abs = $market->delta;
-            $marketHistoryRecord->delta =  $market->getDeltaPercent();
+                $marketHistoryRecord->tick = $tick;
+                $marketHistoryRecord->save(false);
+            }
 
-            $marketHistoryRecord->tick = $tick;
-            $marketHistoryRecord->save(false);
+
         }
     }
 }

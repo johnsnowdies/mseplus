@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: eslider
- * Date: 31.03.18
- * Time: 21:07
- */
-
 namespace app\components;
-
 
 use app\models\Markets;
 use app\models\News;
@@ -90,8 +82,12 @@ class NewsService
 
 
         $newsList = News::find()
-            ->where(['in','tick', [$tick-4,$tick-3,$tick-2,$tick-1,$tick]])
-            ->where([
+
+            ->where(['>=','{{tick}} + {{ttl}}',$tick])
+            ->andWhere('tick <= :tick',[
+                ':tick' => $tick
+            ])
+            ->andWhere([
                 'fk_market' => $company->fk_market,
                 'sector' => $company->sector
             ])->all();
@@ -117,6 +113,7 @@ class NewsService
         ];
 
         foreach ($newsList as $news){
+
             if ($news->priority == News::PRIORITY_LOW){
                 if ($news->type == News::TYPE_NEGATIVE){
                     $newsCountByPriority[News::PRIORITY_LOW][News::TYPE_NEGATIVE]++;
@@ -142,41 +139,70 @@ class NewsService
                     $newsCountByPriority[News::PRIORITY_HIGH][News::TYPE_NEGATIVE]++;
                 }
 
-                if ($news->type == News::PRIORITY_HIGH){
+                if ($news->type == News::TYPE_POSITIVE){
                     $newsCountByPriority[News::PRIORITY_HIGH][News::TYPE_POSITIVE]++;
                 }
             }
         }
 
         $rate = 1;
-
+        $dealRate = 1;
 
         foreach ($newsCountByPriority as $key => $value){
+
             if ($value[News::TYPE_NEGATIVE] > 0){
-                if ($key == News::PRIORITY_HIGH)
-                    $rate -= 1.75;
 
-                if ($key == News::PRIORITY_MEDIUM)
-                    $rate -= 1.5;
+                if ($key == News::PRIORITY_HIGH){
+                    if ($value[News::TYPE_NEGATIVE] > 0){
+                        $rate -= 0.5 * $value[News::TYPE_NEGATIVE];
+                        $dealRate += 4 * $value[News::TYPE_NEGATIVE];
+                    }
+                }
 
-                if ($key == News::PRIORITY_LOW)
-                    $rate -= 1.25;
+
+                if ($key == News::PRIORITY_MEDIUM) {
+                    if ($value[News::TYPE_NEGATIVE] > 0) {
+                        $rate -= 0.3 * $value[News::TYPE_NEGATIVE];
+                        $dealRate += 3 * $value[News::TYPE_NEGATIVE];
+                    }
+                }
+
+                if ($key == News::PRIORITY_LOW) {
+                    if ($value[News::TYPE_NEGATIVE] > 0) {
+                        $rate -= 0.1 * $value[News::TYPE_NEGATIVE];
+                        $dealRate += 2 * $value[News::TYPE_NEGATIVE];
+                    }
+                }
 
             }
 
             if ($value[News::TYPE_POSITIVE] > 0){
-                if ($key == News::PRIORITY_HIGH)
-                    $rate += 1.75;
+                if ($key == News::PRIORITY_HIGH){
+                    if ($value[News::TYPE_POSITIVE] > 0) {
+                        $rate += 0.5 * $value[News::TYPE_POSITIVE];
+                        $dealRate += 4 * $value[News::TYPE_POSITIVE];
+                    }
+                }
 
-                if ($key == News::PRIORITY_MEDIUM)
-                    $rate += 1.5;
+                if ($key == News::PRIORITY_MEDIUM) {
+                    $rate += 0.3 * $value[News::TYPE_POSITIVE];
+                    $dealRate += 3 * $value[News::TYPE_POSITIVE];
+                }
 
-                if ($key == News::PRIORITY_LOW)
-                    $rate += 1.25;
+                if ($key == News::PRIORITY_LOW) {
+                    $rate += 0.1 * $value[News::TYPE_POSITIVE];
+                    $dealRate += 2 * $value[News::TYPE_POSITIVE];
+                }
 
             }
-
         }
-        return $rate;
+
+        $rate = ($rate < 0.1)? 0.1: $rate;
+        $rate = ($rate > 2)? 2: $rate;
+
+        return [
+            'newsRate' => $rate,
+            'dealRate' => $dealRate
+        ];
     }
 }

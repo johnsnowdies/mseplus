@@ -101,6 +101,10 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionCurrency(){
+        return $this->render('currency.php');
+    }
+
     /**
      * Logout action.
      *

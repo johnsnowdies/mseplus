@@ -57,7 +57,7 @@ class MarketsHistory extends \yii\db\ActiveRecord
 
 
         $result = [];
-        $first = (($tick - 10) < 0)? 1: ($tick - 10);
+        $first = ($tick - 10);
 
         for($i = $first; $i <= $tick; $i++){
             $result[] = $this->getMarketsForTick($i);
@@ -92,7 +92,6 @@ class MarketsHistory extends \yii\db\ActiveRecord
     public function getHistoryForMarket($id){
         $data = $this->getLastTicksMarketsHistory();
 
-
         $result = [];
 
         foreach ($data as $ticks){
@@ -102,7 +101,14 @@ class MarketsHistory extends \yii\db\ActiveRecord
         }
 
         return $result;
+    }
 
 
+    public function getDeltaPercent($id){
+        $totalCapitalization = Stock::find()->where(['fk_market' => $id])->sum('capitalization');
+        if (!$totalCapitalization)
+            return 0;
+        $res = round(($this->delta * 100) / $totalCapitalization,4);
+        return $res;
     }
 }

@@ -22,7 +22,8 @@
         "nubs/random-name-generator": "dev-master",
         "rmrevin/yii2-fontawesome": "~2.17",
         "machour/yii2-sparkline": "*",
-        "kartik-v/yii2-grid": "@dev"
+        "kartik-v/yii2-grid": "@dev",
+        "2amigos/yii2-multi-select-widget": "1.0.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
