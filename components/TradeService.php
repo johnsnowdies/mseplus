@@ -127,7 +127,6 @@ class TradeService
             $history->behavior = $behavior;
             $history->save();
 
-
             $company->capitalization = $new_capitalization;
             $company->share_price = $new_share_price;
             $company->delta = $delta;
@@ -135,7 +134,7 @@ class TradeService
             $company->behavior = $behavior;
 
             // Банкротство
-            if ( ($new_capitalization < ($company->initial_capitalization * 0.5)) && ($bancrupt_factor) ){
+            if ( ($new_capitalization < ($company->initial_capitalization * 0.1)) && ($bancrupt_factor) ){
                 $this->_campaignService->bankruptCompany($company,$tick);
             }else{
                 $company->save();

@@ -10,6 +10,7 @@ use app\models\Markets;
 use app\models\MarketsHistory;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\models\Stock;
 
 
 $this->title = 'Главная: состояние биржи';
@@ -54,34 +55,37 @@ $this->title = 'Главная: состояние биржи';
                                 <i class="fa fa-play fa-rotate-90"></i>
                             <?php endif; ?>
 
+
                             <?=$market->market_short_name?>
+                            <?= \machour\sparkline\Sparkline::widget([
+                                'clientOptions' => [
+                                    'type' => 'bar',
+                                    'height' => 20,
+                                    'width' => '100%',
+                                    'lineColor' => $color,
+                                    'fillColor' => '#ffffff',
+                                    'barColor' => '#1ab394',
+                                    'negBarColor' => '#ed5565',
+                                    //'chartRangeMin' => -20,
+                                    //'chartRangeMax' => 20,
+
+                                    //'normalRangeMin' => -10,
+                                    //'normalRangeMax' => 10,
+                                    'drawNormalOnTop' => true,
+                                    'normalRangeColor' => '#eee'
+                                ],
+                                'data' => $data
+                            ]); ?>
 
                             <br>
+
 
                             <?php if(count($data) > 1):?>
                                 <small><?=$data[count($data)-1]?>%</small>
                             <?php endif;?>
                         </h2>
 
-                        <?= \machour\sparkline\Sparkline::widget([
-                            'clientOptions' => [
-                                'type' => 'bar',
-                                'height' => 20,
-                                'width' => '100%',
-                                'lineColor' => $color,
-                                'fillColor' => '#ffffff',
-                                  'barColor' => '#1ab394',
-                                  'negBarColor' => '#ed5565',
-                                //'chartRangeMin' => -20,
-                                //'chartRangeMax' => 20,
 
-                                //'normalRangeMin' => -10,
-                                //'normalRangeMax' => 10,
-                                'drawNormalOnTop' => true,
-                                'normalRangeColor' => '#eee'
-                            ],
-                            'data' => $data
-                        ]); ?>
 
 
                     </div>
