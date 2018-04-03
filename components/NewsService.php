@@ -64,7 +64,7 @@ class NewsService
      * @param int $tick
      * @return bool
      */
-    public function create(Markets $market, Stock $stock, string $title, string $priority, string $text, string $type, int $tick){
+    public function create(Markets $market, Stock $stock, string $title, string $priority, string $text, string $type, int $tick, int $ttl){
 
         $news = new News();
         $news->title = $title;
@@ -74,6 +74,7 @@ class NewsService
         $news->type = $type;
         $news->sector = $stock->sector;
         $news->tick = $tick;
+        $news->ttl = $ttl;
 
         return $news->save(false);
     }
@@ -155,7 +156,7 @@ class NewsService
                 if ($key == News::PRIORITY_HIGH){
                     if ($value[News::TYPE_NEGATIVE] > 0){
                         $rate -= 0.5 * $value[News::TYPE_NEGATIVE];
-                        $dealRate += 4 * $value[News::TYPE_NEGATIVE];
+                        $dealRate += 2 * $value[News::TYPE_NEGATIVE];
                     }
                 }
 
@@ -163,14 +164,14 @@ class NewsService
                 if ($key == News::PRIORITY_MEDIUM) {
                     if ($value[News::TYPE_NEGATIVE] > 0) {
                         $rate -= 0.3 * $value[News::TYPE_NEGATIVE];
-                        $dealRate += 3 * $value[News::TYPE_NEGATIVE];
+                        $dealRate += 1.5 * $value[News::TYPE_NEGATIVE];
                     }
                 }
 
                 if ($key == News::PRIORITY_LOW) {
                     if ($value[News::TYPE_NEGATIVE] > 0) {
                         $rate -= 0.1 * $value[News::TYPE_NEGATIVE];
-                        $dealRate += 2 * $value[News::TYPE_NEGATIVE];
+                        $dealRate += 1 * $value[News::TYPE_NEGATIVE];
                     }
                 }
 
@@ -180,20 +181,23 @@ class NewsService
                 if ($key == News::PRIORITY_HIGH){
                     if ($value[News::TYPE_POSITIVE] > 0) {
                         $rate += 0.5 * $value[News::TYPE_POSITIVE];
-                        $dealRate += 4 * $value[News::TYPE_POSITIVE];
+                        $dealRate += 2 * $value[News::TYPE_POSITIVE];
                     }
                 }
 
                 if ($key == News::PRIORITY_MEDIUM) {
-                    $rate += 0.3 * $value[News::TYPE_POSITIVE];
-                    $dealRate += 3 * $value[News::TYPE_POSITIVE];
+                    if ($value[News::TYPE_POSITIVE] > 0) {
+                        $rate += 0.3 * $value[News::TYPE_POSITIVE];
+                        $dealRate += 1.5 * $value[News::TYPE_POSITIVE];
+                    }
                 }
 
                 if ($key == News::PRIORITY_LOW) {
-                    $rate += 0.1 * $value[News::TYPE_POSITIVE];
-                    $dealRate += 2 * $value[News::TYPE_POSITIVE];
+                    if ($value[News::TYPE_POSITIVE] > 0) {
+                        $rate += 0.1 * $value[News::TYPE_POSITIVE];
+                        $dealRate += 1 * $value[News::TYPE_POSITIVE];
+                    }
                 }
-
             }
         }
 

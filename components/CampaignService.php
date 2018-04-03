@@ -99,21 +99,25 @@ class CampaignService
             $priority = "";
 
             $priorityMessage = "";
+            $ttl = 1;
 
             if ($capValueable < 30) {
                 $priority = News::PRIORITY_LOW;
                 $priorityMessage = "Инвесторы проявили незначительный интерес к данному IPO";
+                $ttl = 2;
             }
 
             if ($capValueable >= 30 && $capValueable < 70){
                 $priority = News::PRIORITY_MEDIUM;
                 $priorityMessage = "Инвесторы положительно восприняли IPO этой кампании";
+                $ttl = 5;
             }
 
 
             if ($capValueable >= 70) {
                 $priority = News::PRIORITY_HIGH;
                 $priorityMessage = "Рынок возбужден новостью!";
+                $ttl = 10;
             }
 
             $formatedSharePrice = Yii::$app->formatter->format($stock->share_price, ['decimal', 2]);
@@ -125,7 +129,8 @@ class CampaignService
                 $priority,
                 "На бирже {$market->market_short_name} было размешено {$stock->amount} акций по цене {$formatedSharePrice} {$market->fkCurrency->currency_short_name} за штуку.\n{$priorityMessage}",
                 News::TYPE_POSITIVE,
-                $tick
+                $tick,
+                $ttl
             );
         }
     }
@@ -138,21 +143,25 @@ class CampaignService
         $news = new News();
 
         $priorityMessage = "";
+        $ttl = 1;
 
         if ($capValueable < 30) {
             $news->priority = News::PRIORITY_LOW;
             $priorityMessage = "Незначительной влияние на рынок не привело к каким-либо серьезным последствиям дла отрасли";
+            $ttl = 1;
         }
 
         if ($capValueable >= 30 && $capValueable < 70){
             $news->priority = News::PRIORITY_MEDIUM;
             $priorityMessage = "Инвесторы обеспокены этим событием, ожидается спад сектора.";
+            $ttl = 5;
         }
 
 
         if ($capValueable >= 70) {
             $news->priority = News::PRIORITY_HIGH;
             $priorityMessage = "Брокеры в панике! Новость о банкротстве некогда крупной компании застигла рынок врасплох!";
+            $ttl = 10;
         }
 
         $news->title = "Кампания {$company->company_name} обанкротилась!";
@@ -163,6 +172,8 @@ class CampaignService
         $news->type = News::TYPE_NEGATIVE;
         $news->sector = $company->sector;
         $news->tick = $tick;
+        $news->ttl = $ttl;
+
         $news->save(false);
 
         // Удаляем все записи из истории

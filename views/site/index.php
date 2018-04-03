@@ -67,13 +67,13 @@ $this->title = 'Главная: состояние биржи';
                                 'width' => '100%',
                                 'lineColor' => $color,
                                 'fillColor' => '#ffffff',
-                                'chartRangeMin' => -0.1,
-                                'chartRangeMax' => 0.1,
+                                //'chartRangeMin' => -20,
+                                //'chartRangeMax' => 20,
 
                                 //'normalRangeMin' => -10,
                                 //'normalRangeMax' => 10,
-                                //'drawNormalOnTop' => true,
-                                'normalRangeColor' => '#ffffaa'
+                                'drawNormalOnTop' => true,
+                                'normalRangeColor' => '#eee'
                             ],
                             'data' => $data
                         ]); ?>

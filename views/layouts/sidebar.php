@@ -26,7 +26,7 @@
                     'label' => 'Валюты'
                 ],
                 [
-                    'url' => '/news/',
+                    'url' => '/meta-news/',
                     'icon' => 'fa fa-globe',
                     'label' => 'Новости'
                 ],
