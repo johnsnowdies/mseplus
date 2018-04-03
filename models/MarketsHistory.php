@@ -11,6 +11,7 @@ use Yii;
  * @property int $fk_market
  * @property double $delta
  * @property double $delta_abs
+ * @property float $capitalization
  * @property int $tick
  */
 class MarketsHistory extends \yii\db\ActiveRecord

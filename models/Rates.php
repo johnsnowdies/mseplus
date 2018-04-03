@@ -191,6 +191,7 @@ class Rates extends \yii\db\ActiveRecord
             $marketHistoryRecord = new MarketsHistory();
             $marketObj =  Markets::find()->where(['market_short_name' => $market->market])->one();
 
+
             if ($marketObj){
                 $id = $marketObj->id;
 
@@ -202,6 +203,7 @@ class Rates extends \yii\db\ActiveRecord
                 $marketHistoryRecord->fk_market = $id;
                 $marketHistoryRecord->delta_abs = $market->delta;
                 $marketHistoryRecord->delta =  $market->getDeltaPercent();
+                $marketHistoryRecord->capitalization = Stock::find()->where(['fk_market' => $id])->sum(['capitalization']);
 
                 $marketHistoryRecord->tick = $tick;
                 $marketHistoryRecord->save(false);

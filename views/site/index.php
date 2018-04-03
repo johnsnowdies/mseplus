@@ -57,16 +57,21 @@ $this->title = 'Главная: состояние биржи';
                             <?=$market->market_short_name?>
 
                             <br>
-                            <small><?=$data[count($data)-1]?>%</small>
+
+                            <?php if(count($data) > 1):?>
+                                <small><?=$data[count($data)-1]?>%</small>
+                            <?php endif;?>
                         </h2>
 
                         <?= \machour\sparkline\Sparkline::widget([
                             'clientOptions' => [
-                                'type' => 'line',
-                                'height' => 100,
+                                'type' => 'bar',
+                                'height' => 20,
                                 'width' => '100%',
                                 'lineColor' => $color,
                                 'fillColor' => '#ffffff',
+                                  'barColor' => '#1ab394',
+                                  'negBarColor' => '#ed5565',
                                 //'chartRangeMin' => -20,
                                 //'chartRangeMax' => 20,
 
