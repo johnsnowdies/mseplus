@@ -41,4 +41,18 @@ class MarketsDelta extends \yii\db\ActiveRecord
             'delta' => 'Delta',
         ];
     }
+
+    public function getDeltaPercent(){
+        $id =  Markets::find()->where(['market_short_name' => $this->market])->one()['id'];
+        $totalCapitalization = $this->getTotalMarketCapitalization($id);
+        if (!$totalCapitalization)
+            return 0;
+        $res = round(($this->delta * 100) / $totalCapitalization,4);
+        return $res;
+    }
+
+    public function getTotalMarketCapitalization($id){
+
+        return Stock::find()->where(['fk_market' => $id])->sum('capitalization');
+    }
 }

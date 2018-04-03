@@ -103,12 +103,4 @@ class MarketsHistory extends \yii\db\ActiveRecord
         return $result;
     }
 
-
-    public function getDeltaPercent($id){
-        $totalCapitalization = Stock::find()->where(['fk_market' => $id])->sum('capitalization');
-        if (!$totalCapitalization)
-            return 0;
-        $res = round(($this->delta * 100) / $totalCapitalization,4);
-        return $res;
-    }
 }

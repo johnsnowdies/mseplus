@@ -19,7 +19,7 @@ $this->title = 'Главная: состояние биржи';
     <?php
 
     $marketsHistory = new MarketsHistory();
-    $markets = Markets::find()->all();
+    $markets = Markets::find()->orderBy('market_short_name')->all();
 
     ?>
 
@@ -40,7 +40,7 @@ $this->title = 'Главная: состояние биржи';
 
             ?>
 
-            <div class="col-lg-6">
+            <div class="col-lg-3">
                 <div class="ibox">
                     <div class="ibox-content">
 
@@ -57,7 +57,7 @@ $this->title = 'Главная: состояние биржи';
                             <?=$market->market_short_name?>
 
                             <br>
-                            <small><?=Yii::$app->formatter->format($marketsHistory->getDeltaPercent($id),['decimal', 4])?>%</small>
+                            <small><?=$data[count($data)-1]?>%</small>
                         </h2>
 
                         <?= \machour\sparkline\Sparkline::widget([
@@ -67,8 +67,8 @@ $this->title = 'Главная: состояние биржи';
                                 'width' => '100%',
                                 'lineColor' => $color,
                                 'fillColor' => '#ffffff',
-                                //'chartRangeMin' => -20,
-                                //'chartRangeMax' => 20,
+                                'chartRangeMin' => -0.1,
+                                'chartRangeMax' => 0.1,
 
                                 //'normalRangeMin' => -10,
                                 //'normalRangeMax' => 10,
