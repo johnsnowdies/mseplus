@@ -11,6 +11,8 @@ use app\models\MarketsHistory;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\Stock;
+use dosamigos\chartjs\ChartJs;
+
 
 
 $this->title = 'Главная: состояние биржи';
@@ -22,7 +24,65 @@ $this->title = 'Главная: состояние биржи';
     $marketsHistory = new MarketsHistory();
     $markets = Markets::find()->orderBy('market_short_name')->all();
 
+    $dataSets = [];
+
+    $ratesService = new \app\models\RatesHistory();
+    $tick = \app\models\Settings::getKeyValue('lastTick');
+
+    $ratesHist = $ratesService->getGraphData();
+
+
+
     ?>
+
+    <div class="row">
+        <?php foreach ($ratesHist as $rate => $rateValue):?>
+
+            <div class="col-lg-3">
+                <div class="ibox">
+                    <div class="ibox-content">
+
+                        <h2 class="">
+                            <?= $rate ?>
+                        </h2>
+
+                        <?= ChartJs::widget([
+                            'type' => 'line',
+                            'options' => [
+                                'legend' => false,
+                            ],
+
+                            'data' => [
+                                'labels' => [$tick-10,$tick-9,$tick-8,$tick-7,$tick-6,$tick-5,$tick-4,$tick-3,$tick-2,$tick-1,$tick],
+                                'datasets' => [
+                                    [
+                                        'label' => $rate,
+                                        'backgroundColor' => "rgba(179,181,198,0.2)",
+                                        'borderColor' => "rgba(179,181,198,1)",
+                                        'pointBackgroundColor' => "rgba(179,181,198,1)",
+                                        'pointBorderColor' => "#fff",
+                                        'pointHoverBackgroundColor' => "#fff",
+                                        'pointHoverBorderColor' => "rgba(179,181,198,1)",
+                                        'data' => $rateValue
+                                    ]
+
+                                ]
+                            ]
+                        ]);
+                        ?>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        <?php endforeach;?>
+    </div>
 
     <div class="row">
         <?php foreach ($markets as $market):
@@ -31,6 +91,24 @@ $this->title = 'Главная: состояние биржи';
 
             $data = $marketsHistory->getHistoryForMarket($id);
             $diff = $marketsHistory->getDiffLastTwoDeltas($id);
+
+
+            $cap = $marketsHistory->getCapitalizationHistory($id,10,$market->fkCurrency->id);
+
+            $currentDataset = [
+                    'label' => $market->market_short_name,
+                    'backgroundColor' => "rgba(179,181,198,0.2)",
+                    'borderColor' => "rgba(179,181,198,1)",
+                    'pointBackgroundColor' => "rgba(179,181,198,1)",
+                    'pointBorderColor' => "#fff",
+                    'pointHoverBackgroundColor' => "#fff",
+                    'pointHoverBorderColor' => "rgba(179,181,198,1)",
+                    'data' => $cap
+                ];
+
+            $dataSets[] = $currentDataset;
+
+           // var_dump($cap);
 
             $color = '';
 
@@ -85,6 +163,20 @@ $this->title = 'Главная: состояние биржи';
                             <?php endif;?>
                         </h2>
 
+                        <?= ChartJs::widget([
+                            'type' => 'line',
+                            'options' => [
+                                'legend' => false,
+                            ],
+
+                            'data' => [
+                                'labels' => [$tick-10,$tick-9,$tick-8,$tick-7,$tick-6,$tick-5,$tick-4,$tick-3,$tick-2,$tick-1,$tick],
+                                'datasets' => [$currentDataset
+
+                                ]
+                            ]
+                        ]);
+                        ?>
 
 
 
@@ -94,6 +186,9 @@ $this->title = 'Главная: состояние биржи';
 
         <?php endforeach;?>
     </div>
+
+
+
 
 
 <!--

@@ -52,6 +52,36 @@ class MarketsHistory extends \yii\db\ActiveRecord
         return self::find()->where(['tick' => $tick])->all();
     }
 
+    public function getCapitalizationHistory($marketId, $ticks,$currency){
+        $currentTick = Settings::getKeyValue('lastTick');
+        $lowTick = $currentTick - $ticks;
+
+        $rateService = new Rates();
+
+        $rate = $rateService->getRateBetween($currency,1);
+        //var_dump($rate);
+        //die;
+
+        if($lowTick < 1)
+            $lowTick = 1;
+
+        $data = self::find()->select('capitalization')->where(['fk_market' => $marketId])->andWhere('tick >= :tick',[
+            ':tick' => $lowTick
+        ])->all();
+
+
+        $result = [];
+
+        foreach ($data as $record){
+            if ($record->capitalization){
+                $result[] = $record->capitalization * $rate  / 1000000000;
+            }
+
+        }
+
+        return $result;
+    }
+
     public function getLastTicksMarketsHistory(){
         $lastTickSettings = Settings::findOne(['key' => 'lastTick']);
         $tick = $lastTickSettings->value;

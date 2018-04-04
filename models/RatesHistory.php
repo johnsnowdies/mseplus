@@ -112,5 +112,35 @@ class RatesHistory extends \yii\db\ActiveRecord
         return $result;
     }
 
+    public function getGraphData(){
+        $hist = $this->getLastTicksHistory();
+        $result = [];
+
+
+        foreach ($hist as $tick){
+            foreach($tick as $source => $sourceVal){
+                foreach ($sourceVal as $target => $targetVal){
+                    if ($source == 'SGD')
+                    if ($source != 'EU')
+                        if ($target != 'EU')
+
+                            if ($targetVal != 0)
+                    $result[$source.'/'.$target][] = round($targetVal,4);
+
+
+                }
+            }
+
+
+
+        }
+
+        return $result;
+
+
+
+
+    }
+
 
 }
