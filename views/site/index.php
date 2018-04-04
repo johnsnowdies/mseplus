@@ -35,7 +35,22 @@ $this->title = 'Главная: состояние биржи';
 
     ?>
 
+    <div class="row" style="margin-bottom: 30px">
+        <div class="col-lg-6">
+            <div class="ibox-content p-md">
+
+                <h2>Динамика <span class="text-navy">курсов</span></h2>
+
+                <p>Отношение Золотого Дракона к другим валютам</p>
+
+
+
+            </div>
+        </div>
+    </div>
+
     <div class="row">
+
         <?php foreach ($ratesHist as $rate => $rateValue):?>
 
             <div class="col-lg-3">
@@ -71,10 +86,6 @@ $this->title = 'Главная: состояние биржи';
                         ]);
                         ?>
 
-
-
-
-
                     </div>
                 </div>
             </div>
@@ -84,7 +95,24 @@ $this->title = 'Главная: состояние биржи';
         <?php endforeach;?>
     </div>
 
+    <div class="row"  style="margin-bottom: 30px">
+        <div class="col-lg-6">
+            <div class="ibox-content p-md">
+
+                <h2>Динамика <span class="text-navy">бирж</span></h2>
+
+                <p>Капитализации указаны в млрд SGD</p>
+
+
+
+            </div>
+        </div>
+    </div>
+
     <div class="row">
+
+
+
         <?php foreach ($markets as $market):
 
             $id = $market->id;
