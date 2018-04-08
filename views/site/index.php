@@ -4,17 +4,21 @@
 /* @var $stockDataProvider yii\data\ActiveDataProvider */
 /* @var $newsDataProvider yii\data\ActiveDataProvider */
 
-$news = $newsDataProvider->query->orderBy(['id' => SORT_DESC])->limit(5)->all();
+//$news = $newsDataProvider->query->orderBy(['id' => SORT_DESC])->limit(5)->all();
+
 
 use app\models\Markets;
 use app\models\MarketsHistory;
+use app\models\MetaNews;
+use app\models\News;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\Stock;
 use dosamigos\chartjs\ChartJs;
 
 
-
+$tick = \app\models\Settings::getKeyValue('lastTick');
+$news = News::find()->select(['title','text','tick','ttl'])->orderBy(['tick' => SORT_DESC])->where(['<=','tick',$tick])->limit(10)->distinct()->all();
 $this->title = 'Главная: состояние биржи';
 ?>
 <div class="site-index">
@@ -27,10 +31,9 @@ $this->title = 'Главная: состояние биржи';
     $dataSets = [];
 
     $ratesService = new \app\models\RatesHistory();
-    $tick = \app\models\Settings::getKeyValue('lastTick');
+
 
     $ratesHist = $ratesService->getGraphData();
-
 
 
     ?>
@@ -44,14 +47,13 @@ $this->title = 'Главная: состояние биржи';
                 <p>Отношение Золотого Дракона к другим валютам</p>
 
 
-
             </div>
         </div>
     </div>
 
     <div class="row">
 
-        <?php foreach ($ratesHist as $rate => $rateValue):?>
+        <?php foreach ($ratesHist as $rate => $rateValue): ?>
 
             <div class="col-lg-3">
                 <div class="ibox">
@@ -68,7 +70,7 @@ $this->title = 'Главная: состояние биржи';
                             ],
 
                             'data' => [
-                                'labels' => [$tick-10,$tick-9,$tick-8,$tick-7,$tick-6,$tick-5,$tick-4,$tick-3,$tick-2,$tick-1,$tick],
+                                'labels' => [$tick - 10, $tick - 9, $tick - 8, $tick - 7, $tick - 6, $tick - 5, $tick - 4, $tick - 3, $tick - 2, $tick - 1, $tick],
                                 'datasets' => [
                                     [
                                         'label' => $rate,
@@ -91,11 +93,10 @@ $this->title = 'Главная: состояние биржи';
             </div>
 
 
-
-        <?php endforeach;?>
+        <?php endforeach; ?>
     </div>
 
-    <div class="row"  style="margin-bottom: 30px">
+    <div class="row" style="margin-bottom: 30px">
         <div class="col-lg-6">
             <div class="ibox-content p-md">
 
@@ -104,13 +105,11 @@ $this->title = 'Главная: состояние биржи';
                 <p>Капитализации указаны в млрд SGD</p>
 
 
-
             </div>
         </div>
     </div>
 
     <div class="row">
-
 
 
         <?php foreach ($markets as $market):
@@ -121,22 +120,22 @@ $this->title = 'Главная: состояние биржи';
             $diff = $marketsHistory->getDiffLastTwoDeltas($id);
 
 
-            $cap = $marketsHistory->getCapitalizationHistory($id,10,$market->fkCurrency->id);
+            $cap = $marketsHistory->getCapitalizationHistory($id, 10, $market->fkCurrency->id);
 
             $currentDataset = [
-                    'label' => $market->market_short_name,
-                    'backgroundColor' => "rgba(179,181,198,0.2)",
-                    'borderColor' => "rgba(179,181,198,1)",
-                    'pointBackgroundColor' => "rgba(179,181,198,1)",
-                    'pointBorderColor' => "#fff",
-                    'pointHoverBackgroundColor' => "#fff",
-                    'pointHoverBorderColor' => "rgba(179,181,198,1)",
-                    'data' => $cap
-                ];
+                'label' => $market->market_short_name,
+                'backgroundColor' => "rgba(179,181,198,0.2)",
+                'borderColor' => "rgba(179,181,198,1)",
+                'pointBackgroundColor' => "rgba(179,181,198,1)",
+                'pointBorderColor' => "#fff",
+                'pointHoverBackgroundColor' => "#fff",
+                'pointHoverBorderColor' => "rgba(179,181,198,1)",
+                'data' => $cap
+            ];
 
             $dataSets[] = $currentDataset;
 
-           // var_dump($cap);
+            // var_dump($cap);
 
             $color = '';
 
@@ -151,18 +150,20 @@ $this->title = 'Главная: состояние биржи';
                 <div class="ibox">
                     <div class="ibox-content">
 
-                        <h2 class="<?=($diff)? 'text-navy': 'text-danger' ?>">
+                        <h2 class="<?= ($diff) ? 'text-navy' : 'text-danger' ?>">
 
-                            <?php if($diff):?>
+                            <?php if ($diff): ?>
                                 <i class="fa fa-play fa-rotate-270"></i>
                             <?php endif; ?>
 
-                            <?php if(!$diff):?>
+                            <?php if (!$diff): ?>
                                 <i class="fa fa-play fa-rotate-90"></i>
                             <?php endif; ?>
 
+                            <a style="color: inherit;" href="/markets/view?id=<?=$market->id?>">
+                                <?= $market->market_short_name ?>
+                            </a>
 
-                            <?=$market->market_short_name?>
                             <?= \machour\sparkline\Sparkline::widget([
                                 'clientOptions' => [
                                     'type' => 'bar',
@@ -186,9 +187,9 @@ $this->title = 'Главная: состояние биржи';
                             <br>
 
 
-                            <?php if(count($data) > 1):?>
-                                <small><?=$data[count($data)-1]?>%</small>
-                            <?php endif;?>
+                            <?php if (count($data) > 1): ?>
+                                <small><?= $data[count($data) - 1] ?>%</small>
+                            <?php endif; ?>
                         </h2>
 
                         <?= ChartJs::widget([
@@ -198,7 +199,7 @@ $this->title = 'Главная: состояние биржи';
                             ],
 
                             'data' => [
-                                'labels' => [$tick-10,$tick-9,$tick-8,$tick-7,$tick-6,$tick-5,$tick-4,$tick-3,$tick-2,$tick-1,$tick],
+                                'labels' => [$tick - 10, $tick - 9, $tick - 8, $tick - 7, $tick - 6, $tick - 5, $tick - 4, $tick - 3, $tick - 2, $tick - 1, $tick],
                                 'datasets' => [$currentDataset
 
                                 ]
@@ -207,148 +208,146 @@ $this->title = 'Главная: состояние биржи';
                         ?>
 
 
+                    </div>
+                </div>
+            </div>
+
+        <?php endforeach; ?>
+    </div>
+
+
+    <!--
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="widget red-bg p-lg text-center">
+                    <div class="m-b-md">
+                        <i class="fa fa-shield fa-4x"></i>
+                        <h1 class="m-xs">SGD</h1>
+                        <h3 class="font-bold no-margins">
+                            Главная резервная валюта вчерашнего дня торгов
+                        </h3>
+                        <small>1 Universal Unit = 1 Standard Gold Dragon</small>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-danger m-r-sm">3</button>
+                            Oбанкротилось
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary m-r-sm">2</button>
+                            IPO
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info m-r-sm">10</button>
+                            Новостей
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-success m-r-sm">1</button>
+                            Такт
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-7">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Сводный курс валют</h5>
+
+                    </div>
+                    <div class="ibox-content">
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Валюта</th>
+                                <th>Золото (1gr)</th>
+                                <th>Платина (1gr)</th>
+                                <th>Мифрил (1gr)</th>
+                                <th>10 Ментан энергии</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>SGD</td>
+                                <td>1.12</td>
+                                <td>2.19</td>
+                                <td>3.29</td>
+                                <td>0.1</td>
+
+                            </tr>
+
+                            <tr>
+                                <td>MP</td>
+                                <td>11.22</td>
+                                <td>21.90</td>
+                                <td>32.290</td>
+                                <td>1 <span class="badge badge-info"><i class="fa fa-lock"></i> </span></td>
+
+                            </tr>
+                            <tr>
+                                <td>NC</td>
+                                <td>4.12</td>
+                                <td>3.19</td>
+                                <td>6.29</td>
+                                <td>0.5</td>
+
+                            </tr>
+                            <tr>
+                                <td>DR</td>
+                                <td>0.96</td>
+                                <td>1.19</td>
+                                <td>2.29</td>
+                                <td>0.21</td>
+
+                            </tr>
+
+                            <tr>
+                                <td>GD</td>
+                                <td>116.96</td>
+                                <td>211.19</td>
+                                <td>341.29</td>
+                                <td>15.21</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>
             </div>
 
-        <?php endforeach;?>
-    </div>
-
-
-
-
-
-<!--
-    <div class="row">
-        <div class="col-lg-5">
-            <div class="widget red-bg p-lg text-center">
-                <div class="m-b-md">
-                    <i class="fa fa-shield fa-4x"></i>
-                    <h1 class="m-xs">SGD</h1>
-                    <h3 class="font-bold no-margins">
-                        Главная резервная валюта вчерашнего дня торгов
-                    </h3>
-                    <small>1 Universal Unit = 1 Standard Gold Dragon</small>
-                </div>
-            </div>
-
-            <table class="table">
-                <tbody>
-                <tr>
-                    <td>
-                        <button type="button" class="btn btn-danger m-r-sm">3</button>
-                        Oбанкротилось
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-primary m-r-sm">2</button>
-                        IPO
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-info m-r-sm">10</button>
-                        Новостей
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" class="btn btn-success m-r-sm">1</button>
-                        Такт
-                    </td>
-                </tr>
-
-                </tbody>
-            </table>
         </div>
-        <div class="col-lg-7">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Сводный курс валют</h5>
-
-                </div>
-                <div class="ibox-content">
-
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Валюта</th>
-                            <th>Золото (1gr)</th>
-                            <th>Платина (1gr)</th>
-                            <th>Мифрил (1gr)</th>
-                            <th>10 Ментан энергии</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>SGD</td>
-                            <td>1.12</td>
-                            <td>2.19</td>
-                            <td>3.29</td>
-                            <td>0.1</td>
-
-                        </tr>
-
-                        <tr>
-                            <td>MP</td>
-                            <td>11.22</td>
-                            <td>21.90</td>
-                            <td>32.290</td>
-                            <td>1 <span class="badge badge-info"><i class="fa fa-lock"></i> </span></td>
-
-                        </tr>
-                        <tr>
-                            <td>NC</td>
-                            <td>4.12</td>
-                            <td>3.19</td>
-                            <td>6.29</td>
-                            <td>0.5</td>
-
-                        </tr>
-                        <tr>
-                            <td>DR</td>
-                            <td>0.96</td>
-                            <td>1.19</td>
-                            <td>2.29</td>
-                            <td>0.21</td>
-
-                        </tr>
-
-                        <tr>
-                            <td>GD</td>
-                            <td>116.96</td>
-                            <td>211.19</td>
-                            <td>341.29</td>
-                            <td>15.21</td>
-
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-
-    </div>
--->
+    -->
     <div class="row">
         <div class="col-lg-5">
             <div id="vertical-timeline" class="vertical-container light-timeline">
 
-                <?php foreach ($news as $item):?>
+                <?php foreach ($news as $item): ?>
 
-                <div class="vertical-timeline-block">
-                    <div class="vertical-timeline-icon navy-bg">
-                        <i class="fa fa-briefcase"></i>
+                    <div class="vertical-timeline-block">
+                        <div class="vertical-timeline-icon navy-bg">
+                            <i class="fa fa-briefcase"></i>
+                        </div>
+
+                        <div class="vertical-timeline-content">
+                            <h2><?= $item->title ?></h2>
+                            <p><?= $item->text ?></p>
+
+
+
+                            <span class="vertical-date">Такт #<?= $item->tick ?> - up to <?= $item->ttl ?></span>
+                        </div>
                     </div>
 
-                    <div class="vertical-timeline-content">
-                        <h2><?=$item->title?></h2>
-                        <p><?=$item->text?></p>
-
-                        <span class="vertical-date">Такт #<?=$item->tick?></span>
-                    </div>
-                </div>
-
-                <?php endforeach;?>
+                <?php endforeach; ?>
             </div>
             <div style="text-align: center;margin-bottom: 25px;">
                 <a href="#">Все новости</a>
@@ -361,7 +360,7 @@ $this->title = 'Главная: состояние биржи';
                 </div>
 
                 <div class="ibox-content">
-                    <?php Pjax::begin();?>
+                    <?php Pjax::begin(); ?>
                     <?= GridView::widget([
                         'dataProvider' => $stockDataProvider,
                         'layout' => '{items}',
@@ -371,9 +370,9 @@ $this->title = 'Главная: состояние биржи';
                         'columns' => [
                             'fkMarket' => [
                                 'headerOptions' => ['style' => 'width:140px'],
-                                'attribute'=>'fk_market',
+                                'attribute' => 'fk_market',
                                 'label' => 'Биржа',
-                                'enableSorting'=> true,
+                                'enableSorting' => true,
                                 'format' => 'raw',
                                 'value' => function ($data) {
                                     $src = $data->fkMarket->logo;
@@ -404,11 +403,11 @@ $this->title = 'Главная: состояние биржи';
                                 'headerOptions' => ['style' => 'width:90px'],
                                 'format' => 'raw',
                                 'value' => function ($data) {
-    
-                                    if($data->behavior == 'GROWTH')
-                                        return '<i class="fa fa-level-up" style="color:#1ab394"></i>'.Yii::$app->formatter->format($data->delta,['decimal', 2]).'%';
+
+                                    if ($data->behavior == 'GROWTH')
+                                        return '<i class="fa fa-level-up" style="color:#1ab394"></i>' . Yii::$app->formatter->format($data->delta, ['decimal', 2]) . '%';
                                     else
-                                        return '<i class="fa fa-level-down" style="color:#ed5565"></i>'.Yii::$app->formatter->format($data->delta,['decimal', 2]).'%';
+                                        return '<i class="fa fa-level-down" style="color:#ed5565"></i>' . Yii::$app->formatter->format($data->delta, ['decimal', 2]) . '%';
                                 }
                             ],
 
@@ -425,13 +424,12 @@ $this->title = 'Главная: состояние биржи';
 
                         ],
                     ]); ?>
-                    <?php Pjax::end();?>
+                    <?php Pjax::end(); ?>
                 </div>
             </div>
 
         </div>
     </div>
-
 
 
 </div>

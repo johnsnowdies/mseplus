@@ -12,7 +12,7 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Биржи', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="markets-view">
+<div class="markets-view"><!--
     <div class="col-lg-3">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
@@ -61,7 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-    <div class="col-lg-9">
+    -->
+    <div class="col-lg-12">
         <div class="ibox-title">
             <h5>Капитализация</h5>
         </div>
@@ -77,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $tick = \app\models\Settings::getKeyValue('lastTick');
 
 
-        $cap = $marketsHistory->getCapitalizationHistory($id,100,$market->fkCurrency->id);
+        $cap = $marketsHistory->getCapitalizationHistoryInFiat($id,100,$market->fkCurrency->id);
 
         $currentDataset = [
             'label' => $market->market_short_name,
@@ -88,6 +89,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'pointHoverBackgroundColor' => "#fff",
             'pointHoverBorderColor' => "rgba(179,181,198,1)",
             'data' => $cap
+        ];
+
+
+        $cap2 = $marketsHistory->getCapitalizationHistory($id,100,$market->fkCurrency->id);
+
+        $currentDataset2 = [
+            'label' => $market->market_short_name,
+            'backgroundColor' => "rgba(179,181,198,0.2)",
+            'borderColor' => "rgba(179,181,198,1)",
+            'pointBackgroundColor' => "rgba(179,181,198,1)",
+            'pointBorderColor' => "#fff",
+            'pointHoverBackgroundColor' => "#fff",
+            'pointHoverBorderColor' => "rgba(179,181,198,1)",
+            'data' => $cap2
         ];
 
         $dataSets[] = $currentDataset;
@@ -155,6 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php endif;?>
                     </h2>
 
+            <h3>В валюте биржи</h3>
                     <?= ChartJs::widget([
                         'type' => 'line',
                         'options' => [
@@ -169,6 +185,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     ]);
                     ?>
+<hr>
+            <h3>В Exchange Units</h3>
+            <?= ChartJs::widget([
+                'type' => 'line',
+                'options' => [
+                    'legend' => false,
+                ],
+
+                'data' => [
+                    'labels' =>$labels,
+                    'datasets' => [$currentDataset2
+
+                    ]
+                ]
+            ]);
+            ?>
         </div>
 
 

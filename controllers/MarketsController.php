@@ -44,6 +44,10 @@ class MarketsController extends Controller
         ]);
     }
 
+    public function actionDiff(){
+        return $this->render('diff');
+    }
+
     /**
      * Displays a single Markets model.
      * @param integer $id
