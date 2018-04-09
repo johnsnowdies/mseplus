@@ -4,52 +4,28 @@
 /* @var $stockDataProvider yii\data\ActiveDataProvider */
 /* @var $newsDataProvider yii\data\ActiveDataProvider */
 
-//$news = $newsDataProvider->query->orderBy(['id' => SORT_DESC])->limit(5)->all();
-
-
 use app\models\Markets;
 use app\models\MarketsHistory;
-use app\models\MetaNews;
 use app\models\News;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use app\models\Stock;
 use dosamigos\chartjs\ChartJs;
 
-
 $tick = \app\models\Settings::getKeyValue('lastTick');
-$news = News::find()->select(['title','text','tick','ttl'])->orderBy(['tick' => SORT_DESC])->where(['<=','tick',$tick])->limit(10)->distinct()->all();
+$news = News::find()->select(['title','text','tick'])->orderBy(['tick' => SORT_DESC])->where(['<=','tick',$tick])->limit(10)->distinct()->all();
 $this->title = 'Главная: состояние биржи';
 ?>
 <div class="site-index">
 
     <?php
-
     $marketsHistory = new MarketsHistory();
     $markets = Markets::find()->orderBy('market_short_name')->all();
-
     $dataSets = [];
-
     $ratesService = new \app\models\RatesHistory();
-
-
     $ratesHist = $ratesService->getGraphData();
-
-
     ?>
 
-    <div class="row" style="margin-bottom: 30px">
-        <div class="col-lg-6">
-            <div class="ibox-content p-md">
 
-                <h2>Динамика <span class="text-navy">курсов</span></h2>
-
-                <p>Отношение Золотого Дракона к другим валютам</p>
-
-
-            </div>
-        </div>
-    </div>
 
     <div class="row">
 
@@ -96,18 +72,7 @@ $this->title = 'Главная: состояние биржи';
         <?php endforeach; ?>
     </div>
 
-    <div class="row" style="margin-bottom: 30px">
-        <div class="col-lg-6">
-            <div class="ibox-content p-md">
-
-                <h2>Динамика <span class="text-navy">бирж</span></h2>
-
-                <p>Капитализации указаны в млрд SGD</p>
-
-
-            </div>
-        </div>
-    </div>
+   <hr>
 
     <div class="row">
 
@@ -339,11 +304,13 @@ $this->title = 'Главная: состояние биржи';
 
                         <div class="vertical-timeline-content">
                             <h2><?= $item->title ?></h2>
-                            <p><?= $item->text ?></p>
+                            <?php if (!strpos($item->text,'MetaNews')):?>
+                                <p><?= $item->text ?></p>
+                            <?php endif;?>
 
 
 
-                            <span class="vertical-date">Такт #<?= $item->tick ?> - up to <?= $item->ttl ?></span>
+                            <span class="vertical-date">Такт #<?= $item->tick ?></span>
                         </div>
                     </div>
 
