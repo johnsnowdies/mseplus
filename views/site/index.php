@@ -36,7 +36,7 @@ $this->title = 'Главная: состояние биржи';
                     <div class="ibox-content">
 
                         <h2 class="">
-                            <?= $rate ?>
+                            <?= $rate ?>R
                         </h2>
 
                         <?= ChartJs::widget([

@@ -1,6 +1,7 @@
 <?php
 namespace app\components;
 
+use app\models\Markets;
 use app\models\News;
 use app\models\Stock;
 use app\models\StockHistory;
@@ -37,7 +38,17 @@ class TradeService
         print("Assuming tick #{$tick}\r\n");
 
         // Вытаскиваем все компании
-        $companies = Stock::find()->all();
+
+        $disabledMarkets = Markets::find()->where(['active' => false])->all();
+
+        $disabledMarketsIds = [];
+
+        foreach ($disabledMarkets as $market){
+            $disabledMarketsIds[] = $market->id;
+        }
+
+        $companies = Stock::find()->where('fk_market NOT IN('.$disabledMarketsIds.')')->all();
+
 
         foreach($companies as $company){
             print("Trade simulation for {$company->company_name}\r\n");

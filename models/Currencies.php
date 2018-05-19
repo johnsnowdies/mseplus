@@ -16,6 +16,7 @@ use yii\behaviors\TimestampBehavior;
  * @property Markets[] $markets
  * @property int $created_at [int(11)]
  * @property int $updated_at [int(11)]
+ * @property bool active
  */
 class Currencies extends \yii\db\ActiveRecord
 {

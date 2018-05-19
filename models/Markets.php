@@ -29,6 +29,7 @@ use yii\behaviors\TimestampBehavior;
  * @prorerty int rate_agri
  * @property int rate_indus
  * @property int rate_serv
+ * @property bool active
  */
 class Markets extends \yii\db\ActiveRecord
 {

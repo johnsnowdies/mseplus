@@ -185,7 +185,7 @@ class CampaignService
 
 
     public function run(){
-        $currencies = Currencies::find()->all();
+        $currencies = Currencies::find()->where(['active' => true])->all();
 
         // Проход по странам
         foreach ($currencies as $currency){
@@ -194,7 +194,11 @@ class CampaignService
            
             print("\r\n");
             print("Processing {$currency->country}\r\n");
-            $markets = Markets::find()->where(['fk_currency' => $currency->id])->all();
+
+            $markets = Markets::find()->where([
+                'fk_currency' => $currency->id,
+                'active' => true
+                ])->all();
 
 
             // Проход по биржам
