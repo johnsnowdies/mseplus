@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Markets;
 use Yii;
 use app\models\Stock;
 use yii\data\ActiveDataProvider;
@@ -35,9 +36,26 @@ class StockController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Stock::find(),
-        ]);
+
+        $disabledMarkets = Markets::find()->where(['active' => false])->all();
+
+        $disabledMarketsIds = "";
+
+        $glue = "";
+        foreach ($disabledMarkets as $market){
+            $disabledMarketsIds .= $glue.$market->id;
+            $glue = ",";
+        }
+
+        if (!empty($disabledMarketsIds)) {
+            $dataProvider = new ActiveDataProvider([
+                'query' => Stock::find()->where('fk_market NOT IN(' . $disabledMarketsIds . ')'),
+            ]);
+        }else{
+            $dataProvider = new ActiveDataProvider([
+                'query' => Stock::find(),
+            ]);
+        }
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,

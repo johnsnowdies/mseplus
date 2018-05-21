@@ -142,7 +142,7 @@ class MetaNewsController extends Controller
             $model->setSectors($sectorIds);
 
             if ($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['meta-news/index']);
             }
 
         }

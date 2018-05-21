@@ -6,7 +6,7 @@ use app\models\Settings;
 use dosamigos\chartjs\ChartJs;
 
 $marketsHistory = new MarketsHistory();
-$markets = Markets::find()->orderBy('market_short_name')->all();
+$markets = Markets::find()->where(['active'=> true])->orderBy('market_short_name')->all();
 $tick = Settings::getKeyValue('lastTick');
 $dataSets = [];
 

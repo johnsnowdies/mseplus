@@ -41,14 +41,18 @@ class TradeService
 
         $disabledMarkets = Markets::find()->where(['active' => false])->all();
 
-        $disabledMarketsIds = [];
+        $disabledMarketsIds = "";
 
+        $glue = "";
         foreach ($disabledMarkets as $market){
-            $disabledMarketsIds[] = $market->id;
+            $disabledMarketsIds .= $glue.$market->id;
+            $glue = ",";
         }
 
-        $companies = Stock::find()->where('fk_market NOT IN('.$disabledMarketsIds.')')->all();
-
+        if (!empty($disabledMarketsIds))
+            $companies = Stock::find()->where('fk_market NOT IN('.$disabledMarketsIds.')')->all();
+        else
+            $companies = Stock::find()->all();
 
         foreach($companies as $company){
             print("Trade simulation for {$company->company_name}\r\n");

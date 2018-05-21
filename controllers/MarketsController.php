@@ -36,7 +36,7 @@ class MarketsController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Markets::find(),
+            'query' => Markets::find()->where(['active' => true]),
         ]);
 
         return $this->render('index', [

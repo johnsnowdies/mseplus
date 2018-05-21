@@ -36,7 +36,7 @@ class CurrenciesController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Currencies::find(),
+            'query' => Currencies::find()->where(['active' => true ]),
         ]);
 
         return $this->render('index', [

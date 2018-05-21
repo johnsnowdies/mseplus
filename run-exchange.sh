@@ -2,7 +2,7 @@
 # Basic until loop
 
 counter=1
-until [ $counter -gt 90 ]
+until [ $counter -gt 30 ]
 do
     php yii exchange/run > /dev/null
     ((counter++))

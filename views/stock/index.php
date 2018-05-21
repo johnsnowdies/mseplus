@@ -90,10 +90,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) {
                                 $result = $data->capitalization;
                                 $currency = $data->fkMarket->fkCurrency->currency_short_name;
-                                if ($selectedCurrency && $selectedCurrency != $currency)
-                                    $result = ($data->capitalization) * ($exchangeRates[$currency][$selectedCurrency]);
+                                if ($data->fkMarket->active) {
 
-                                return $result;
+                                    if ($selectedCurrency && $selectedCurrency != $currency)
+                                        $result = ($data->capitalization) * ($exchangeRates[$currency][$selectedCurrency]);
+
+                                    return $result;
+                                }
                             }
                         ],
 
@@ -104,10 +107,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($data) use (&$selectedCurrency, &$exchangeRates) {
                                 $result = $data->share_price;
                                 $currency = $data->fkMarket->fkCurrency->currency_short_name;
-                                if ($selectedCurrency && $selectedCurrency != $currency)
-                                    $result = ($data->share_price) * ($exchangeRates[$selectedCurrency][$currency]);
+                                   if ($data->fkMarket->active) {
+                                       if ($selectedCurrency && $selectedCurrency != $currency)
+                                           $result = ($data->share_price) * ($exchangeRates[$selectedCurrency][$currency]);
 
-                                return $result;
+                                       return $result;
+                                   }
                             }
                         ],
                         'value' => [

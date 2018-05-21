@@ -87,7 +87,7 @@ class Rates extends \yii\db\ActiveRecord
 
 
     public function getSystemRates(){
-        $currencies = Currencies::find()->all();
+        $currencies = Currencies::find()->where(['active' => true])->all();
         
         $result = [];
 
@@ -108,7 +108,7 @@ class Rates extends \yii\db\ActiveRecord
 
 
     public function getSystemRatesWithoutEU(){
-        $currencies = Currencies::find()->all();
+        $currencies = Currencies::find()->where(['active' => true])->all();
 
         $result = [];
 

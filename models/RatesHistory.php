@@ -85,7 +85,7 @@ class RatesHistory extends \yii\db\ActiveRecord
 
 
     public function getSystemRatesForTick($tick){
-        $currencies = Currencies::find()->all();
+        $currencies = Currencies::find()->where(['active' => true])->all();
 
         $result = [];
 

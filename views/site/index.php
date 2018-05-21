@@ -19,7 +19,7 @@ $this->title = 'Главная: состояние биржи';
 
     <?php
     $marketsHistory = new MarketsHistory();
-    $markets = Markets::find()->orderBy('market_short_name')->all();
+    $markets = Markets::find()->where(['active' => true])->orderBy('market_short_name')->all();
     $dataSets = [];
     $ratesService = new \app\models\RatesHistory();
     $ratesHist = $ratesService->getGraphData();
@@ -31,12 +31,12 @@ $this->title = 'Главная: состояние биржи';
 
         <?php foreach ($ratesHist as $rate => $rateValue): ?>
 
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <div class="ibox">
                     <div class="ibox-content">
 
                         <h2 class="">
-                            <?= $rate ?>R
+                            <?= $rate ?>
                         </h2>
 
                         <?= ChartJs::widget([
@@ -111,7 +111,7 @@ $this->title = 'Главная: состояние биржи';
 
             ?>
 
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <div class="ibox">
                     <div class="ibox-content">
 

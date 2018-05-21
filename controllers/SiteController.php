@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Markets;
 use app\models\News;
 use app\models\Stock;
 use Yii;
@@ -64,12 +65,32 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $stockDataProvider = new ActiveDataProvider([
-            'query' => Stock::find(),
-            'sort' => [
-                'defaultOrder' => ['capitalization' => SORT_DESC],
-            ],
-        ]);
+        $disabledMarkets = Markets::find()->where(['active' => false])->all();
+
+        $disabledMarketsIds = "";
+
+        $glue = "";
+        foreach ($disabledMarkets as $market){
+            $disabledMarketsIds .= $glue.$market->id;
+            $glue = ",";
+        }
+
+        if (!empty($disabledMarketsIds)) {
+            $stockDataProvider = new ActiveDataProvider([
+                'query' => Stock::find()->where('fk_market NOT IN(' . $disabledMarketsIds . ')'),
+                'sort' => [
+                    'defaultOrder' => ['capitalization' => SORT_DESC],
+                ],
+            ]);
+        }else {
+
+            $stockDataProvider = new ActiveDataProvider([
+                'query' => Stock::find(),
+                'sort' => [
+                    'defaultOrder' => ['capitalization' => SORT_DESC],
+                ],
+            ]);
+        }
 
         $newsDataProvider = new ActiveDataProvider([
            'query' =>  News::find()
